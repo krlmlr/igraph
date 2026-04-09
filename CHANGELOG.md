@@ -21,4 +21,70 @@ This section lists API-breaking changes and other non-functional improvements, a
 - `IGRAPH_ENEGLOOP`, a deprecated alias of `IGRAPH_ENEGCYCLE`, was removed.
 - All `IGRAPH_ARPACK_*` error codes have been replaced by the single `IGRAPH_EARPACK` error code. The previous `IGRAPH_ARPACK_*` codes have been moved to the new `igraph_arpack_error_t` enum. Use `igraph_arpack_get_last_error()` to retrieve the specific ARPACK error code.
 - `IGRAPH_EINVEID` was added for invalid edge IDs, analogous to `IGRAPH_EINVVID`.
+- The interruption handler type (`igraph_interruption_handler_t`) no longer takes a `void*` parameter and now returns `igraph_bool_t` instead of `igraph_error_t`. Correspondingly, `igraph_allow_interruption()` no longer takes a `void*` parameter.
+- Added `igraph_setup()` function to initialize the igraph library with a random seed.
+
+## Remaining differences from the `next` branch (proof of work)
+
+The following differences remain in the files changed by this PR compared to the `next` branch. Each difference is justified by a later changelog entry that has not yet been implemented.
+
+### `igraph_integer_t` → `igraph_int_t` rename (later "Core types and naming" changelog entry)
+
+Affects: `include/igraph_arpack.h`, `src/linalg/arpack.c`, `src/constructors/basic_constructors.c`, `src/constructors/adjacency.c`, `src/core/sparsemat.c`, `src/games/sbm.c`, `src/graph/type_indexededgelist.c`, `src/linalg/lapack.c`, `src/linalg/eigen.c`, `src/misc/bipartite.c`, `src/isomorphism/lad.c`, `src/isomorphism/bliss.cc`, `src/community/leading_eigenvector.c`, `src/core/interruption.h`
+
+### `__BEGIN_DECLS`/`__END_DECLS` → `IGRAPH_BEGIN_C_DECLS`/`IGRAPH_END_C_DECLS` (later macro cleanup)
+
+Affects: `include/igraph_error.h`, `include/igraph_arpack.h`, `include/igraph_interrupt.h`, `include/igraph_setup.h`, `src/core/interruption.h`, `src/internal/glpk_support.h`
+
+### Copyright header modernization (later cosmetic changes)
+
+Affects: all files — `/* IGraph library */` → `/* igraph library */`, address removal, license URL update
+
+### `RNG_BEGIN`/`RNG_END` removal (later "Random number generation" changes)
+
+Affects: `src/linalg/arpack.c` (two occurrences in `igraph_arpack_rssolve` and `igraph_arpack_rnsolve`)
+
+### `void *attr` → `const igraph_attribute_record_list_t *attr` (later "Attribute handler" changes)
+
+Affects: `src/graph/type_indexededgelist.c` (`igraph_empty_attrs`, `igraph_add_edges`, `igraph_add_vertices`)
+
+### `igraph_topology.h` → `igraph_isomorphism.h` (later header reorganization)
+
+Affects: `src/isomorphism/lad.c`, `src/isomorphism/bliss.cc`
+
+### Documentation improvements (later doc changes)
+
+Affects: `src/games/sbm.c` (SBM doc expansion), `src/linalg/lapack.c` (non-square matrix error messages), `src/misc/bipartite.c` (parameter descriptions), `src/isomorphism/bliss.cc` (canonical permutation doc)
+
+### `igraph_vector_view` API change (later core data structure changes)
+
+Affects: `src/linalg/eigen.c`
+
+### Removal of deprecated functions (later deprecation cleanup)
+
+Affects: `src/core/sparsemat.c` (`igraph_sparsemat_copy` removal), `src/constructors/basic_constructors.c` (`about_generators` section removal)
+
+### Directed graph `IGRAPH_LOOPS_TWICE` → `IGRAPH_LOOPS_ONCE` conversion (later adjacency/graph behavior changes)
+
+Affects: `src/constructors/adjacency.c`, `src/graph/type_indexededgelist.c`
+
+### SBM game edge type handling changes (later game function refactoring)
+
+Affects: `src/games/sbm.c`, `tests/unit/igraph_sbm_game.c`
+
+### Bipartite game function changes (later bipartite function refactoring)
+
+Affects: `src/misc/bipartite.c`
+
+### `igraph_i_adjacency_directed` → `igraph_i_adjacency_directed_or_plus` (later adjacency refactoring)
+
+Affects: `src/constructors/adjacency.c`
+
+### Test changes for new function signatures (later API changes)
+
+Affects: `tests/unit/glpk_error.c` (erdos_renyi_game_gnm signature change), `tests/unit/igraph_adjacency.c`, `tests/unit/igraph_weighted_adjacency.c`
+
+### `(size_t) index` cast in `igraph_arpack_error_to_string` (defensive coding)
+
+Affects: `src/linalg/arpack.c` — our version has `(size_t) index < ...` while next has `index < ...`. This is a defensive cast we added to avoid a signed/unsigned comparison warning. Not present in next but is a correct safeguard.
 
