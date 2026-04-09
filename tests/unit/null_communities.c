@@ -1,6 +1,6 @@
 /*
-   IGraph library.
-   Copyright (C) 2022  The igraph development team <igraph@igraph.org>
+   igraph library.
+   Copyright (C) 2022-2025  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ int main(void) {
 
     /* Edge betweenness */
 
-    igraph_community_edge_betweenness(&g, NULL, NULL, &merges, NULL, &modularity, &membership, 0, NULL);
+    igraph_community_edge_betweenness(&g, NULL, NULL, &merges, NULL, &modularity, &membership, IGRAPH_UNDIRECTED, NULL, NULL);
 
     IGRAPH_ASSERT(igraph_matrix_int_nrow(&merges) == 0);
     IGRAPH_ASSERT(igraph_matrix_int_ncol(&merges) == 2);
@@ -74,18 +74,31 @@ int main(void) {
 
     /* InfoMAP */
 
-    m = 2;
-    igraph_vector_int_resize(&membership, 1);
+    {
+        igraph_error_t ret;
+        igraph_error_handler_t *handler;
 
-    igraph_community_infomap(&g, NULL, NULL, 3, &membership, &m);
+        m = 2;
+        igraph_vector_int_resize(&membership, 1);
 
-    IGRAPH_ASSERT(igraph_vector_int_size(&membership) == 0);
+        handler = igraph_set_error_handler(igraph_error_handler_ignore);
+        ret = igraph_community_infomap(&g, NULL, NULL, 3, false, 0, &membership, &m);
+        igraph_set_error_handler(handler);
+
+        if (ret != IGRAPH_UNIMPLEMENTED) {
+            IGRAPH_ASSERT(ret == IGRAPH_SUCCESS);
+            IGRAPH_ASSERT(igraph_vector_int_size(&membership) == 0);
+        }
+    }
 
     /* Label propagation */
 
     igraph_vector_int_resize(&membership, 1);
 
-    igraph_community_label_propagation(&g, &membership, IGRAPH_ALL, NULL, NULL, NULL);
+    igraph_lpa_variant_t variants[3] = {IGRAPH_LPA_DOMINANCE, IGRAPH_LPA_RETENTION, IGRAPH_LPA_FAST};
+    for (igraph_int_t i = 0; i < 3; i++) {
+        igraph_community_label_propagation(&g, &membership, IGRAPH_ALL, NULL, NULL, NULL, variants[i]);
+    }
 
     IGRAPH_ASSERT(igraph_vector_int_size(&membership) == 0);
 
@@ -108,7 +121,7 @@ int main(void) {
     m = 2;
     igraph_vector_int_resize(&membership, 1);
 
-    igraph_community_leiden(&g, NULL, NULL, 1, 0.01, 0, 1, &membership, NULL, &m);
+    igraph_community_leiden(&g, NULL, NULL, NULL, 1, 0.01, 0, 1, &membership, NULL, &m);
 
     IGRAPH_ASSERT(igraph_vector_int_size(&membership) == 0);
     IGRAPH_ASSERT(isnan(m));
@@ -135,7 +148,7 @@ int main(void) {
         igraph_vector_int_resize(&membership, 1);
 
         handler = igraph_set_error_handler(igraph_error_handler_ignore);
-        ret = igraph_community_optimal_modularity(&g, &m, &membership, NULL);
+        ret = igraph_community_optimal_modularity(&g, NULL, 1, &m, &membership);
         igraph_set_error_handler(handler);
 
         if (ret != IGRAPH_UNIMPLEMENTED) {
