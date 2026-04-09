@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -47,21 +47,21 @@ int main(void) {
     igraph_distances_floyd_warshall(&g, &d, igraph_vss_all(), igraph_vss_all(), NULL, IGRAPH_OUT, IGRAPH_FLOYD_WARSHALL_TREE);
     print_matrix(&d);
 
-    igraph_distances(&g, &d2, igraph_vss_all(), igraph_vss_all(), IGRAPH_OUT);
+    igraph_distances(&g, NULL, &d2, igraph_vss_all(), igraph_vss_all(), IGRAPH_OUT);
     IGRAPH_ASSERT(igraph_matrix_all_e(&d, &d2));
 
     printf("\nUnweighted directed, 'in' mode\n");
     igraph_distances_floyd_warshall(&g, &d, igraph_vss_all(), igraph_vss_all(), NULL, IGRAPH_IN, IGRAPH_FLOYD_WARSHALL_TREE);
     print_matrix(&d);
 
-    igraph_distances(&g, &d2, igraph_vss_all(), igraph_vss_all(), IGRAPH_IN);
+    igraph_distances(&g, NULL, &d2, igraph_vss_all(), igraph_vss_all(), IGRAPH_IN);
     IGRAPH_ASSERT(igraph_matrix_all_e(&d, &d2));
 
     printf("\nUnweighted undirected\n");
     igraph_distances_floyd_warshall(&g, &d, igraph_vss_all(), igraph_vss_all(), NULL, IGRAPH_ALL, IGRAPH_FLOYD_WARSHALL_TREE);
     print_matrix(&d);
 
-    igraph_distances(&g, &d2, igraph_vss_all(), igraph_vss_all(), IGRAPH_ALL);
+    igraph_distances(&g, NULL, &d2, igraph_vss_all(), igraph_vss_all(), IGRAPH_ALL);
     IGRAPH_ASSERT(igraph_matrix_all_e(&d, &d2));
 
     igraph_vector_init_int(&weights, igraph_ecount(&g),
@@ -109,7 +109,7 @@ int main(void) {
     igraph_destroy(&g);
 
     /* Unweighted directed - larger graph */
-    igraph_erdos_renyi_game_gnp(&g, 100, 0.1, IGRAPH_DIRECTED, IGRAPH_NO_LOOPS);
+    igraph_erdos_renyi_game_gnp(&g, 100, 0.1, IGRAPH_DIRECTED, IGRAPH_SIMPLE_SW, IGRAPH_EDGE_UNLABELED);
     igraph_distances_floyd_warshall(&g, &d, igraph_vss_all(), igraph_vss_all(), NULL, IGRAPH_OUT, IGRAPH_FLOYD_WARSHALL_TREE);
     igraph_distances_dijkstra(&g, &d2, igraph_vss_all(), igraph_vss_all(), NULL, IGRAPH_OUT);
     IGRAPH_ASSERT(igraph_matrix_all_e(&d, &d2));
