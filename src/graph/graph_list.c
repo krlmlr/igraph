@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2022  The igraph development team
    334 Harvard street, Cambridge, MA 02139 USA
 
@@ -31,7 +30,7 @@
 #define BASE_GRAPH
 #define CUSTOM_INIT_DESTROY
 #include "igraph_pmt.h"
-#include "../core/typed_list.pmt"
+#include "core/typed_list.pmt"
 #include "igraph_pmt_off.h"
 #undef CUSTOM_INIT_DESTROY
 #undef BASE_GRAPH
