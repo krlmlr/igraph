@@ -67,7 +67,6 @@ This section lists API-breaking changes and other non-functional improvements, a
 - `igraph_vector_list_swap()` and `igraph_graph_list_swap()` no longer return an error code.
 - `igraph_vector_swap_elements()` no longer returns an error code.
 - `igraph_vector_list_swap_elements()` and `igraph_graph_list_swap_elements()` no longer return an error code.
-- `igraph_matrix_copy_to()` gained an `igraph_matrix_storage_t storage` parameter that specifies whether the data should be written in column-major or row-major format.
 - `igraph_vector_view()`, `igraph_matrix_view()`, `igraph_matrix_view_from_vector()`, and `igraph_vector_ptr_view()` now return their result as a return value instead of an output parameter. This allows assigning the value to a `const` variable without triggering warnings with modern compilers.
 - `igraph_vector_append()`, `igraph_strvector_append()` and `igraph_vector_ptr_append()` now use a different allocation strategy: if the `to` vector has insufficient capacity, they double its capacity. Previously they reserved precisely as much capacity as needed for appending the `from` vector.
 - `igraph_vector_difference_sorted()` now handles multisets properly (and documents how the multiplicities are handled).
@@ -83,19 +82,13 @@ This section lists API-breaking changes and other non-functional improvements, a
 ### Core graph manipulation
 
 - `igraph_delete_vertices_map()` (formerly called `igraph_delete_vertices_idx()`) and `igraph_induced_subgraph_map()` now use `-1` to represent unmapped vertices in the returned forward mapping vector and they do not offset vertex indices by 1 any more. Note that the inverse map always behaved this way, this change makes the two mappings consistent.
-- `igraph_edges()` gained a new `igraph_bool_t bycol` argument that determines the order in which the edges are returned. `bycol = false` reproduces the existing behaviour, while `bycol = true` returns the edges suitable for a matrix stored in column-wise order.
-- `igraph_neighbors()` and `igraph_vs_adj()` gained two extra arguments, `igraph_loops_t loops` and `igraph_bool_t multiple` to specify what to do with loop and multiple edges. This makes their interfaces consistent with `igraph_adjlist_init()`. Use `loops = IGRAPH_LOOPS_TWICE` and `multiple = true` to reproduce the previous behavior.
-- `igraph_incident()` and `igraph_es_incident()` gained an extra `igraph_loops_t loops` argument to specify what to do with loop edges. This makes their interfaces consistent with `igraph_inclist_init()`. Use `loops = IGRAPH_LOOPS_TWICE` to reproduce the previous behavior.
 - The order of edges in the graph returned by `igraph_(weighted_)adjacency()` and `igraph_biadjacency()` has changed. Note that these functions do not guarantee any specific edge order.
 - The semantics of the `igraph_permute_vertices()` permutation argument has changed: the i-th element of the vector now contains the index of the _original_ vertex that will be mapped to the i-th vertex in the new graph. This is now consistent with how other igraph functions treat permutations and vertex index vectors; for instance, you can now pass the result of `igraph_topological_sorting()` directly to `igraph_permute_vertices()` to obtain a new graph where the vertices are sorted topologically.
 - As a consequence to the change in the semantics of the `igraph_permute_vertices()` permutation argument, the semantics of the permutations returned from `igraph_canonical_permutation()` and `igraph_canonical_permutation_bliss()` have also been inverted to maintain the invariant that the output of these functions can be fed into `igraph_permute_vertices()` directly.
 
 ### Basic graph properties
 
-- `igraph_density()` now takes an optional `weights` parameter.
-- `igraph_is_simple()` gained an extra `igraph_bool_t` argument that decides whether edge directions should be considered. Directed graphs with a mutual edge pair are treated as non-simple if this argument is set to `IGRAPH_UNDIRECTED` (which treats the graph as if it was undirected).
 - The type of the `loops` argument of `igraph_adjlist_init_complementer()`, `igraph_centralization_degree()`, `igraph_centralization_degree_tmax()`, `igraph_degree()`, `igraph_maxdegree()`, `igraph_sort_vertex_ids_by_degree()` and `igraph_strength()` was changed to `igraph_loops_t` from `igraph_bool_t`, allowing finer-grained control about how loop edges are treated. Pass `IGRAPH_LOOPS_TWICE` and `IGRAPH_NO_LOOPS` to reproduce the previous behaviour of `true` and `false`.
-- `igraph_get_biadjacency()` now takes a `weights` parameter, and can optionally create weighted biadjacency matrices.
 
 ### Graph generators
 
@@ -109,7 +102,6 @@ This section lists API-breaking changes and other non-functional improvements, a
 - `igraph_sbm_game()` uses an `igraph_edge_type_sw_t allowed_edge_types` parameter instead of `igraph_bool_t loops` and now supports generating graphs with multi-edges. The parameter determining the total number of vertices (`n`) was removed as it was redundant.
 - `igraph_rewire_edges()` uses an `igraph_edge_type_sw_t allowed_edge_types` parameter instead of `loops` and `multiple`.
 - `igraph_rewire()` now takes an `igraph_edge_type_sw_t allowed_edge_types` parameter to specify whether to create self-loops. The `igraph_rewiring_t` enum type was removed. Instead of the old `IGRAPH_REWIRING_SIMPLE`, use `IGRAPH_SIMPLE_SW`. Instead of the old `IGRAPH_REWIRING_SIMPLE_LOOPS`, use `IGRAPH_LOOPS_SW`.
-- `igraph_rewire()` now takes an optional `igraph_rewiring_stats_t *` output argument. You can pass the appropriate struct there to find out the number of successful swaps during the rewiring operation.
 - `igraph_watts_strogatz_game()` uses an `igraph_edge_type_sw_t allowed_edge_types` parameter instead of `loops` and `multiple`.
 - `igraph_static_fitness_game()` uses an `igraph_edge_type_sw_t allowed_edge_types` parameter instead of `loops` and `multiple`.
 - `igraph_static_power_law_game()` uses an `igraph_edge_type_sw_t allowed_edge_types` parameter instead of `loops` and `multiple`.
@@ -119,18 +111,13 @@ This section lists API-breaking changes and other non-functional improvements, a
 ### Paths and cycles
 
 - `igraph_distances()`, `igraph_distances_cutoff()`, `igraph_get_shortest_path()`, `igraph_get_shortest_paths()` and `igraph_get_all_shortest_paths()` gained a `weights` argument. The functions now automatically select the appropriate implementation (unweighted, Dijkstra, Bellman-Ford or Johnson) algorithm based on whether weights are present and whether there are negative weights or not. You can still call the individual methods by their more specific names.
-- `igraph_distances_johnson()` now takes an `igraph_neimode_t mode` parameter to determine in which direction paths should be followed.
 - The weighted variants of `igraph_diameter()`, `igraph_pseudo_diameter()`, `igraph_radius()`, `igraph_graph_center()`, `igraph_eccentricity()` and `igraph_average_path_length()` were merged into the undirected ones by adding a new argument named `weights` in the second position.
 - The `weights` parameter of `igraph_average_path_length()`, `igraph_global_efficiency()`, `igraph_local_efficiency()` and `igraph_average_local_efficiency()` were moved to the second position, after the `graph` itself, for consistency with other functions.
 - `igraph_get_all_simple_paths()` returns its results in an integer vector list (`igraph_vector_int_list_t`) instead of a single integer vector.
 - `igraph_get_all_simple_paths()` now has an additional parameter that allows restricting paths by minimum length as well, and its `mode` parameter was moved to before the path length limit parameters.
-- `igraph_get_all_simple_paths()` gained a `max_results` parameter to limit the number of returned results. Pass `1` to return a single result, or `IGRAPH_UNLIMITED` to return all results.
-- `igraph_simple_cycles()` gained a `max_results` parameter to limit the number of returned results. Pass `1` to return a single result, or `IGRAPH_UNLIMITED` to return all results.
 
 ### Community detection
 
-- `igraph_community_infomap()` now supports regularization and gained the `is_regularized` and `regularization_strength` parameters.
-- `igraph_community_label_propagation()` gained the `igraph_lpa_variant_t lpa_variant` parameter to allow specification of label propagation algorithm (LPA) variants. A new fast label propagation variant was added. Set `lpa_variant=DOMINANCE` to select the algorithm used up to igraph 0.10.
 - `igraph_community_leiden()` now takes two `vertex_out_weights` and `vertex_in_weights` parameters in order to support directed graphs, instead of the previous single `node_weights` parameter. To obtain the old behavior for undirected graphs, pass the vertex weights as `vertex_out_weights` and set `vertex_in_weights` to `NULL`.
 - The `history` parameter of `igraph_community_leading_eigenvector()` is now a pointer to an `igraph_vector_int_t` instead of an `igraph_vector_t`.
 - `igraph_community_optimal_modularity()` now takes a `resolution` parameter and its `weight` parameter was moved to the second place.
@@ -146,7 +133,6 @@ This section lists API-breaking changes and other non-functional improvements, a
 ### Centralities
 
 - All betweenness functions got a `normalized` parameter to support normalizing the result by the number of vertex pairs in the graph. At the same time, their parameter ordering was standardized. The following functions are affected: `igraph_betweenness()`, `igraph_betweenness_cutoff()`, `igraph_edge_betweenness()`, `igraph_edge_betweenness_cutoff()`, `igraph_betweenness_subset()`, `igraph_edge_betweenness_subset()`.
-- `igraph_edge_betweenness()` and `igraph_edge_betweenness_cutoff()` now have an `eids` parameter to return only a subset of results. This makes their interface consistent with other betweenness functions.
 - `igraph_eigenvector_centrality()`, `igraph_centralization_eigenvector_centrality()` and `igraph_centralization_eigenvector_centrality_tmax()` now use a `mode` parameter with possible values `IGRAPH_OUT`, `IGRAPH_IN` or `IGRAPH_ALL` to control how edge directions are considered. Previously they used a boolean `directed` parameter.
 - `igraph_eigenvector_centrality()`, `igraph_centralization_eigenvector_centrality()` and `igraph_centralization_eigenvector_centrality_tmax()` no longer have a `scale` parameter. The result is now always scaled so that the largest centrality value is 1.
 - `igraph_hub_and_authority_scores()` no longer has a `scale` parameter. The result is now always scaled so that the largest hub and authority scores are each 1.
@@ -154,8 +140,6 @@ This section lists API-breaking changes and other non-functional improvements, a
 
 ### Cliques and independent sets
 
-- `igraph_cliques()`, `igraph_weighed_cliques()`, `igraph_maximal_cliques()`, `igraph_maximal_cliques_file()`, `igraph_maximal_cliques_subset()`, `igraph_independent_sets()` and `igraph_maximal_independent_sets()` received a `max_results` parameter to limit the number of returned results. Pass `1` to return a single result, or `IGRAPH_UNLIMITED` to return all results.
-- `igraph_maximal_independent_sets()` received `min_size` and `max_size` parameters that control the range of independent set sizes that are returned.
 - `igraph_weighted_cliques()` had its parameter ordering standardized: the `igraph_bool_t maximal` parameter now comes before the `min_weight` / `max_weight` parameters.
 - `igraph_maximal_cliques_callback()` had its parameter ordering standardized: the `igraph_clique_handler_t *cliquehandler_fn, void *arg` parameter pair now comes at the end, making this function consistent with `igraph_cliques_callback()`.
 
@@ -166,7 +150,6 @@ This section lists API-breaking changes and other non-functional improvements, a
 ### Other network analysis
 
 - `igraph_similarity_jaccard()` and `igraph_similarity_dice()` now take two sets of vertices (`to` and `from` parameters) to create vertex pairs of, instead of one. Pass the same vertex set to both parameters to recover the previous behaviour.
-- `igraph_minimum_spanning_tree()` takes a new `method` parameter that controls the algorithm used for finding the spanning tree. Kruskal's algorithm was added.
 - `igraph_motifs_randesu_no()` and `igraph_motifs_randesu_estimate()` now take an `igraph_real_t` as their `result` argument to prevent overflows when igraph is compiled with 32-bit integers.
 - The `igraph_motifs_handler_t` callback type now takes a `const igraph_vector_int_t *vids` parameter. Previously this was not formally `const`, even though it was not allowed to modify `vids`. This affects uses of `igraph_motifs_randesu_callback()`.
 - The experimental functions `igraph_fundamental_cycles()` and `igraph_minimum_cycle_basis()` now use the type `igraph_real_t` for their `bfs_cutoff` parameter, and had their `weights` parameter moved to the 2nd position.
@@ -207,6 +190,23 @@ This section lists API-breaking changes and other non-functional improvements, a
 - Functionality for generating several kinds of spatial networks.
 
 - `igraph_setup()` performs all initialization tasks that are recommended before using the igraph library. Right now this function only initializes igraph's internal random number generator with a practically random seed, but it may also perform other tasks in the future. It is recommended to call this function before using any other function from the library (although most of the functions will work fine now even if this function is not called).
+- `igraph_matrix_copy_to()` gained an `igraph_matrix_storage_t storage` parameter that specifies whether the data should be written in column-major or row-major format.
+- `igraph_edges()` gained a new `igraph_bool_t bycol` argument that determines the order in which the edges are returned. `bycol = false` reproduces the existing behaviour, while `bycol = true` returns the edges suitable for a matrix stored in column-wise order.
+- `igraph_neighbors()` and `igraph_vs_adj()` gained two extra arguments, `igraph_loops_t loops` and `igraph_bool_t multiple` to specify what to do with loop and multiple edges. This makes their interfaces consistent with `igraph_adjlist_init()`. Use `loops = IGRAPH_LOOPS_TWICE` and `multiple = true` to reproduce the previous behavior.
+- `igraph_incident()` and `igraph_es_incident()` gained an extra `igraph_loops_t loops` argument to specify what to do with loop edges. This makes their interfaces consistent with `igraph_inclist_init()`. Use `loops = IGRAPH_LOOPS_TWICE` to reproduce the previous behavior.
+- `igraph_density()` now takes an optional `weights` parameter.
+- `igraph_is_simple()` gained an extra `igraph_bool_t` argument that decides whether edge directions should be considered. Directed graphs with a mutual edge pair are treated as non-simple if this argument is set to `IGRAPH_UNDIRECTED` (which treats the graph as if it was undirected).
+- `igraph_get_biadjacency()` now takes a `weights` parameter, and can optionally create weighted biadjacency matrices.
+- `igraph_rewire()` now takes an optional `igraph_rewiring_stats_t *` output argument. You can pass the appropriate struct there to find out the number of successful swaps during the rewiring operation.
+- `igraph_distances_johnson()` now takes an `igraph_neimode_t mode` parameter to determine in which direction paths should be followed.
+- `igraph_get_all_simple_paths()` gained a `max_results` parameter to limit the number of returned results. Pass `1` to return a single result, or `IGRAPH_UNLIMITED` to return all results.
+- `igraph_simple_cycles()` gained a `max_results` parameter to limit the number of returned results. Pass `1` to return a single result, or `IGRAPH_UNLIMITED` to return all results.
+- `igraph_community_infomap()` now supports regularization and gained the `is_regularized` and `regularization_strength` parameters.
+- `igraph_community_label_propagation()` gained the `igraph_lpa_variant_t lpa_variant` parameter to allow specification of label propagation algorithm (LPA) variants. A new fast label propagation variant was added. Set `lpa_variant=DOMINANCE` to select the algorithm used up to igraph 0.10.
+- `igraph_edge_betweenness()` and `igraph_edge_betweenness_cutoff()` now have an `eids` parameter to return only a subset of results. This makes their interface consistent with other betweenness functions.
+- `igraph_cliques()`, `igraph_weighed_cliques()`, `igraph_maximal_cliques()`, `igraph_maximal_cliques_file()`, `igraph_maximal_cliques_subset()`, `igraph_independent_sets()` and `igraph_maximal_independent_sets()` received a `max_results` parameter to limit the number of returned results. Pass `1` to return a single result, or `IGRAPH_UNLIMITED` to return all results.
+- `igraph_maximal_independent_sets()` received `min_size` and `max_size` parameters that control the range of independent set sizes that are returned.
+- `igraph_minimum_spanning_tree()` takes a new `method` parameter that controls the algorithm used for finding the spanning tree. Kruskal's algorithm was added.
 - `igraph_iea_game()` samples random multigraphs through independent edge assignment.
 - `igraph_bipartite_iea_game()` samples random bipartite multigraph through independent edge assignment.
 - `igraph_weighted_biadjacency()` creates a weighted graph from a bipartite adjacency matrix.
