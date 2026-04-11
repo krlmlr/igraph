@@ -30,6 +30,7 @@ This section lists API-breaking changes and other non-functional improvements, a
 
 - igraph now requires a C++ compiler that supports the C++14 standard.
 - Projects that depend on igraph must only include the `<igraph.h>` header. While an igraph installation includes several sub-headers, these are for organizational purposes only, and their contents may change without notice. Only `#include <igraph.h>` is supported.
+- The sub-header `igraph_topology.h` was renamed to `igraph_isomorphism.h`.
 
 ### Core infrastructure
 
@@ -121,6 +122,7 @@ This section lists API-breaking changes and other non-functional improvements, a
 - `igraph_community_leiden()` now takes two `vertex_out_weights` and `vertex_in_weights` parameters in order to support directed graphs, instead of the previous single `node_weights` parameter. To obtain the old behavior for undirected graphs, pass the vertex weights as `vertex_out_weights` and set `vertex_in_weights` to `NULL`.
 - The `history` parameter of `igraph_community_leading_eigenvector()` is now a pointer to an `igraph_vector_int_t` instead of an `igraph_vector_t`.
 - `igraph_community_optimal_modularity()` now takes a `resolution` parameter and its `weight` parameter was moved to the second place.
+- `igraph_community_infomap()` parameter names were standardized: `e_weights` is now `edge_weights` and `v_weights` is now `vertex_weights`.
 
 ### Isomorphism functions and permutations
 
@@ -180,6 +182,8 @@ This section lists API-breaking changes and other non-functional improvements, a
 - Various documentation improvements.
 - Improved performance when creating graphs from dense adjacency matrices (`igraph_adjacency()` and `igraph_weighted_adjacency()`).
 - nanoflann was updated to version 1.9.0.
+- Qhull was vendored as a required dependency for spatial geometry computation functions (Delaunay triangulation, convex hull).
+- A sampling uniformity test tool was added for verifying that stochastic graph generators produce correct distributions.
 
 ## Added functionality
 
@@ -271,6 +275,9 @@ This section lists API-breaking changes and other non-functional improvements, a
 - The deprecated `igraph_rng_get_dirichlet()` function was removed.
 - The deprecated `igraph_zeroin()` was removed.
 - The deprecated `igraph_deterministic_optimal_imitation()`, `igraph_moran_process()`, `igraph_roulette_wheel_imitation()` and `igraph_stochastic_imitation()` functions were removed.
+- The deprecated `igraph_clusters()` function was removed. Use `igraph_connected_components()` instead.
+- The deprecated `igraph_array3_t` type and all associated functions (`igraph_array3_init()`, `igraph_array3_destroy()`, etc.) were removed, along with the `igraph_array.h` sub-header.
+- The unused typedefs `igraph_scalar_function_t` and `igraph_vector_function_t` were removed.
 - `igraph_sample_dirichlet()`, `igraph_sample_sphere_surface()` and `igraph_sample_sphere_volume()` were removed in favour of `igraph_rng_sample_dirichlet()`, `igraph_rng_sample_sphere_surface()` and `igraph_rng_sample_sphere_volume()`, which allow the user to specify the random number generator to use.
 - The unused enum type `igraph_fileformat_type_t` was removed.
 - The macros `IGRAPH_POSINFINITY` and `IGRAPH_NEGINFINITY` were removed. Use `IGRAPH_INFINITY` and `-IGRAPH_INFINITY` instead.
