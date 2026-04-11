@@ -1,5 +1,6 @@
-/* IGraph library.
-   Copyright (C) 2022  The igraph development team <igraph@igraph.org>
+/*
+   igraph library.
+   Copyright (C) 2003-2025  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -15,26 +16,16 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include <igraph.h>
-#include "test_utilities.h"
+#ifndef IGRAPH_SETUP_H
+#define IGRAPH_SETUP_H
 
-int main(void) {
-    igraph_vector_int_t v;
-    igraph_t g;
+#include "igraph_decls.h"
+#include "igraph_error.h"
 
-    igraph_vector_int_init(&v, 9);
-    /* error: IGRAPH_EINVAL */
-    VECTOR(v)[8] = 0;
-    CHECK_ERROR(igraph_create(&g, &v, 0, 0), IGRAPH_EINVAL);
+__BEGIN_DECLS
 
-    /* error: IGRAPH_EINVVID */
-    igraph_vector_int_resize(&v, 8);
-    VECTOR(v)[7] = -1;
-    CHECK_ERROR(igraph_create(&g, &v, 10, 1), IGRAPH_EINVVID);
+IGRAPH_EXPORT igraph_error_t igraph_setup(void);
 
-    igraph_vector_int_destroy(&v);
+__END_DECLS
 
-    VERIFY_FINALLY_STACK();
-
-    return 0;
-}
+#endif

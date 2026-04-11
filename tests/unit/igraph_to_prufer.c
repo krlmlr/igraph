@@ -154,7 +154,6 @@ int test_num = 0;
 
 int main(void) {
 
-    RNG_BEGIN();
 
     RUN_TEST(test_from_prufer_back_to_prufer());
     RUN_TEST(test_from_prufer_back_to_prufer_with_resize());
@@ -164,7 +163,6 @@ int main(void) {
     RUN_TEST(test_from_random_prufer_back_to_prufer(1000));
     RUN_TEST(test_from_random_prufer_back_to_prufer(10000));
 
-    RNG_END();
 
     VERIFY_FINALLY_STACK();
 
