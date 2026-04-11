@@ -24,25 +24,26 @@ This section lists API-breaking changes and other non-functional improvements, a
 - The interruption handler type (`igraph_interruption_handler_t`) no longer takes a `void*` parameter and now returns `igraph_bool_t` instead of `igraph_error_t`. Correspondingly, `igraph_allow_interruption()` no longer takes a `void*` parameter.
 - Added `igraph_setup()` function to initialize the igraph library with a random seed.
 
+### Random number generation
+
+- `igraph_rng_set_default()` now returns a pointer to the previous default RNG. Furthermore, this function now only stores a pointer to the `igraph_rng_t` struct passed to it, instead of copying the struct. Thus the `igraph_rng_t` object must continue to exist for as long as it is used as the default RNG.
+- The `RNG_BEGIN()` and `RNG_END()` macros were removed. You are now responsible for seeding the RNG before using any igraph function that may use random numbers by calling `igraph_rng_seed(igraph_rng_default(), ...)`, or by simply ensuring that `igraph_setup()` was called before the first use of the library.
+
 ## Remaining differences from the `next` branch (proof of work)
 
 The following differences remain in the files changed by this PR compared to the `next` branch. Each difference is justified by a later changelog entry that has not yet been implemented.
 
 ### `igraph_integer_t` → `igraph_int_t` rename (later "Core types and naming" changelog entry)
 
-Affects: `include/igraph_arpack.h`, `src/linalg/arpack.c`, `src/constructors/basic_constructors.c`, `src/constructors/adjacency.c`, `src/core/sparsemat.c`, `src/games/sbm.c`, `src/graph/type_indexededgelist.c`, `src/linalg/lapack.c`, `src/linalg/eigen.c`, `src/misc/bipartite.c`, `src/isomorphism/lad.c`, `src/isomorphism/bliss.cc`, `src/community/leading_eigenvector.c`, `src/core/interruption.h`
+Affects: `include/igraph_arpack.h`, `src/linalg/arpack.c`, `src/constructors/basic_constructors.c`, `src/constructors/adjacency.c`, `src/core/sparsemat.c`, `src/games/sbm.c`, `src/graph/type_indexededgelist.c`, `src/linalg/lapack.c`, `src/linalg/eigen.c`, `src/misc/bipartite.c`, `src/isomorphism/lad.c`, `src/isomorphism/bliss.cc`, `src/community/leading_eigenvector.c`, `src/core/interruption.h`, `src/graph/iterators.c`, and many other files
 
 ### `__BEGIN_DECLS`/`__END_DECLS` → `IGRAPH_BEGIN_C_DECLS`/`IGRAPH_END_C_DECLS` (later macro cleanup)
 
-Affects: `include/igraph_error.h`, `include/igraph_arpack.h`, `include/igraph_interrupt.h`, `include/igraph_setup.h`, `src/core/interruption.h`, `src/internal/glpk_support.h`
+Affects: `include/igraph_error.h`, `include/igraph_arpack.h`, `include/igraph_interrupt.h`, `include/igraph_setup.h`, `include/igraph_random.h`, `src/core/interruption.h`, `src/internal/glpk_support.h`
 
 ### Copyright header modernization (later cosmetic changes)
 
 Affects: all files — `/* IGraph library */` → `/* igraph library */`, address removal, license URL update
-
-### `RNG_BEGIN`/`RNG_END` removal (later "Random number generation" changes)
-
-Affects: `src/linalg/arpack.c` (two occurrences in `igraph_arpack_rssolve` and `igraph_arpack_rnsolve`)
 
 ### `void *attr` → `const igraph_attribute_record_list_t *attr` (later "Attribute handler" changes)
 
@@ -62,7 +63,7 @@ Affects: `src/linalg/eigen.c`
 
 ### Removal of deprecated functions (later deprecation cleanup)
 
-Affects: `src/core/sparsemat.c` (`igraph_sparsemat_copy` removal), `src/constructors/basic_constructors.c` (`about_generators` section removal)
+Affects: `src/core/sparsemat.c` (`igraph_sparsemat_copy` removal), `src/constructors/basic_constructors.c` (`about_generators` section removal), `src/graph/iterators.c` (`igraph_vs_seq` removal)
 
 ### Directed graph `IGRAPH_LOOPS_TWICE` → `IGRAPH_LOOPS_ONCE` conversion (later adjacency/graph behavior changes)
 
@@ -87,4 +88,16 @@ Affects: `tests/unit/glpk_error.c` (erdos_renyi_game_gnm signature change), `tes
 ### `(size_t) index` cast in `igraph_arpack_error_to_string` (defensive coding)
 
 Affects: `src/linalg/arpack.c` — our version has `(size_t) index < ...` while next has `index < ...`. This is a defensive cast we added to avoid a signed/unsigned comparison warning. Not present in next but is a correct safeguard.
+
+### `igraph_rng_get_dirichlet()` deprecation removal (later deprecation cleanup)
+
+Affects: `include/igraph_random.h`
+
+### Additional RNG header differences (later macro and include cleanup)
+
+Affects: `include/igraph_random.h` — `RNG_GAMMA` macro not yet added, `__BEGIN_DECLS`/`__END_DECLS` not yet replaced
+
+### `stdbool.h` include addition (later cleanup)
+
+Affects: `src/random/random.c`
 
