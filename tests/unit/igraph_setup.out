@@ -1,0 +1,3 @@
+igraph_setup() succeeded.
+igraph_setup() second call succeeded.
+RNG is seeded after igraph_setup().
