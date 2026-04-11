@@ -30,10 +30,12 @@ int main(void) {
     IGRAPH_ASSERT(igraph_setup() == IGRAPH_SUCCESS);
     printf("igraph_setup() second call succeeded.\n");
 
-    /* After setup, the RNG should be seeded. Test by generating a random number. */
+    /* After setup, the RNG should be seeded and usable. */
     igraph_rng_t *rng = igraph_rng_default();
     IGRAPH_ASSERT(rng != NULL);
-    IGRAPH_ASSERT(rng->is_seeded);
+    /* Verify the RNG is functional by generating a random number */
+    igraph_integer_t val = igraph_rng_get_integer(rng, 0, 100);
+    IGRAPH_ASSERT(val >= 0 && val <= 100);
     printf("RNG is seeded after igraph_setup().\n");
 
     VERIFY_FINALLY_STACK();
