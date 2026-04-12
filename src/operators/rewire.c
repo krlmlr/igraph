@@ -39,10 +39,10 @@
 #define REWIRE_ADJLIST_THRESHOLD 10
 
 /* Not declared static so that the testsuite can use it, but not part of the public API. */
-igraph_error_t igraph_i_rewire(igraph_t *graph, igraph_integer_t n, igraph_rewiring_t mode, igraph_bool_t use_adjlist) {
-    const igraph_integer_t no_of_edges = igraph_ecount(graph);
+igraph_error_t igraph_i_rewire(igraph_t *graph, igraph_int_t n, igraph_rewiring_t mode, igraph_bool_t use_adjlist) {
+    const igraph_int_t no_of_edges = igraph_ecount(graph);
     char message[256];
-    igraph_integer_t a, b, c, d, dummy, num_swaps, num_successful_swaps;
+    igraph_int_t a, b, c, d, dummy, num_swaps, num_successful_swaps;
     igraph_vector_int_t eids;
     igraph_vector_int_t edgevec, alledges;
     const igraph_bool_t directed = igraph_is_directed(graph);
@@ -56,7 +56,6 @@ igraph_error_t igraph_i_rewire(igraph_t *graph, igraph_integer_t n, igraph_rewir
         return IGRAPH_SUCCESS;
     }
 
-    RNG_BEGIN();
 
     IGRAPH_VECTOR_INT_INIT_FINALLY(&eids, 2);
 
@@ -188,7 +187,6 @@ igraph_error_t igraph_i_rewire(igraph_t *graph, igraph_integer_t n, igraph_rewir
             }
             break;
         default:
-            RNG_END();
             IGRAPH_ERROR("Invalid rewiring mode.", IGRAPH_EINVAL);
         }
         num_swaps++;
@@ -212,7 +210,6 @@ igraph_error_t igraph_i_rewire(igraph_t *graph, igraph_integer_t n, igraph_rewir
     igraph_vector_int_destroy(&eids);
     IGRAPH_FINALLY_CLEAN(use_adjlist ? 3 : 2);
 
-    RNG_END();
 
     return IGRAPH_SUCCESS;
 }
@@ -258,7 +255,7 @@ igraph_error_t igraph_i_rewire(igraph_t *graph, igraph_integer_t n, igraph_rewir
  *
  * Time complexity: TODO.
  */
-igraph_error_t igraph_rewire(igraph_t *graph, igraph_integer_t n, igraph_rewiring_t mode) {
+igraph_error_t igraph_rewire(igraph_t *graph, igraph_int_t n, igraph_rewiring_t mode) {
     igraph_bool_t use_adjlist = n >= REWIRE_ADJLIST_THRESHOLD;
     return igraph_i_rewire(graph, n, mode, use_adjlist);
 }

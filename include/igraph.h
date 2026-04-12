@@ -26,6 +26,7 @@
 #include "igraph_error.h"
 #include "igraph_random.h"
 #include "igraph_progress.h"
+#include "igraph_setup.h"
 #include "igraph_statusbar.h"
 
 #include "igraph_types.h"
@@ -58,7 +59,7 @@
 #include "igraph_structural.h"
 #include "igraph_transitivity.h"
 #include "igraph_neighborhood.h"
-#include "igraph_topology.h"
+#include "igraph_isomorphism.h"
 #include "igraph_bipartite.h"
 #include "igraph_cliques.h"
 #include "igraph_layout.h"

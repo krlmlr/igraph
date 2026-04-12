@@ -47,8 +47,8 @@
  * fail due to overflow. While this version avoids overflow and uses less memory,
  * it is also slower than the default implementation. */
 static igraph_error_t gnp_large(
-    igraph_t *graph, igraph_integer_t n, igraph_real_t p,
-    igraph_bool_t directed, igraph_bool_t loops, igraph_integer_t ecount_estimate
+    igraph_t *graph, igraph_int_t n, igraph_real_t p,
+    igraph_bool_t directed, igraph_bool_t loops, igraph_int_t ecount_estimate
 ) {
 
     igraph_vector_int_t edges;
@@ -66,9 +66,8 @@ static igraph_error_t gnp_large(
     IGRAPH_VECTOR_INT_INIT_FINALLY(&edges, 0);
     IGRAPH_CHECK(igraph_vector_int_reserve(&edges, 2*ecount_estimate));
 
-    RNG_BEGIN();
-    for (igraph_integer_t i=0; i < n; i++) {
-        igraph_integer_t j = directed ? 0 : i;
+    for (igraph_int_t i=0; i < n; i++) {
+        igraph_int_t j = directed ? 0 : i;
 
         while (true) {
             igraph_real_t gap = RNG_GEOM(p);
@@ -76,7 +75,7 @@ static igraph_error_t gnp_large(
             /* This formulation not only terminates the loop when necessary,
              * but also protects against overflow when 'p' is very small
              * and 'gap' becomes very large, perhaps larger than representable
-             * in an igraph_integer_t. */
+             * in an igraph_int_t. */
             if (gap >= n - j) {
                 break;
             }
@@ -93,7 +92,6 @@ static igraph_error_t gnp_large(
             IGRAPH_ALLOW_INTERRUPTION_LIMITED(iter, 1 << 14);
         }
     }
-    RNG_END();
 
     IGRAPH_CHECK(igraph_create(graph, &edges, n, directed));
     igraph_vector_int_destroy(&edges);
@@ -144,7 +142,7 @@ static igraph_error_t gnp_large(
  * \example examples/simple/igraph_erdos_renyi_game_gnp.c
  */
 igraph_error_t igraph_erdos_renyi_game_gnp(
-    igraph_t *graph, igraph_integer_t n, igraph_real_t p,
+    igraph_t *graph, igraph_int_t n, igraph_real_t p,
     igraph_bool_t directed, igraph_bool_t loops
 ) {
     /* This function uses doubles in its `s` vector, and for `maxedges` and `last`.
@@ -152,7 +150,7 @@ igraph_error_t igraph_erdos_renyi_game_gnp(
      * IGRAPH_INTEGER_MAX and this will cause overflows when calculating `from` and `to`
      * for tests on large graphs.
     */
-    igraph_integer_t no_of_nodes = n;
+    igraph_int_t no_of_nodes = n;
     igraph_real_t no_of_nodes_real = (igraph_real_t) no_of_nodes;   /* for divisions below */
     igraph_vector_int_t edges = IGRAPH_VECTOR_NULL;
     igraph_vector_t s = IGRAPH_VECTOR_NULL;
@@ -171,7 +169,7 @@ igraph_error_t igraph_erdos_renyi_game_gnp(
         IGRAPH_CHECK(igraph_full(graph, n, directed, loops));
     } else {
         igraph_real_t maxedges = n, last;
-        igraph_integer_t ecount_estimate, ecount;
+        igraph_int_t ecount_estimate, ecount;
 
         if (directed && loops) {
             maxedges *= n;
@@ -193,7 +191,6 @@ igraph_error_t igraph_erdos_renyi_game_gnp(
         IGRAPH_VECTOR_INIT_FINALLY(&s, 0);
         IGRAPH_CHECK(igraph_vector_reserve(&s, ecount_estimate));
 
-        RNG_BEGIN();
 
         last = RNG_GEOM(p);
         while (last < maxedges) {
@@ -203,7 +200,6 @@ igraph_error_t igraph_erdos_renyi_game_gnp(
             IGRAPH_ALLOW_INTERRUPTION_LIMITED(iter, 1 << 14);
         }
 
-        RNG_END();
 
         ecount = igraph_vector_size(&s);
         if (ecount > IGRAPH_ECOUNT_MAX) {
@@ -215,17 +211,17 @@ igraph_error_t igraph_erdos_renyi_game_gnp(
 
         iter = 0;
         if (directed && loops) {
-            for (igraph_integer_t i = 0; i < ecount; i++) {
-                igraph_integer_t to = floor(VECTOR(s)[i] / no_of_nodes_real);
-                igraph_integer_t from = VECTOR(s)[i] - to * no_of_nodes_real;
+            for (igraph_int_t i = 0; i < ecount; i++) {
+                igraph_int_t to = floor(VECTOR(s)[i] / no_of_nodes_real);
+                igraph_int_t from = VECTOR(s)[i] - to * no_of_nodes_real;
                 igraph_vector_int_push_back(&edges, from);
                 igraph_vector_int_push_back(&edges, to);
                 IGRAPH_ALLOW_INTERRUPTION_LIMITED(iter, 1 << 14);
             }
         } else if (directed && !loops) {
-            for (igraph_integer_t i = 0; i < ecount; i++) {
-                igraph_integer_t to = floor(VECTOR(s)[i] / no_of_nodes_real);
-                igraph_integer_t from = VECTOR(s)[i] - to * no_of_nodes_real;
+            for (igraph_int_t i = 0; i < ecount; i++) {
+                igraph_int_t to = floor(VECTOR(s)[i] / no_of_nodes_real);
+                igraph_int_t from = VECTOR(s)[i] - to * no_of_nodes_real;
                 if (from == to) {
                     to = no_of_nodes - 1;
                 }
@@ -234,17 +230,17 @@ igraph_error_t igraph_erdos_renyi_game_gnp(
                 IGRAPH_ALLOW_INTERRUPTION_LIMITED(iter, 1 << 14);
             }
         } else if (!directed && loops) {
-            for (igraph_integer_t i = 0; i < ecount; i++) {
-                igraph_integer_t to = floor((sqrt(8 * VECTOR(s)[i] + 1) - 1) / 2);
-                igraph_integer_t from = VECTOR(s)[i] - (((igraph_real_t)to) * (to + 1)) / 2;
+            for (igraph_int_t i = 0; i < ecount; i++) {
+                igraph_int_t to = floor((sqrt(8 * VECTOR(s)[i] + 1) - 1) / 2);
+                igraph_int_t from = VECTOR(s)[i] - (((igraph_real_t)to) * (to + 1)) / 2;
                 igraph_vector_int_push_back(&edges, from);
                 igraph_vector_int_push_back(&edges, to);
                 IGRAPH_ALLOW_INTERRUPTION_LIMITED(iter, 1 << 14);
             }
         } else { /* !directed && !loops */
-            for (igraph_integer_t i = 0; i < ecount; i++) {
-                igraph_integer_t to = floor((sqrt(8 * VECTOR(s)[i] + 1) + 1) / 2);
-                igraph_integer_t from = VECTOR(s)[i] - (((igraph_real_t)to) * (to - 1)) / 2;
+            for (igraph_int_t i = 0; i < ecount; i++) {
+                igraph_int_t to = floor((sqrt(8 * VECTOR(s)[i] + 1) + 1) / 2);
+                igraph_int_t from = VECTOR(s)[i] - (((igraph_real_t)to) * (to - 1)) / 2;
                 igraph_vector_int_push_back(&edges, from);
                 igraph_vector_int_push_back(&edges, to);
                 IGRAPH_ALLOW_INTERRUPTION_LIMITED(iter, 1 << 14);
@@ -291,7 +287,7 @@ igraph_error_t igraph_erdos_renyi_game_gnp(
  * \example examples/simple/igraph_erdos_renyi_game_gnm.c
  */
 igraph_error_t igraph_erdos_renyi_game_gnm(
-    igraph_t *graph, igraph_integer_t n, igraph_integer_t m,
+    igraph_t *graph, igraph_int_t n, igraph_int_t m,
     igraph_bool_t directed, igraph_bool_t loops
 ) {
 
@@ -300,8 +296,8 @@ igraph_error_t igraph_erdos_renyi_game_gnm(
      * IGRAPH_INTEGER_MAX and this will cause overflows when calculating `from` and `to`
      * for tests on large graphs. This is also why we need a 'real' version of random_sample.
     */
-    igraph_integer_t no_of_nodes = n;
-    igraph_integer_t no_of_edges = m;
+    igraph_int_t no_of_nodes = n;
+    igraph_int_t no_of_edges = m;
     igraph_real_t no_of_nodes_real = (igraph_real_t) no_of_nodes;   /* for divisions below */
     igraph_vector_int_t edges = IGRAPH_VECTOR_NULL;
     igraph_vector_t s = IGRAPH_VECTOR_NULL;
@@ -318,7 +314,7 @@ igraph_error_t igraph_erdos_renyi_game_gnm(
         IGRAPH_CHECK(igraph_empty(graph, n, directed));
     } else {
 
-        igraph_integer_t i;
+        igraph_int_t i;
         igraph_real_t maxedges = n;
         if (directed && loops) {
             maxedges *= n;
@@ -338,10 +334,10 @@ igraph_error_t igraph_erdos_renyi_game_gnm(
             IGRAPH_CHECK(igraph_full(graph, n, directed, loops));
         } else {
 
-            igraph_integer_t slen;
+            igraph_int_t slen;
 
             IGRAPH_VECTOR_INIT_FINALLY(&s, 0);
-            IGRAPH_CHECK(igraph_random_sample_real(&s, 0, maxedges - 1, no_of_edges));
+            IGRAPH_CHECK(igraph_i_random_sample_real(&s, 0, maxedges - 1, no_of_edges));
 
             IGRAPH_VECTOR_INT_INIT_FINALLY(&edges, 0);
             IGRAPH_CHECK(igraph_vector_int_reserve(&edges, igraph_vector_size(&s) * 2));
@@ -349,16 +345,16 @@ igraph_error_t igraph_erdos_renyi_game_gnm(
             slen = igraph_vector_size(&s);
             if (directed && loops) {
                 for (i = 0; i < slen; i++) {
-                    igraph_integer_t to = floor(VECTOR(s)[i] / no_of_nodes_real);
-                    igraph_integer_t from = VECTOR(s)[i] - to * no_of_nodes_real;
+                    igraph_int_t to = floor(VECTOR(s)[i] / no_of_nodes_real);
+                    igraph_int_t from = VECTOR(s)[i] - to * no_of_nodes_real;
                     igraph_vector_int_push_back(&edges, from);
                     igraph_vector_int_push_back(&edges, to);
                     IGRAPH_ALLOW_INTERRUPTION_LIMITED(iter, 1 << 14);
                 }
             } else if (directed && !loops) {
                 for (i = 0; i < slen; i++) {
-                    igraph_integer_t from = floor(VECTOR(s)[i] / (no_of_nodes_real - 1));
-                    igraph_integer_t to = VECTOR(s)[i] - from * (no_of_nodes_real - 1);
+                    igraph_int_t from = floor(VECTOR(s)[i] / (no_of_nodes_real - 1));
+                    igraph_int_t to = VECTOR(s)[i] - from * (no_of_nodes_real - 1);
                     if (from == to) {
                         to = no_of_nodes - 1;
                     }
@@ -368,16 +364,16 @@ igraph_error_t igraph_erdos_renyi_game_gnm(
                 }
             } else if (!directed && loops) {
                 for (i = 0; i < slen; i++) {
-                    igraph_integer_t to = floor((sqrt(8 * VECTOR(s)[i] + 1) - 1) / 2);
-                    igraph_integer_t from = VECTOR(s)[i] - (((igraph_real_t)to) * (to + 1)) / 2;
+                    igraph_int_t to = floor((sqrt(8 * VECTOR(s)[i] + 1) - 1) / 2);
+                    igraph_int_t from = VECTOR(s)[i] - (((igraph_real_t)to) * (to + 1)) / 2;
                     igraph_vector_int_push_back(&edges, from);
                     igraph_vector_int_push_back(&edges, to);
                     IGRAPH_ALLOW_INTERRUPTION_LIMITED(iter, 1 << 14);
                 }
             } else { /* !directed && !loops */
                 for (i = 0; i < slen; i++) {
-                    igraph_integer_t to = floor((sqrt(8 * VECTOR(s)[i] + 1) + 1) / 2);
-                    igraph_integer_t from = VECTOR(s)[i] - (((igraph_real_t)to) * (to - 1)) / 2;
+                    igraph_int_t to = floor((sqrt(8 * VECTOR(s)[i] + 1) + 1) / 2);
+                    igraph_int_t from = VECTOR(s)[i] - (((igraph_real_t)to) * (to - 1)) / 2;
                     igraph_vector_int_push_back(&edges, from);
                     igraph_vector_int_push_back(&edges, to);
                     IGRAPH_ALLOW_INTERRUPTION_LIMITED(iter, 1 << 14);
@@ -438,13 +434,13 @@ igraph_error_t igraph_erdos_renyi_game_gnm(
  * \ref igraph_erdos_renyi_game_gnm(), \ref igraph_erdos_renyi_game_gnp()
  */
 igraph_error_t igraph_erdos_renyi_game(igraph_t *graph, igraph_erdos_renyi_t type,
-                            igraph_integer_t n, igraph_real_t p_or_m,
+                            igraph_int_t n, igraph_real_t p_or_m,
                             igraph_bool_t directed, igraph_bool_t loops) {
 
     if (type == IGRAPH_ERDOS_RENYI_GNP) {
         return igraph_erdos_renyi_game_gnp(graph, n, p_or_m, directed, loops);
     } else if (type == IGRAPH_ERDOS_RENYI_GNM) {
-        return igraph_erdos_renyi_game_gnm(graph, n, (igraph_integer_t) p_or_m, directed, loops);
+        return igraph_erdos_renyi_game_gnm(graph, n, (igraph_int_t) p_or_m, directed, loops);
     } else {
         IGRAPH_ERROR("Invalid type", IGRAPH_EINVAL);
     }

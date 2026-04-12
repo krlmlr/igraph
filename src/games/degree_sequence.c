@@ -40,11 +40,11 @@ static igraph_error_t configuration(
         const igraph_vector_int_t *in_seq) {
 
     const igraph_bool_t directed = (in_seq != NULL && igraph_vector_int_size(in_seq) != 0);
-    igraph_integer_t outsum = 0, insum = 0;
+    igraph_int_t outsum = 0, insum = 0;
     igraph_bool_t graphical;
-    igraph_integer_t no_of_nodes, no_of_edges;
-    igraph_integer_t *bag1, *bag2;
-    igraph_integer_t bagp1 = 0, bagp2 = 0;
+    igraph_int_t no_of_nodes, no_of_edges;
+    igraph_int_t *bag1, *bag2;
+    igraph_int_t bagp1 = 0, bagp2 = 0;
     igraph_vector_int_t edges;
 
     IGRAPH_CHECK(igraph_is_graphical(out_seq, in_seq, IGRAPH_LOOPS_SW | IGRAPH_MULTI_SW, &graphical));
@@ -61,21 +61,21 @@ static igraph_error_t configuration(
     no_of_nodes = igraph_vector_int_size(out_seq);
     no_of_edges = directed ? outsum : outsum / 2;
 
-    bag1 = IGRAPH_CALLOC(outsum, igraph_integer_t);
+    bag1 = IGRAPH_CALLOC(outsum, igraph_int_t);
     IGRAPH_CHECK_OOM(bag1, "Insufficient memory for sampling from configuration model.");
     IGRAPH_FINALLY(igraph_free, bag1);
 
-    for (igraph_integer_t i = 0; i < no_of_nodes; i++) {
-        for (igraph_integer_t j = 0; j < VECTOR(*out_seq)[i]; j++) {
+    for (igraph_int_t i = 0; i < no_of_nodes; i++) {
+        for (igraph_int_t j = 0; j < VECTOR(*out_seq)[i]; j++) {
             bag1[bagp1++] = i;
         }
     }
     if (directed) {
-        bag2 = IGRAPH_CALLOC(insum, igraph_integer_t);
+        bag2 = IGRAPH_CALLOC(insum, igraph_int_t);
         IGRAPH_CHECK_OOM(bag2, "Insufficient memory for sampling from configuration model.");
         IGRAPH_FINALLY(igraph_free, bag2);
-        for (igraph_integer_t i = 0; i < no_of_nodes; i++) {
-            for (igraph_integer_t j = 0; j < VECTOR(*in_seq)[i]; j++) {
+        for (igraph_int_t i = 0; i < no_of_nodes; i++) {
+            for (igraph_int_t j = 0; j < VECTOR(*in_seq)[i]; j++) {
                 bag2[bagp2++] = i;
             }
         }
@@ -84,12 +84,11 @@ static igraph_error_t configuration(
     IGRAPH_VECTOR_INT_INIT_FINALLY(&edges, 0);
     IGRAPH_CHECK(igraph_vector_int_reserve(&edges, no_of_edges * 2));
 
-    RNG_BEGIN();
 
     if (directed) {
-        for (igraph_integer_t i = 0; i < no_of_edges; i++) {
-            igraph_integer_t from = RNG_INTEGER(0, bagp1 - 1);
-            igraph_integer_t to = RNG_INTEGER(0, bagp2 - 1);
+        for (igraph_int_t i = 0; i < no_of_edges; i++) {
+            igraph_int_t from = RNG_INTEGER(0, bagp1 - 1);
+            igraph_int_t to = RNG_INTEGER(0, bagp2 - 1);
             igraph_vector_int_push_back(&edges, bag1[from]); /* safe, already reserved */
             igraph_vector_int_push_back(&edges, bag2[to]);   /* ditto */
             bag1[from] = bag1[bagp1 - 1];
@@ -97,9 +96,9 @@ static igraph_error_t configuration(
             bagp1--; bagp2--;
         }
     } else {
-        for (igraph_integer_t i = 0; i < no_of_edges; i++) {
-            igraph_integer_t from = RNG_INTEGER(0, bagp1 - 1);
-            igraph_integer_t to;
+        for (igraph_int_t i = 0; i < no_of_edges; i++) {
+            igraph_int_t from = RNG_INTEGER(0, bagp1 - 1);
+            igraph_int_t to;
             igraph_vector_int_push_back(&edges, bag1[from]); /* safe, already reserved */
             bag1[from] = bag1[bagp1 - 1];
             bagp1--;
@@ -110,7 +109,6 @@ static igraph_error_t configuration(
         }
     }
 
-    RNG_END();
 
     IGRAPH_FREE(bag1);
     IGRAPH_FINALLY_CLEAN(1);
@@ -136,9 +134,9 @@ static igraph_error_t fast_heur_undirected(
     igraph_set_t incomplete_vertices;
     igraph_adjlist_t al;
     igraph_bool_t finished, failed;
-    igraph_integer_t from, to, dummy;
-    igraph_integer_t i, j, k;
-    igraph_integer_t no_of_nodes, outsum = 0;
+    igraph_int_t from, to, dummy;
+    igraph_int_t i, j, k;
+    igraph_int_t no_of_nodes, outsum = 0;
     igraph_bool_t graphical;
     int iter = 0;
 
@@ -161,7 +159,6 @@ static igraph_error_t fast_heur_undirected(
     IGRAPH_FINALLY(igraph_set_destroy, &incomplete_vertices);
 
     /* Start the RNG */
-    RNG_BEGIN();
 
     /* Outer loop; this will try to construct a graph several times from scratch
      * until it finally succeeds. */
@@ -249,7 +246,6 @@ static igraph_error_t fast_heur_undirected(
     }
 
     /* Finish the RNG */
-    RNG_END();
 
     /* Clean up */
     igraph_set_destroy(&incomplete_vertices);
@@ -282,9 +278,9 @@ static igraph_error_t fast_heur_directed(
     igraph_vector_int_t *neis;
     igraph_vector_int_t residual_in_degrees, residual_out_degrees;
     igraph_set_t incomplete_in_vertices, incomplete_out_vertices;
-    igraph_integer_t from, to;
-    igraph_integer_t i, j, k;
-    igraph_integer_t no_of_nodes, outsum;
+    igraph_int_t from, to;
+    igraph_int_t i, j, k;
+    igraph_int_t no_of_nodes, outsum;
     int iter = 0;
 
     IGRAPH_CHECK(igraph_is_graphical(out_seq, in_seq, IGRAPH_SIMPLE_SW, &deg_seq_ok));
@@ -311,7 +307,6 @@ static igraph_error_t fast_heur_directed(
     IGRAPH_FINALLY(igraph_set_destroy, &incomplete_in_vertices);
 
     /* Start the RNG */
-    RNG_BEGIN();
 
     /* Outer loop; this will try to construct a graph several times from scratch
      * until it finally succeeds. */
@@ -396,7 +391,6 @@ static igraph_error_t fast_heur_directed(
     }
 
     /* Finish the RNG */
-    RNG_END();
 
     /* Clean up */
     igraph_set_destroy(&incomplete_in_vertices);
@@ -420,7 +414,7 @@ static igraph_error_t fast_heur_directed(
 /* swap two elements of a vector_int */
 #define SWAP_INT_ELEM(vec, i, j) \
     { \
-        igraph_integer_t temp; \
+        igraph_int_t temp; \
         temp = VECTOR(vec)[i]; \
         VECTOR(vec)[i] = VECTOR(vec)[j]; \
         VECTOR(vec)[j] = temp; \
@@ -430,9 +424,9 @@ static igraph_error_t fast_heur_directed(
 static igraph_error_t configuration_simple_undirected_set(
         const igraph_vector_int_t *degseq,
         igraph_vector_int_t *stubs,
-        igraph_integer_t vcount, igraph_integer_t stub_count) {
+        igraph_int_t vcount, igraph_int_t stub_count) {
 
-    const igraph_integer_t ecount = stub_count / 2;
+    const igraph_int_t ecount = stub_count / 2;
     igraph_vector_ptr_t adjlist;
     int iter = 0;
 
@@ -440,7 +434,7 @@ static igraph_error_t configuration_simple_undirected_set(
     IGRAPH_CHECK(igraph_vector_ptr_init(&adjlist, vcount));
     IGRAPH_VECTOR_PTR_SET_ITEM_DESTRUCTOR(&adjlist, igraph_set_destroy);
     IGRAPH_FINALLY(igraph_vector_ptr_destroy_all, &adjlist);
-    for (igraph_integer_t i = 0; i < vcount; ++i) {
+    for (igraph_int_t i = 0; i < vcount; ++i) {
         igraph_set_t *set = IGRAPH_CALLOC(1, igraph_set_t);
         IGRAPH_CHECK_OOM(set, "Insufficient memory for configuration model (simple graphs).");
         IGRAPH_CHECK(igraph_set_init(set, 0));
@@ -448,14 +442,13 @@ static igraph_error_t configuration_simple_undirected_set(
         IGRAPH_CHECK(igraph_set_reserve(set, VECTOR(*degseq)[i]));
     }
 
-    RNG_BEGIN();
 
     for (;;) {
         igraph_bool_t success = true;
 
         /* Shuffle stubs vector with Fisher-Yates and check for self-loops and multi-edges as we go. */
-        for (igraph_integer_t i = 0; i < ecount; ++i) {
-            igraph_integer_t k, from, to;
+        for (igraph_int_t i = 0; i < ecount; ++i) {
+            igraph_int_t k, from, to;
 
             k = RNG_INTEGER(2*i, stub_count-1);
             SWAP_INT_ELEM(*stubs, 2*i, k);
@@ -488,14 +481,13 @@ static igraph_error_t configuration_simple_undirected_set(
         }
 
         /* Clear adjacency list. */
-        for (igraph_integer_t j = 0; j < vcount; ++j) {
+        for (igraph_int_t j = 0; j < vcount; ++j) {
             igraph_set_clear((igraph_set_t *) VECTOR(adjlist)[j]);
         }
 
         IGRAPH_ALLOW_INTERRUPTION_LIMITED(iter, 1 << 8);
     }
 
-    RNG_END();
 
     igraph_vector_ptr_destroy_all(&adjlist);
     IGRAPH_FINALLY_CLEAN(1);
@@ -506,26 +498,25 @@ static igraph_error_t configuration_simple_undirected_set(
 /* Uses a bitset to check for multi-edges. Efficient for smaller graphs. */
 static igraph_error_t configuration_simple_undirected_bitset(
         igraph_vector_int_t *stubs,
-        igraph_integer_t vcount, igraph_integer_t stub_count) {
+        igraph_int_t vcount, igraph_int_t stub_count) {
 
-    const igraph_integer_t ecount = stub_count / 2;
+    const igraph_int_t ecount = stub_count / 2;
     igraph_bitset_list_t adjlist;
     int iter = 0;
 
     /* Build an adjacency list in terms of bitsets; used to check for multi-edges. */
     IGRAPH_BITSET_LIST_INIT_FINALLY(&adjlist, vcount);
-    for (igraph_integer_t i = 0; i < vcount; ++i) {
+    for (igraph_int_t i = 0; i < vcount; ++i) {
         IGRAPH_CHECK(igraph_bitset_resize(igraph_bitset_list_get_ptr(&adjlist, i), vcount));
     }
 
-    RNG_BEGIN();
 
     for (;;) {
         igraph_bool_t success = true;
 
         /* Shuffle stubs vector with Fisher-Yates and check for self-loops and multi-edges as we go. */
-        for (igraph_integer_t i = 0; i < ecount; ++i) {
-            igraph_integer_t k, from, to;
+        for (igraph_int_t i = 0; i < ecount; ++i) {
+            igraph_int_t k, from, to;
 
             k = RNG_INTEGER(2*i, stub_count-1);
             SWAP_INT_ELEM(*stubs, 2*i, k);
@@ -558,14 +549,13 @@ static igraph_error_t configuration_simple_undirected_bitset(
         }
 
         /* Clear adjacency list. */
-        for (igraph_integer_t j = 0; j < vcount; ++j) {
+        for (igraph_int_t j = 0; j < vcount; ++j) {
             igraph_bitset_null(igraph_bitset_list_get_ptr(&adjlist, j));
         }
 
         IGRAPH_ALLOW_INTERRUPTION_LIMITED(iter, 1 << 8);
     }
 
-    RNG_END();
 
     igraph_bitset_list_destroy(&adjlist);
     IGRAPH_FINALLY_CLEAN(1);
@@ -579,7 +569,7 @@ static igraph_error_t configuration_simple_undirected(
 
     igraph_vector_int_t stubs;
     igraph_bool_t graphical;
-    igraph_integer_t vcount, stub_count;
+    igraph_int_t vcount, stub_count;
 
     IGRAPH_CHECK(igraph_is_graphical(degseq, NULL, IGRAPH_SIMPLE_SW, &graphical));
     if (!graphical) {
@@ -593,10 +583,10 @@ static igraph_error_t configuration_simple_undirected(
 
     /* Fill stubs vector. */
     {
-        igraph_integer_t k = 0;
-        for (igraph_integer_t i = 0; i < vcount; ++i) {
-            igraph_integer_t deg = VECTOR(*degseq)[i];
-            for (igraph_integer_t j = 0; j < deg; ++j) {
+        igraph_int_t k = 0;
+        for (igraph_int_t i = 0; i < vcount; ++i) {
+            igraph_int_t deg = VECTOR(*degseq)[i];
+            for (igraph_int_t j = 0; j < deg; ++j) {
                 VECTOR(stubs)[k++] = i;
             }
         }
@@ -627,7 +617,7 @@ static igraph_error_t configuration_simple_directed(
     igraph_vector_int_t edges;
     igraph_vector_int_t vertex_done;
     igraph_bool_t graphical;
-    igraph_integer_t vcount, ecount;
+    igraph_int_t vcount, ecount;
     int iter = 0;
 
     IGRAPH_CHECK(igraph_is_graphical(out_deg, in_deg, IGRAPH_SIMPLE_SW, &graphical));
@@ -653,33 +643,32 @@ static igraph_error_t configuration_simple_directed(
 
     /* Fill in- and out-stubs vectors. */
     {
-        igraph_integer_t k = 0, l = 0;
-        for (igraph_integer_t i = 0; i < vcount; ++i) {
-            igraph_integer_t dout, din;
+        igraph_int_t k = 0, l = 0;
+        for (igraph_int_t i = 0; i < vcount; ++i) {
+            igraph_int_t dout, din;
 
             dout = VECTOR(*out_deg)[i];
-            for (igraph_integer_t j = 0; j < dout; ++j) {
+            for (igraph_int_t j = 0; j < dout; ++j) {
                 VECTOR(out_stubs)[k++] = i;
             }
 
             din  = VECTOR(*in_deg)[i];
-            for (igraph_integer_t j = 0; j < din; ++j) {
+            for (igraph_int_t j = 0; j < din; ++j) {
                 VECTOR(in_stubs)[l++] = i;
             }
         }
     }
 
-    igraph_integer_t vertex_done_mark = 1;
+    igraph_int_t vertex_done_mark = 1;
 
-    RNG_BEGIN();
 
     for (;;) {
         igraph_bool_t success = true;
-        igraph_integer_t previous_to = -1;
+        igraph_int_t previous_to = -1;
 
         /* Shuffle out-stubs vector with Fisher-Yates and check for self-loops and multi-edges as we go. */
-        for (igraph_integer_t i = 0; i < ecount; ++i) {
-            igraph_integer_t k, from, to;
+        for (igraph_int_t i = 0; i < ecount; ++i) {
+            igraph_int_t k, from, to;
 
             k = RNG_INTEGER(i, ecount-1);
             SWAP_INT_ELEM(out_stubs, i, k);
@@ -715,9 +704,8 @@ static igraph_error_t configuration_simple_directed(
         IGRAPH_ALLOW_INTERRUPTION_LIMITED(iter, 1 << 8);
     }
 
-    RNG_END();
 
-    for (igraph_integer_t i=0; i < ecount; i++) {
+    for (igraph_int_t i=0; i < ecount; i++) {
         VECTOR(edges)[2*i]   = VECTOR(out_stubs)[i];
         VECTOR(edges)[2*i+1] = VECTOR(in_stubs)[i];
     }

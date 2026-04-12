@@ -30,13 +30,12 @@
 #include "test_utilities.h"
 
 int main(void) {
-    igraph_integer_t i;
+    igraph_int_t i;
     igraph_matrix_t m;
     igraph_real_t x, y, z, r;
 
     igraph_rng_seed(igraph_rng_default(), 42); /* make tests deterministic */
 
-    RNG_BEGIN();
 
     /* 2D */
     igraph_matrix_init(&m, 1000, 2);
@@ -79,7 +78,6 @@ int main(void) {
     }
     igraph_matrix_destroy(&m);
 
-    RNG_END();
 
     VERIFY_FINALLY_STACK();
 

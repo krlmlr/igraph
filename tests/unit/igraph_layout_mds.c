@@ -32,11 +32,10 @@
 int main(void) {
     igraph_t g;
     igraph_matrix_t coords, dist_mat;
-    igraph_integer_t i, j;
+    igraph_int_t i, j;
 
     igraph_rng_seed(igraph_rng_default(), 42); /* make tests deterministic */
 
-    RNG_BEGIN();
 
     igraph_small(&g, 0, 0, -1);
     igraph_matrix_init(&coords, 0, 0);
@@ -95,7 +94,6 @@ int main(void) {
 
     VERIFY_FINALLY_STACK();
 
-    RNG_END();
 
     return 0;
 }

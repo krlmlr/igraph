@@ -24,7 +24,7 @@
 #include "igraph_interface.h"
 #include "igraph_random.h"
 #include "igraph_structural.h"
-#include "igraph_topology.h"
+#include "igraph_isomorphism.h"
 
 #include "centrality/centrality_internal.h"
 
@@ -35,14 +35,14 @@ static igraph_error_t adjmat_mul_unweighted(igraph_real_t *to, const igraph_real
                                            int n, void *extra) {
     igraph_adjlist_t *adjlist = extra;
     igraph_vector_int_t *neis;
-    igraph_integer_t i, j, nlen;
+    igraph_int_t i, j, nlen;
 
     for (i = 0; i < n; i++) {
         neis = igraph_adjlist_get(adjlist, i);
         nlen = igraph_vector_int_size(neis);
         to[i] = 0.0;
         for (j = 0; j < nlen; j++) {
-            igraph_integer_t nei = VECTOR(*neis)[j];
+            igraph_int_t nei = VECTOR(*neis)[j];
             to[i] += from[nei];
         }
     }
@@ -65,15 +65,15 @@ static igraph_error_t adjmat_mul_weighted(igraph_real_t *to, const igraph_real_t
     const igraph_inclist_t *inclist = data->inclist;
     const igraph_vector_t *weights = data->weights;
     igraph_vector_int_t *edges;
-    igraph_integer_t i, j, nlen;
+    igraph_int_t i, j, nlen;
 
     for (i = 0; i < n; i++) {
         edges = igraph_inclist_get(inclist, i);
         nlen = igraph_vector_int_size(edges);
         to[i] = 0.0;
         for (j = 0; j < nlen; j++) {
-            igraph_integer_t edge = VECTOR(*edges)[j];
-            igraph_integer_t nei = IGRAPH_OTHER(graph, edge, i);
+            igraph_int_t edge = VECTOR(*edges)[j];
+            igraph_int_t nei = IGRAPH_OTHER(graph, edge, i);
             igraph_real_t w = VECTOR(*weights)[edge];
             to[i] += w * from[nei];
         }
@@ -90,8 +90,8 @@ static igraph_error_t igraph_i_eigenvector_centrality_undirected(const igraph_t 
     igraph_vector_t values;
     igraph_matrix_t vectors;
     igraph_vector_t degree;
-    igraph_integer_t i;
-    igraph_integer_t no_of_nodes = igraph_vcount(graph);
+    igraph_int_t i;
+    igraph_int_t no_of_nodes = igraph_vcount(graph);
     igraph_bool_t negative_weights = false;
 
     if (no_of_nodes > INT_MAX) {
@@ -148,7 +148,6 @@ static igraph_error_t igraph_i_eigenvector_centrality_undirected(const igraph_t 
     IGRAPH_VECTOR_INIT_FINALLY(&degree, no_of_nodes);
     IGRAPH_CHECK(igraph_strength(graph, &degree, igraph_vss_all(),
                                  IGRAPH_ALL, IGRAPH_LOOPS, weights));
-    RNG_BEGIN();
     for (i = 0; i < no_of_nodes; i++) {
         if (VECTOR(degree)[i]) {
             /* Note: Keep random perturbation non-negative. */
@@ -157,7 +156,6 @@ static igraph_error_t igraph_i_eigenvector_centrality_undirected(const igraph_t 
             MATRIX(vectors, i, 0) = 0.01;
         }
     }
-    RNG_END();
     igraph_vector_destroy(&degree);
     IGRAPH_FINALLY_CLEAN(1);
 
@@ -201,7 +199,7 @@ static igraph_error_t igraph_i_eigenvector_centrality_undirected(const igraph_t 
 
     if (vector) {
         igraph_real_t amax = 0;
-        igraph_integer_t which = 0;
+        igraph_int_t which = 0;
         IGRAPH_CHECK(igraph_vector_resize(vector, no_of_nodes));
 
         if (!negative_weights && VECTOR(values)[0] <= 0) {
@@ -262,8 +260,8 @@ static igraph_error_t igraph_i_eigenvector_centrality_directed(const igraph_t *g
     igraph_matrix_t vectors;
     igraph_vector_t indegree;
     igraph_bool_t dag;
-    igraph_integer_t no_of_nodes = igraph_vcount(graph);
-    igraph_integer_t i;
+    igraph_int_t no_of_nodes = igraph_vcount(graph);
+    igraph_int_t i;
     igraph_bool_t negative_weights = false;
 
     if (igraph_ecount(graph) == 0) {
@@ -373,7 +371,6 @@ static igraph_error_t igraph_i_eigenvector_centrality_directed(const igraph_t *g
     IGRAPH_VECTOR_INIT_FINALLY(&indegree, no_of_nodes);
     IGRAPH_CHECK(igraph_strength(graph, &indegree, igraph_vss_all(),
                                  IGRAPH_IN, IGRAPH_LOOPS, weights));
-    RNG_BEGIN();
     for (i = 0; i < no_of_nodes; i++) {
         if (VECTOR(indegree)[i]) {
             /* Note: Keep random perturbation non-negative. */
@@ -382,7 +379,6 @@ static igraph_error_t igraph_i_eigenvector_centrality_directed(const igraph_t *g
             MATRIX(vectors, i, 0) = 0.01;
         }
     }
-    RNG_END();
     igraph_vector_destroy(&indegree);
     IGRAPH_FINALLY_CLEAN(1);
 
@@ -418,7 +414,7 @@ static igraph_error_t igraph_i_eigenvector_centrality_directed(const igraph_t *g
 
     if (vector) {
         igraph_real_t amax = 0;
-        igraph_integer_t which = 0;
+        igraph_int_t which = 0;
 
         IGRAPH_CHECK(igraph_vector_resize(vector, options->n));
 

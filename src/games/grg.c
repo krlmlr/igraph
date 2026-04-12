@@ -55,11 +55,11 @@
  *
  * \example examples/simple/igraph_grg_game.c
  */
-igraph_error_t igraph_grg_game(igraph_t *graph, igraph_integer_t nodes,
+igraph_error_t igraph_grg_game(igraph_t *graph, igraph_int_t nodes,
                     igraph_real_t radius, igraph_bool_t torus,
                     igraph_vector_t *x, igraph_vector_t *y) {
 
-    igraph_integer_t i;
+    igraph_int_t i;
     igraph_vector_t myx, myy, *xx = &myx, *yy = &myy;
     igraph_vector_int_t edges;
     igraph_real_t r2;
@@ -91,14 +91,12 @@ igraph_error_t igraph_grg_game(igraph_t *graph, igraph_integer_t nodes,
         IGRAPH_VECTOR_INIT_FINALLY(yy, nodes);
     }
 
-    RNG_BEGIN();
 
     for (i = 0; i < nodes; i++) {
         VECTOR(*xx)[i] = RNG_UNIF01();
         VECTOR(*yy)[i] = RNG_UNIF01();
     }
 
-    RNG_END();
 
     igraph_vector_sort(xx);
 
@@ -106,7 +104,7 @@ igraph_error_t igraph_grg_game(igraph_t *graph, igraph_integer_t nodes,
         for (i = 0; i < nodes; i++) {
             igraph_real_t xx1 = VECTOR(*xx)[i];
             igraph_real_t yy1 = VECTOR(*yy)[i];
-            igraph_integer_t j = i + 1;
+            igraph_int_t j = i + 1;
             igraph_real_t dx, dy;
 
             IGRAPH_ALLOW_INTERRUPTION();
@@ -125,7 +123,7 @@ igraph_error_t igraph_grg_game(igraph_t *graph, igraph_integer_t nodes,
         for (i = 0; i < nodes; i++) {
             igraph_real_t xx1 = VECTOR(*xx)[i];
             igraph_real_t yy1 = VECTOR(*yy)[i];
-            igraph_integer_t j = i + 1;
+            igraph_int_t j = i + 1;
             igraph_real_t dx, dy;
 
             IGRAPH_ALLOW_INTERRUPTION();

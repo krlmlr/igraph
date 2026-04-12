@@ -19,7 +19,7 @@
 #include <igraph.h>
 #include "test_utilities.h"
 
-void call_and_print(igraph_integer_t n, igraph_matrix_t *pref_matrix, igraph_vector_int_t *block_sizes, igraph_bool_t directed, igraph_bool_t loops) {
+void call_and_print(igraph_int_t n, igraph_matrix_t *pref_matrix, igraph_vector_int_t *block_sizes, igraph_bool_t directed, igraph_bool_t loops) {
     igraph_t result;
     IGRAPH_ASSERT(igraph_sbm_game(&result, n, pref_matrix, block_sizes, directed, loops) == IGRAPH_SUCCESS);
     print_graph_canon(&result);
@@ -85,7 +85,7 @@ int main(void) {
     VERIFY_FINALLY_STACK();
 
     printf("Check for nonsquare matrix error handling.\n");
-    CHECK_ERROR(igraph_sbm_game(&result, 6, &pref_matrix_nonsq, &block_sizes_3, 0, 0), IGRAPH_NONSQUARE);
+    CHECK_ERROR(igraph_sbm_game(&result, 6, &pref_matrix_nonsq, &block_sizes_3, 0, 0), IGRAPH_EINVAL);
 
     printf("Check for preference matrix probability out of range error handling.\n");
     CHECK_ERROR(igraph_sbm_game(&result, 6, &pref_matrix_oor, &block_sizes_3, 0, 0), IGRAPH_EINVAL);

@@ -24,7 +24,7 @@
 
 void random_permutation(igraph_vector_int_t *vec) {
     /* We just do size(vec) * 2 swaps */
-    igraph_integer_t one, two, tmp, i, n = igraph_vector_int_size(vec);
+    igraph_int_t one, two, tmp, i, n = igraph_vector_int_size(vec);
     for (i = 0; i < 2 * n; i++) {
         one = RNG_INTEGER(0, n - 1);
         two = RNG_INTEGER(0, n - 1);
@@ -36,7 +36,7 @@ void random_permutation(igraph_vector_int_t *vec) {
 
 
 void test3(void) {
-    igraph_integer_t i, j;
+    igraph_int_t i, j;
     igraph_graph_list_t graphs3;
     igraph_t g;
 
@@ -80,7 +80,7 @@ void test3(void) {
 
 
 void test4(void) {
-    igraph_integer_t i, j;
+    igraph_int_t i, j;
     igraph_graph_list_t graphs4;
     igraph_t g;
 
@@ -228,14 +228,12 @@ int main(void) {
 
     igraph_rng_seed(igraph_rng_default(), 293847); /* make tests deterministic */
 
-    RNG_BEGIN();
 
     test3();
     test4();
     test_bliss();
     test_bug_995();
 
-    RNG_END();
 
     VERIFY_FINALLY_STACK();
 
