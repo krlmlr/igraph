@@ -31,7 +31,6 @@ int main(void) {
 
     igraph_vector_int_init(&vec, 0);
 
-    RNG_BEGIN();
 
 #define N 10000000
 
@@ -59,7 +58,6 @@ int main(void) {
     }
     BENCH("Sort vector of length " IGRAPH_I_STRINGIFY(N), igraph_vector_int_sort(&vec));
 
-    RNG_END();
 
     igraph_vector_int_destroy(&vec);
 
