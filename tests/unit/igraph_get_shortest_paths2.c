@@ -35,7 +35,7 @@ int main(void) {
     igraph_vector_int_t parents, inbound_edges;
     igraph_int_t vcount, i;
 
-    igraph_vector_int_view(&edgev, edges, sizeof(edges) / sizeof(edges[0]));
+    edgev = igraph_vector_int_view(edges, sizeof(edges) / sizeof(edges[0]));
     vcount = igraph_vector_int_max(&edgev) + 1;
     igraph_create(&g, &edgev, vcount, IGRAPH_DIRECTED);
 

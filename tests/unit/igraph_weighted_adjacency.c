@@ -309,14 +309,14 @@ int main(void) {
     {
         printf("Check handling of non-square matrix error.\n");
         igraph_real_t e[] = {1, 2, 0};
-        igraph_matrix_view(&mat, e, 1, 3);
+        const igraph_matrix_t mat = igraph_matrix_view(e, 1, 3);
         check_error(&mat, IGRAPH_ADJ_DIRECTED, IGRAPH_NO_LOOPS, IGRAPH_EINVAL);
     }
 
     {
         printf("Check handling of invalid adjacency mode.\n");
         igraph_real_t e[] = {0, 2, 0, 3, 0, 4, 0, 5, 6};
-        igraph_matrix_view(&mat, e, 3, 3);
+        const igraph_matrix_t mat = igraph_matrix_view(e, 3, 3);
         check_error(&mat, (igraph_adjacency_t) 42, IGRAPH_LOOPS_TWICE, IGRAPH_EINVAL);
     }
 
@@ -330,7 +330,7 @@ int main(void) {
     {
         printf("Check error for non-symmetric matrix and IGRAPH_ADJ_UNDIRECTED.\n");
         igraph_real_t e[] = {0, 2, 0, 3, 0, 4, 0, 5, 6};
-        igraph_matrix_view(&mat, e, 3, 3);
+        const igraph_matrix_t mat = igraph_matrix_view(e, 3, 3);
         check_error(&mat, IGRAPH_ADJ_UNDIRECTED, IGRAPH_LOOPS_TWICE, IGRAPH_EINVAL);
     }
 
