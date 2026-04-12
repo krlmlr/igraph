@@ -10,14 +10,37 @@ if ! command -v apt-get &>/dev/null; then
 fi
 
 sudo apt-get update -y
-sudo apt-get install -y \
-  cmake \
-  ninja-build \
-  gcc \
-  g++ \
-  flex \
-  bison \
-  libxml2-dev \
-  ccache
+
+packages=(libxml2-dev)
+
+if ! command -v cmake &>/dev/null; then
+  packages+=("cmake")
+fi
+
+if ! command -v ninja &>/dev/null; then
+  packages+=("ninja-build")
+fi
+
+if ! command -v gcc &>/dev/null; then
+  packages+=("gcc")
+fi
+
+if ! command -v g++ &>/dev/null; then
+  packages+=("g++")
+fi
+
+if ! command -v flex &>/dev/null; then
+  packages+=("flex")
+fi
+
+if ! command -v bison &>/dev/null; then
+  packages+=("bison")
+fi
+
+if ! command -v ccache &>/dev/null; then
+  packages+=("ccache")
+fi
+
+sudo apt-get install -y "${packages[@]}"
 
 echo "All dependencies installed."
