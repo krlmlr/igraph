@@ -58,7 +58,7 @@ int main(void) {
       7,8, 7,9, 8,9, 8,10 };
     igraph_int_t n = sizeof(edges) / sizeof(edges[0]);
 
-    igraph_vector_int_view(&v, edges, n);
+    v = igraph_vector_int_view(edges, n);
     igraph_create(&graph, &v, 0, IGRAPH_UNDIRECTED);
 
     /* Compute the trussness of the edges. */
