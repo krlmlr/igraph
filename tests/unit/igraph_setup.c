@@ -34,7 +34,7 @@ int main(void) {
     igraph_rng_t *rng = igraph_rng_default();
     IGRAPH_ASSERT(rng != NULL);
     /* Verify the RNG is functional by generating a random number */
-    igraph_integer_t val = igraph_rng_get_integer(rng, 0, 100);
+    igraph_int_t val = igraph_rng_get_integer(rng, 0, 100);
     IGRAPH_ASSERT(val >= 0 && val <= 100);
     printf("RNG is seeded after igraph_setup().\n");
 

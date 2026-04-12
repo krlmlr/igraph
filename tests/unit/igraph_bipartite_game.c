@@ -4,9 +4,9 @@
 #include "test_utilities.h"
 
 void check_partitions(const igraph_t *g, const igraph_vector_bool_t *types, igraph_neimode_t mode) {
-    igraph_integer_t m = igraph_ecount(g);
+    igraph_int_t m = igraph_ecount(g);
 
-    for (igraph_integer_t i=0; i < m; i++) {
+    for (igraph_int_t i=0; i < m; i++) {
         switch (mode) {
         case IGRAPH_OUT:
             IGRAPH_ASSERT(VECTOR(*types)[IGRAPH_FROM(g, i)] == false);
@@ -27,7 +27,7 @@ int main(void) {
     igraph_t graph;
     igraph_vector_bool_t types;
     igraph_bool_t bipartite;
-    igraph_integer_t n1, n2, m;
+    igraph_int_t n1, n2, m;
     igraph_neimode_t modes[] = { IGRAPH_OUT, IGRAPH_IN, IGRAPH_ALL };
 
     igraph_rng_seed(igraph_rng_default(), 947);
