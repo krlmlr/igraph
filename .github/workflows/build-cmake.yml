@@ -4,10 +4,14 @@ name: MINGW
 on:
   push:
     branches:
-      - '**'
-      - '!appveyor/**'
-      - '!travis/**'
+      - main
+      - '*-dev'
+      - next
   pull_request:
+    branches:
+      - main
+      - '*-dev'
+      - next
 
 env:
   CMAKE_COLOR_DIAGNOSTICS: ON
@@ -22,11 +26,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: ['x86_64', 'ucrt-x86_64']
-        shared_libs: ['shared', 'static']
+        arch: ['ucrt-x86_64']
+        shared_libs: ['shared']
         include:
-          - arch: x86_64
-            msystem: MINGW64
           - arch: ucrt-x86_64
             msystem: UCRT64
 
