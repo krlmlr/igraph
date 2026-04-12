@@ -139,7 +139,7 @@ int main(void) {
     from = 6;
     printf("From: %" IGRAPH_PRId ", to: all.\n", from);
 
-    igraph_vector_view(&weights, weights_raw, sizeof(weights_raw) / sizeof(igraph_real_t));
+    weights = igraph_vector_view(weights_raw, sizeof(weights_raw) / sizeof(igraph_real_t));
     igraph_get_all_shortest_paths_dijkstra(&graph, &paths, &paths_edge, &nrgeo, from, igraph_vss_all(), &weights, IGRAPH_ALL);
 
     printf("Vertex paths:\n");
