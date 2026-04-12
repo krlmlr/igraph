@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -51,7 +51,7 @@ void get_ecc3(const igraph_t *g, igraph_vector_t *res, igraph_bool_t offset, igr
     igraph_vector_int_init(&triangles_vec, 0);
     igraph_list_triangles(g, &triangles_vec);
 
-    igraph_matrix_int_view_from_vector(&triangles, &triangles_vec, 3);
+    triangles = igraph_matrix_int_view_from_vector(&triangles_vec, 3);
 
     igraph_vector_int_init(&eids, 0);
 

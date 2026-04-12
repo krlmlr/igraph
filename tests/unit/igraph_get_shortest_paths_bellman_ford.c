@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    (C) 2006-2021 The igraph development team  Gabor Csardi <csardi.gabor@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
@@ -125,7 +124,7 @@ int main(void) {
     igraph_vector_int_list_init(&vecs, 0);
     igraph_vector_int_list_init(&evecs, 0);
 
-    igraph_vector_view(&weights_vec, weights_data_0, sizeof(weights_data_0) / sizeof(weights_data_0[0]));
+    weights_vec = igraph_vector_view(weights_data_0, sizeof(weights_data_0) / sizeof(weights_data_0[0]));
     igraph_get_shortest_paths_bellman_ford(&g, /*vertices=*/ &vecs, /*edges=*/ &evecs,
                                            /*from=*/ 0, /*to=*/ vs,
                                            &weights_vec, IGRAPH_OUT,
@@ -178,7 +177,7 @@ int main(void) {
                  0, 1, 0, 3, 1, 3, 1, 4, 2, 1, 3, 2, 3, 4, 4, 0, 4, 2,
                  -1);
 
-    igraph_vector_view(&weights_vec, weights_data_1, sizeof(weights_data_1) / sizeof(weights_data_1[0]));
+    weights_vec = igraph_vector_view(weights_data_1, sizeof(weights_data_1) / sizeof(weights_data_1[0]));
     igraph_get_shortest_paths_bellman_ford(&g, /*vertices=*/ &vecs, /*edges=*/ &evecs,
                                            /*from=*/ 0, /*to=*/ vs,
                                            &weights_vec, IGRAPH_OUT,
@@ -194,7 +193,7 @@ int main(void) {
 
     /* Same graph with negative loop */
     igraph_set_error_handler(igraph_error_handler_ignore);
-    igraph_vector_view(&weights_vec, weights_data_2,
+    weights_vec = igraph_vector_view(weights_data_2,
                        sizeof(weights_data_2) / sizeof(weights_data_2[0]));
     IGRAPH_ASSERT(igraph_get_shortest_paths_bellman_ford(&g, /*vertices=*/ &vecs, /*edges=*/ &evecs,
                                                          /*from=*/ 0, /*to=*/ vs,

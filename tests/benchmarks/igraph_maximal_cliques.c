@@ -34,7 +34,7 @@ int main(void) {
 
     BENCH_INIT();
 
-    igraph_vector_int_view(&toremove, toremovev, sizeof(toremovev) / sizeof(toremovev[0]));
+    toremove = igraph_vector_int_view(toremovev, sizeof(toremovev) / sizeof(toremovev[0]));
     igraph_full(&g, 200, IGRAPH_UNDIRECTED, IGRAPH_NO_LOOPS);
     igraph_delete_edges(&g, igraph_ess_vector(&toremove));
 

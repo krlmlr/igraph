@@ -25,7 +25,7 @@ int main(void) {
     igraph_t g;
     igraph_int_t i;
 
-    igraph_vector_int_view(&edges, edges3, sizeof(edges3) / sizeof(edges3[0]));
+    edges = igraph_vector_int_view(edges3, sizeof(edges3) / sizeof(edges3[0]));
     igraph_vector_bool_init(&types, igraph_vector_int_max(&edges) + 1);
     for (i = 0; i < igraph_vector_bool_size(&types); i++) {
         VECTOR(types)[i] = i % 2;

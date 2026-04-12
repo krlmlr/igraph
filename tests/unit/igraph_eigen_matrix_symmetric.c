@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2010-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -43,7 +42,7 @@ int check_ev(const igraph_matrix_t *A, const igraph_vector_t *values,
     igraph_vector_init(&rhs, n);
 
     for (i = 0; i < ne; i++) {
-        igraph_vector_view(&v, &MATRIX(*vectors, 0, i), n);
+        v = igraph_vector_view(&MATRIX(*vectors, 0, i), n);
         igraph_blas_dgemv(/*transpose=*/ 0, /*alpha=*/ 1, A, &v,
                                          /*beta=*/ 0, &lhs);
         igraph_vector_update(&rhs, &v);

@@ -54,7 +54,7 @@ int main(void) {
     igraph_bool_t simple;
     igraph_error_t retval;
 
-    igraph_vector_int_view(&v, edges, sizeof(edges) / sizeof(edges[0]));
+    v = igraph_vector_int_view(edges, sizeof(edges) / sizeof(edges[0]));
     igraph_create(&graph, &v, 0, IGRAPH_UNDIRECTED);
 
     igraph_vector_init(&weights, 0);
