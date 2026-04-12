@@ -1,0 +1,9 @@
+# IGRAPH_POSINFINITY, IGRAPH_NEGINFINITY, IGRAPH_INFINITY
+
+The macros `IGRAPH_POSINFINITY` and `IGRAPH_NEGINFINITY` were removed. Use `IGRAPH_INFINITY` and `-IGRAPH_INFINITY` instead.
+
+---
+
+**Original changelog wording:**
+
+> The macros `IGRAPH_POSINFINITY` and `IGRAPH_NEGINFINITY` were removed. Use `IGRAPH_INFINITY` and `-IGRAPH_INFINITY` instead.
