@@ -8,13 +8,12 @@
 static clock_t start;
 
 /* Wait for at least a second before attempting interruption */
-igraph_error_t interruption_handler(void *data) {
-    IGRAPH_UNUSED(data);
+igraph_bool_t interruption_handler(void) {
     if ( ((double) (clock() - start)) / CLOCKS_PER_SEC > 1.0 ) {
         IGRAPH_FINALLY_FREE();
-        return IGRAPH_INTERRUPTED;
+        return true;
     } else {
-        return IGRAPH_SUCCESS;
+        return false;
     }
 }
 
@@ -43,7 +42,7 @@ int main(void) {
     igraph_full(&graph, 700, IGRAPH_DIRECTED, IGRAPH_NO_LOOPS);
 
     ehandler = igraph_set_error_handler(igraph_error_handler_printignore);
-    IGRAPH_ASSERT(igraph_feedback_arc_set(&graph, &res, NULL, IGRAPH_FAS_EXACT_IP_TI) == IGRAPH_EGLP);
+    IGRAPH_ASSERT(igraph_feedback_arc_set(&graph, &res, NULL, IGRAPH_FAS_EXACT_IP_TI) == IGRAPH_FAILURE);
     igraph_set_error_handler(ehandler);
 
     igraph_destroy(&graph);

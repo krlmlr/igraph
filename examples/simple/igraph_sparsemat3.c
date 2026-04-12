@@ -112,7 +112,6 @@ int main(void) {
     igraph_vector_int_t p, q;
     igraph_integer_t i;
 
-    RNG_BEGIN();
 
     /* Permutation of a matrix */
 
@@ -306,7 +305,6 @@ int main(void) {
     igraph_matrix_destroy(&M);
     igraph_matrix_destroy(&N);
 
-    RNG_END();
 
     return 0;
 }
