@@ -62,7 +62,7 @@ int main(void) {
                  2, 1,
                  -1);
 
-    igraph_vector_view(&weights_vec, weights, sizeof(weights) / sizeof(weights[0]));
+    weights_vec = igraph_vector_view(weights, sizeof(weights) / sizeof(weights[0]));
     igraph_get_all_shortest_paths_dijkstra(
                 &g,
                 /*vertices=*/ &vertices, /*edges=*/ &edges, /*nrgeo=*/ &nrgeo,
