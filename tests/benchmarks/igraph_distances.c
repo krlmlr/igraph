@@ -42,7 +42,7 @@ int main(void) {
     igraph_matrix_resize(&res, igraph_vcount(&g), igraph_vcount(&g));
     igraph_vector_resize(&weights, igraph_ecount(&g));
 
-    for (igraph_integer_t i=0; i < igraph_ecount(&g); i++) {
+    for (igraph_int_t i=0; i < igraph_ecount(&g); i++) {
         VECTOR(weights)[i] = RNG_EXP(1);
     }
 
@@ -65,7 +65,7 @@ int main(void) {
           REPEAT(igraph_distances_floyd_warshall(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT, IGRAPH_FLOYD_WARSHALL_TREE), REP)
     );
 
-    for (igraph_integer_t i=0; i < trunc(0.005 * igraph_ecount(&g)); i++) {
+    for (igraph_int_t i=0; i < trunc(0.005 * igraph_ecount(&g)); i++) {
         /* For reproducibility, do not write two RNG_...() calls on the same line
          * as the C language does not guarantee any evaluation order between them. */
         igraph_real_t w = RNG_UNIF(-0.05, 0);
@@ -101,7 +101,7 @@ int main(void) {
     igraph_matrix_resize(&res, igraph_vcount(&g), igraph_vcount(&g));
     igraph_vector_resize(&weights, igraph_ecount(&g));
 
-    for (igraph_integer_t i=0; i < igraph_ecount(&g); i++) {
+    for (igraph_int_t i=0; i < igraph_ecount(&g); i++) {
         VECTOR(weights)[i] = RNG_EXP(1);
     }
 
@@ -124,7 +124,7 @@ int main(void) {
           REPEAT(igraph_distances_floyd_warshall(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT, IGRAPH_FLOYD_WARSHALL_TREE), REP)
     );
 
-    for (igraph_integer_t i=0; i < trunc(0.002 * igraph_ecount(&g)); i++) {
+    for (igraph_int_t i=0; i < trunc(0.002 * igraph_ecount(&g)); i++) {
         /* For reproducibility, do not write two RNG_...() calls on the same line
          * as the C language does not guarantee any evaluation order between them. */
         igraph_real_t w = RNG_UNIF(-0.02, 0);
@@ -160,7 +160,7 @@ int main(void) {
     igraph_matrix_resize(&res, igraph_vcount(&g), igraph_vcount(&g));
     igraph_vector_resize(&weights, igraph_ecount(&g));
 
-    for (igraph_integer_t i=0; i < igraph_ecount(&g); i++) {
+    for (igraph_int_t i=0; i < igraph_ecount(&g); i++) {
         VECTOR(weights)[i] = RNG_EXP(1);
     }
 
@@ -183,7 +183,7 @@ int main(void) {
           REPEAT(igraph_distances_floyd_warshall(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT, IGRAPH_FLOYD_WARSHALL_TREE), REP)
     );
 
-    for (igraph_integer_t i=0; i < trunc(0.01 * igraph_ecount(&g)); i++) {
+    for (igraph_int_t i=0; i < trunc(0.01 * igraph_ecount(&g)); i++) {
         /* For reproducibility, do not write two RNG_...() calls on the same line
          * as the C language does not guarantee any evaluation order between them. */
         igraph_real_t w = RNG_UNIF(-0.02, 0);
