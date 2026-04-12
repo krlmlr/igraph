@@ -34,7 +34,7 @@ int main(void) {
 
     igraph_set_warning_handler(igraph_warning_handler_ignore);
 
-    igraph_vector_int_view(&edges, edge_data, 2 * ec);
+    edges = igraph_vector_int_view(edge_data, 2 * ec);
 
     igraph_create(&graph, &edges, vc, 1 /* directed=true */);
 
