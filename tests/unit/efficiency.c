@@ -68,7 +68,7 @@ int test_graph(const char* name, const igraph_t* graph, const igraph_real_t* wei
     print_vector(&eff_vec);
 
     if (weights_array) {
-        igraph_vector_view(&weights, weights_array, igraph_ecount(graph));
+        weights = igraph_vector_view(weights_array, igraph_ecount(graph));
         printf("\nWEIGHTED CASE:\n\n");
 
         igraph_global_efficiency(graph, &eff, &weights, IGRAPH_UNDIRECTED);

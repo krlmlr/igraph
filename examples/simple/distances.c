@@ -50,7 +50,7 @@ int main(void) {
 
     printf("\nWeighted distances:\n\n");
 
-    igraph_vector_view(&weights, weights_data,
+    weights = igraph_vector_view(weights_data,
                        sizeof(weights_data) / sizeof(weights_data[0]));
 
     igraph_distances_dijkstra(&graph, &res, igraph_vss_all(), igraph_vss_all(),

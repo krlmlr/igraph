@@ -49,8 +49,8 @@ int main(void) {
 
     igraph_rng_seed(igraph_rng_default(), 333);
 
-    igraph_vector_int_view(&outdeg, outarr, n);
-    igraph_vector_int_view(&indeg,  inarr,  n);
+    outdeg = igraph_vector_int_view(outarr, n);
+    indeg = igraph_vector_int_view( inarr,  n);
 
     igraph_vector_int_init(&empty, 0);
 

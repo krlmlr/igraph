@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -28,7 +28,7 @@ int main(void) {
     printf("Triangles in a full graph of 5 vertices:\n");
     igraph_vector_int_init(&v, 0);
     igraph_list_triangles(&g, &v);
-    igraph_matrix_int_view_from_vector(&result, &v, /* nrow = */ 3);
+    result = igraph_matrix_int_view_from_vector(&v, /* nrow = */ 3);
     igraph_matrix_int_print(&result);
     igraph_vector_int_destroy(&v);
     igraph_destroy(&g);

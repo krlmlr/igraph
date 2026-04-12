@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2008-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard street, Cambridge, MA 02139 USA
 
@@ -31,7 +30,7 @@ int main(void) {
     igraph_vector_int_t edges;
     igraph_integer_t i;
 
-    igraph_vector_int_view(&edges, edges2, sizeof(edges2) / sizeof(edges2[0]));
+    edges = igraph_vector_int_view(edges2, sizeof(edges2) / sizeof(edges2[0]));
     igraph_vector_bool_init(&types, igraph_vector_int_max(&edges) + 1);
     for (i = 0; i < igraph_vector_bool_size(&types); i++) {
         VECTOR(types)[i] = i % 2;

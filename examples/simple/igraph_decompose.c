@@ -34,9 +34,8 @@ int main(void) {
     igraph_graph_list_clear(&complist);
 
     /* A toy graph, three components maximum, with at least 2 vertices each */
-    igraph_create(&g,
-                  igraph_vector_int_view(&v, edges, sizeof(edges) / sizeof(edges[0])),
-                  0, IGRAPH_DIRECTED);
+    v = igraph_vector_int_view(edges, sizeof(edges) / sizeof(edges[0]));
+    igraph_create(&g, &v, 0, IGRAPH_DIRECTED);
     igraph_decompose(&g, &complist, IGRAPH_WEAK, 3, 2);
     for (i = 0; i < igraph_graph_list_size(&complist); i++) {
         component = igraph_graph_list_get_ptr(&complist, i);

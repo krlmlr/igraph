@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2008-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard street, Cambridge, MA 02139 USA
 
@@ -42,7 +41,7 @@ int main(void) {
                  2, 1,
                  -1);
 
-    igraph_vector_view(&weights, weights_data_0,
+    weights = igraph_vector_view(weights_data_0,
                        sizeof(weights_data_0) / sizeof(weights_data_0[0]));
 
     igraph_matrix_init(&res, 0, 0);
@@ -61,7 +60,7 @@ int main(void) {
     igraph_small(&g, 5, IGRAPH_DIRECTED,
                  0, 1, 0, 3, 1, 3, 1, 4, 2, 1, 3, 2, 3, 4, 4, 0, 4, 2, -1);
 
-    igraph_vector_view(&weights, weights_data_1,
+    weights = igraph_vector_view(weights_data_1,
                        sizeof(weights_data_1) / sizeof(weights_data_1[0]));
 
     igraph_matrix_init(&res, 0, 0);
@@ -73,7 +72,7 @@ int main(void) {
 
     /* Same graph with negative cycle */
     igraph_set_error_handler(igraph_error_handler_ignore);
-    igraph_vector_view(&weights, weights_data_2,
+    weights = igraph_vector_view(weights_data_2,
                        sizeof(weights_data_2) / sizeof(weights_data_2[0]));
     if (igraph_distances_bellman_ford(&g, &res, igraph_vss_all(),
                                       igraph_vss_all(),
