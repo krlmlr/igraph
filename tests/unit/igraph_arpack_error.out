@@ -1,0 +1,35 @@
+Testing igraph_arpack_error_to_string():
+  NO_ERROR: No error
+  PROD: Matrix-vector product failed
+  NPOS: N must be positive
+  NEVNPOS: NEV must be positive
+  NCVSMALL: NCV must be greater than NEV and less than or equal to N (and for the non-symmetric solver NCV-NEV >=2 must also hold)
+  NONPOSI: Maximum number of iterations should be positive
+  WHICHINV: Invalid WHICH parameter
+  BMATINV: Invalid BMAT parameter
+  WORKLSMALL: WORKL is too small
+  TRIDERR: LAPACK error in tridiagonal eigenvalue calculation
+  ZEROSTART: Starting vector is zero
+  MODEINV: MODE is invalid
+  MODEBMAT: MODE and BMAT are not compatible
+  ISHIFT: ISHIFT must be 0 or 1
+  NEVBE: NEV and WHICH='BE' are incompatible
+  NOFACT: Could not build an Arnoldi factorization
+  FAILED: No eigenvalues to sufficient accuracy
+  HOWMNY: HOWMNY is invalid
+  HOWMNYS: HOWMNY='S' is not implemented
+  EVDIFF: Different number of converged Ritz values
+  SHUR: Error from calculation of a real Schur form
+  LAPACK: LAPACK (dtrevc) error for calculating eigenvectors
+  UNKNOWN: Unknown ARPACK error
+  MAXIT: Maximum number of iterations reached
+  NOSHIFT: No shifts could be applied during a cycle of the Implicitly restarted Arnoldi iteration. One possibility is to increase the size of NCV relative to NEV
+  REORDER: The Schur form computed by LAPACK routine dlahqr could not be reordered by LAPACK routine dtrsen.
+  Out-of-range: Unknown ARPACK error
+
+Testing igraph_arpack_get_last_error():
+  Initial last error: 0
+
+Testing igraph_strerror() with new error codes:
+  IGRAPH_EARPACK: ARPACK error
+  IGRAPH_EINVEID: Invalid edge ID

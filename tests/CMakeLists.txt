@@ -772,6 +772,7 @@ add_examples(
 add_legacy_tests(
   FOLDER tests/unit NAMES
   dgemv
+  igraph_arpack_error
   igraph_arpack_rnsolve
   igraph_arpack_unpack_complex
   igraph_blas_dgemm
@@ -948,6 +949,13 @@ add_legacy_tests(
 add_legacy_tests(
   FOLDER tests/unit NAMES
   glpk_error
+)
+
+# setup
+
+add_legacy_tests(
+  FOLDER tests/unit NAMES
+  igraph_setup
 )
 
 # regression and fuzzing tests
