@@ -23,11 +23,18 @@ git pull origin main-dev
 ```
 
 Ensure a build directory exists:
+
 ```bash
 cd /home/user/igraph
 if [ ! -f build/CMakeCache.txt ]; then
   mkdir -p build && cd build && cmake .. -GNinja && cd ..
 fi
+```
+
+Install dependencies if not already done:
+
+```bash
+tools/install-deps.sh
 ```
 
 ### 2. Identify the next changelog entry to port
@@ -80,6 +87,7 @@ git diff main-dev..next -- path/to/file
 ```
 
 For each relevant file:
+
 1. Read the current file on `main-dev` (which is HEAD)
 2. Read the target version on `next`: `git show next:path/to/file`
 3. Apply only the hunks related to THIS changelog entry, not other changes
@@ -87,12 +95,14 @@ For each relevant file:
 **IMPORTANT**: The diff between `main-dev` and `next` contains ALL remaining changes, not just this one entry. You must carefully select only the hunks that correspond to the current changelog entry. Look at the changelog description to understand what the change does, then pick only matching hunks.
 
 **Strategy for identifying relevant hunks:**
+
 - Read the changelog entry carefully — it describes specific functions, types, or behaviors that changed
-- Use `git diff main-dev..next -- <file>` to see all remaining differences  
+- Use `git diff main-dev..next -- <file>` to see all remaining differences
 - Select only hunks that modify the specific functions/types/behaviors described in the changelog
 - Leave other hunks untouched — they belong to later changelog entries
 
 **Applying changes:**
+
 - Use the Edit tool to make targeted edits to files on main-dev
 - Do NOT use `git checkout next -- <file>` as that would apply ALL changes, not just this entry's
 - Do NOT use `git cherry-pick` as the changes were not made as individual commits on `next`
@@ -125,10 +135,12 @@ cmake --build . --target build_tests 2>&1 | tail -30
 ```
 
 If build fails, fix the issues. Common problems:
+
 - Missing type definitions or function declarations that are part of a different changelog entry — add minimal forward declarations or stubs
 - Conflicting changes with previously ported entries — adapt minimally
 
 Run tests:
+
 ```bash
 cd /home/user/igraph/build
 ctest --output-on-failure -j4 2>&1 | tail -50
@@ -138,20 +150,9 @@ If tests fail, investigate and fix. Re-build and re-test until green.
 
 ### 9. Capture the AFTER proof-of-work
 
-```bash
-git add -A  # stage everything first so HEAD..next comparison accounts for working tree
-# Actually: diff is HEAD..next, so we need to commit first or use a temp commit
-# Better: just capture numstat for the files we changed
-git diff --numstat HEAD..next > /tmp/numstat_after.txt
-```
-
-Wait — `HEAD..next` compares the committed HEAD, not the working tree. So the "after" numstat should be captured AFTER committing. Use this approach instead:
-
 1. Create a temporary commit
-2. Capture `git diff --numstat HEAD..next` for affected files  
+2. Capture `git diff --numstat HEAD..next` for affected files
 3. Amend the commit with the final message
-
-OR capture it by diffing the staged changes against next:
 
 ```bash
 # Stage all changes
@@ -167,7 +168,7 @@ git diff --numstat HEAD..next > /tmp/numstat_after.txt
 
 For each file that was modified, create a side-by-side table with four numbers:
 
-```
+```txt
 add-before  del-before  add-after  del-after  filename
 ```
 
@@ -177,7 +178,7 @@ Extract the relevant lines from `/tmp/numstat_before.txt` and `/tmp/numstat_afte
 
 Append to the changelog file `changelog/TARGET_DIR/TARGET_FILE`:
 
-```markdown
+`````markdown
 
 ---
 
@@ -190,8 +191,8 @@ Before and after the change, side by side (add-before, del-before, add-after, de
 ```
 
 Notes on remaining differences:
-<explain any increases or notable patterns>
-```
+<explain the remaining differences, any increases or notable patterns>
+`````
 
 ### 12. Commit
 
@@ -214,6 +215,7 @@ EOF
 ```
 
 **Commit message format** (follow the pattern of existing commits):
+
 - Title: `nfc: <short description>` for NFC changes, or descriptive title for other categories
 - Body: explanation of what changed
 - Proof of work section with the numstat table
@@ -229,7 +231,7 @@ If push fails due to network errors, retry up to 4 times with exponential backof
 
 ## Key principles
 
-- **Minimal adaptation**: Apply the diff from `next` as-is whenever possible. Only adapt if strictly necessary for compilation/tests.
+- **Minimal adaptation**: Apply the diff from `next` as-is whenever possible. Capture all diffs that are relevant for the change. Only adapt if strictly necessary for compilation/tests.
 - **One entry at a time**: Only port the single next changelog entry, nothing more.
 - **Proof of work**: The numstat comparison proves the change was correctly ported by showing the diff to `next` decreased for affected files.
 - **Explain increases**: If any file shows an increase in diff to `next` after the change, explain why in the notes (e.g., proof-of-work section added to changelog file).
