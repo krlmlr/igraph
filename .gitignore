@@ -11,7 +11,3 @@
 /tools/**/*.pyc
 /src/io/parsers/
 /tests/unit/*.tmp
-/Testing/
-/interfaces/.venv/
-/interfaces/*.o
-/interfaces/test.cpp
