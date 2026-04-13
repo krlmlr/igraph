@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2013-2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -66,7 +66,7 @@ igraph_error_t igraph_incadjlist_inter_init(const igraph_t *graph,
     for (i = 0; i < il->length; i++) {
         //IGRAPH_ALLOW_INTERRUPTION();
 
-        IGRAPH_CHECK(igraph_incident(graph, &tmp, i, mode));
+        IGRAPH_CHECK(igraph_incident(graph, &tmp, i, mode, IGRAPH_LOOPS));
 
         n = igraph_vector_int_size(&tmp);
         IGRAPH_CHECK(igraph_vector_int_init(&il->incadjs[i], n * 2));
@@ -137,7 +137,7 @@ igraph_error_t igraph_incadjlist_sep_init(const igraph_t *graph,
     for (i = 0; i < il->length; i++) {
         //IGRAPH_ALLOW_INTERRUPTION();
 
-        IGRAPH_CHECK(igraph_incident(graph, &tmp, i, mode));
+        IGRAPH_CHECK(igraph_incident(graph, &tmp, i, mode, IGRAPH_LOOPS));
 
         n = igraph_vector_int_size(&tmp);
         IGRAPH_CHECK(igraph_vector_int_init(&il->incs[i], n));
@@ -443,7 +443,7 @@ int main(void) {
     igraph_destroy(&g);
 
     printf("\nRandom graph tests:\n");
-    igraph_erdos_renyi_game_gnm(&g, 10000, 49994999, IGRAPH_UNDIRECTED, IGRAPH_NO_LOOPS);
+    igraph_erdos_renyi_game_gnm(&g, 10000, 49994999, IGRAPH_UNDIRECTED, IGRAPH_SIMPLE_SW, IGRAPH_EDGE_UNLABELED);
     do_benchmarks(" rg - ", &g, 1);
     igraph_destroy(&g);
 

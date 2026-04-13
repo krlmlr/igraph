@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2021-2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -82,7 +82,7 @@ igraph_vector_int_t *igraph_i_lazy_adjlist2_get_real(
          * should never happen, because the stor_end is set to one past the
          * end of the latest integer.
          */
-        ret = igraph_neighbors(al->graph, &al->adjs[no], no, al->mode);
+        ret = igraph_neighbors(al->graph, &al->adjs[no], no, al->mode, al->loops, al->multiple);
         if (ret != IGRAPH_SUCCESS) {
             igraph_error("", IGRAPH_FILE_BASENAME, __LINE__, ret);
             return NULL;
@@ -150,7 +150,6 @@ igraph_error_t igraph_neighborhood_adjl2(const igraph_t *graph, igraph_vector_in
             igraph_int_t actdist = igraph_dqueue_int_pop(&q);
             igraph_int_t n;
             neis = igraph_i_lazy_adjlist2_get_real(&adjlist2, actnode);
-            //IGRAPH_CHECK(igraph_neighbors(graph, &neis, actnode, mode));
             n = igraph_vector_int_size(neis);
 
             if (actdist < order - 1) {
@@ -251,7 +250,6 @@ igraph_error_t igraph_neighborhood_adjl(const igraph_t *graph, igraph_vector_int
             igraph_int_t actdist = igraph_dqueue_int_pop(&q);
             igraph_int_t n;
             neis = igraph_lazy_adjlist_get(&adjlist, actnode);
-            //IGRAPH_CHECK(igraph_neighbors(graph, &neis, actnode, mode));
             n = igraph_vector_int_size(neis);
 
             if (actdist < order - 1) {
@@ -352,7 +350,6 @@ igraph_error_t igraph_neighborhood_adj(const igraph_t *graph, igraph_vector_int_
             igraph_int_t actdist = igraph_dqueue_int_pop(&q);
             igraph_int_t n;
             neis = igraph_adjlist_get(&adjlist, actnode);
-            //IGRAPH_CHECK(igraph_neighbors(graph, &neis, actnode, mode));
             n = igraph_vector_int_size(neis);
 
             if (actdist < order - 1) {
@@ -448,7 +445,7 @@ int main(void) {
 
     igraph_full(&g_full, 500, IGRAPH_UNDIRECTED, IGRAPH_NO_LOOPS);
     igraph_ring(&g_ring, 50000, IGRAPH_UNDIRECTED, /* mutual */ 0, /*circular*/ 0);
-    igraph_erdos_renyi_game_gnm(&g_er, 2000, 20000, IGRAPH_UNDIRECTED, /*loops*/ 0);
+    igraph_erdos_renyi_game_gnm(&g_er, 2000, 20000, IGRAPH_UNDIRECTED, IGRAPH_SIMPLE_SW, IGRAPH_EDGE_UNLABELED);
 
     printf("Select all vertices:\n\n");
     printf("Full graph:\n");

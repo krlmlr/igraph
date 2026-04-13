@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2017-2025  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -23,12 +23,15 @@ int main(void) {
     igraph_vector_int_t colors;
     igraph_bool_t valid_coloring;
 
+    /* Initialize the library. */
+    igraph_setup();
+
     /* Setting a seed makes the result of erdos_renyi_game_gnm deterministic. */
     igraph_rng_seed(igraph_rng_default(), 42);
 
     /* IGRAPH_UNDIRECTED and IGRAPH_NO_LOOPS are both equivalent to 0/FALSE, but
        communicate intent better in this context. */
-    igraph_erdos_renyi_game_gnm(&graph, 1000, 10000, IGRAPH_UNDIRECTED, IGRAPH_NO_LOOPS);
+    igraph_erdos_renyi_game_gnm(&graph, 1000, 10000, IGRAPH_UNDIRECTED, IGRAPH_SIMPLE_SW, IGRAPH_EDGE_UNLABELED);
 
     /* As with all igraph functions, the vector in which the result is returned must
        be initialized in advance. */

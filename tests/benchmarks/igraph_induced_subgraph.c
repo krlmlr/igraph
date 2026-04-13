@@ -1,5 +1,5 @@
 /*
-    IGraph library.
+    igraph library.
     Copyright (C) 2025  The igraph development team <igraph@igraph.org>
 
     This program is free software; you can redistribute it and/or modify
@@ -69,7 +69,7 @@ void run_bench(int i, int n, int m, int subset_percentage) {
     igraph_int_t subset_size = (n * subset_percentage) / 100;
 
     // Prepare random graph and vertices
-    igraph_erdos_renyi_game_gnm(&graph, n, m, IGRAPH_UNDIRECTED, 0);
+    igraph_erdos_renyi_game_gnm(&graph, n, m, IGRAPH_UNDIRECTED, IGRAPH_SIMPLE_SW, IGRAPH_EDGE_UNLABELED);
     generate_random_vertices(&vertices, n, subset_size);
 
     char msg[255];
