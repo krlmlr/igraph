@@ -374,8 +374,8 @@ igraph_chung_lu_game:
 igraph_static_fitness_game:
     PARAMS: |-
         OUT GRAPH graph, INTEGER no_of_edges, VECTOR fitness_out,
-        OPTIONAL VECTOR fitness_in, BOOLEAN loops=False,
-        BOOLEAN multiple=False
+        OPTIONAL VECTOR fitness_in,
+        EDGE_TYPE_SW allowed_edge_types=SIMPLE
 
 igraph_static_power_law_game:
     PARAMS: |-
