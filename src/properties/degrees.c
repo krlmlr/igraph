@@ -21,6 +21,7 @@
 #include "igraph_structural.h"
 
 #include "igraph_interface.h"
+#include "graph/internal.h"
 
 /**
  * \function igraph_maxdegree
@@ -55,7 +56,7 @@
  */
 igraph_error_t igraph_maxdegree(const igraph_t *graph, igraph_int_t *res,
                      igraph_vs_t vids, igraph_neimode_t mode,
-                     igraph_bool_t loops) {
+                     igraph_loops_t loops) {
 
     igraph_vector_int_t tmp;
 
@@ -612,7 +613,7 @@ static igraph_error_t strength_all(
  */
 igraph_error_t igraph_strength(const igraph_t *graph, igraph_vector_t *res,
                     const igraph_vs_t vids, igraph_neimode_t mode,
-                    igraph_bool_t loops, const igraph_vector_t *weights) {
+                    igraph_loops_t loops, const igraph_vector_t *weights) {
 
     igraph_int_t no_of_nodes = igraph_vcount(graph);
     igraph_vit_t vit;
@@ -653,27 +654,12 @@ igraph_error_t igraph_strength(const igraph_t *graph, igraph_vector_t *res,
     IGRAPH_CHECK(igraph_vector_resize(res, no_vids));
     igraph_vector_null(res);
 
-    if (loops) {
-        for (igraph_int_t i = 0; !IGRAPH_VIT_END(vit); IGRAPH_VIT_NEXT(vit), i++) {
-            IGRAPH_CHECK(igraph_incident(graph, &neis, IGRAPH_VIT_GET(vit), mode));
-            const igraph_int_t n = igraph_vector_int_size(&neis);
-            for (igraph_int_t j = 0; j < n; j++) {
-                igraph_int_t edge = VECTOR(neis)[j];
-                VECTOR(*res)[i] += VECTOR(*weights)[edge];
-            }
-        }
-    } else {
-        for (igraph_int_t i = 0; !IGRAPH_VIT_END(vit); IGRAPH_VIT_NEXT(vit), i++) {
-            IGRAPH_CHECK(igraph_incident(graph, &neis, IGRAPH_VIT_GET(vit), mode));
-            const igraph_int_t n = igraph_vector_int_size(&neis);
-            for (igraph_int_t j = 0; j < n; j++) {
-                igraph_int_t edge = VECTOR(neis)[j];
-                igraph_int_t from = IGRAPH_FROM(graph, edge);
-                igraph_int_t to = IGRAPH_TO(graph, edge);
-                if (from != to) {
-                    VECTOR(*res)[i] += VECTOR(*weights)[edge];
-                }
-            }
+    for (igraph_int_t i = 0; !IGRAPH_VIT_END(vit); IGRAPH_VIT_NEXT(vit), i++) {
+        IGRAPH_CHECK(igraph_i_incident(graph, &neis, IGRAPH_VIT_GET(vit), mode, loops));
+        const igraph_int_t n = igraph_vector_int_size(&neis);
+        for (igraph_int_t j = 0; j < n; j++) {
+            igraph_int_t edge = VECTOR(neis)[j];
+            VECTOR(*res)[i] += VECTOR(*weights)[edge];
         }
     }
 
@@ -722,7 +708,7 @@ igraph_error_t igraph_sort_vertex_ids_by_degree(const igraph_t *graph,
                                      igraph_vector_int_t *outvids,
                                      igraph_vs_t vids,
                                      igraph_neimode_t mode,
-                                     igraph_bool_t loops,
+                                     igraph_loops_t loops,
                                      igraph_order_t order,
                                      igraph_bool_t only_indices) {
     igraph_int_t i, n;
