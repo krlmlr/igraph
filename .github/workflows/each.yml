@@ -21,7 +21,7 @@ name: each-ci
 
 jobs:
   each-ci:
-    if: github.repository == 'igraph/igraph'
+    if: github.repository == 'krlmlr/igraph'
     runs-on: ubuntu-24.04
 
     name: "Trigger CI workflows for each commit"
