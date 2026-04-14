@@ -374,8 +374,8 @@ igraph_error_t igraph_static_fitness_game(igraph_t *graph, igraph_int_t no_of_ed
  *                     the exponent of the in-degree distribution. If
  *                     non-negative but less than 2, an error will be
  *                     generated.
- * \param loops        Whether to allow loop edges in the generated graph.
- * \param multiple     Whether to allow multiple edges in the generated graph.
+ * \param allowed_edge_types Controls whether multi-edges and self-loops
+ *     are allowed in the generated graph. See \ref igraph_edge_type_sw_t.
  * \param finite_size_correction  Whether to use the proposed finite size
  *                     correction of Cho et al.
  *
@@ -389,7 +389,7 @@ igraph_error_t igraph_static_fitness_game(igraph_t *graph, igraph_int_t no_of_ed
 igraph_error_t igraph_static_power_law_game(igraph_t *graph,
                                  igraph_int_t no_of_nodes, igraph_int_t no_of_edges,
                                  igraph_real_t exponent_out, igraph_real_t exponent_in,
-                                 igraph_bool_t loops, igraph_bool_t multiple,
+                                 igraph_edge_type_sw_t allowed_edge_types,
                                  igraph_bool_t finite_size_correction) {
 
     igraph_vector_t fitness_out, fitness_in;
@@ -450,15 +450,13 @@ igraph_error_t igraph_static_power_law_game(igraph_t *graph,
         igraph_vector_shuffle(&fitness_in);
 
         IGRAPH_CHECK(igraph_static_fitness_game(graph, no_of_edges,
-                                                &fitness_out, &fitness_in,
-                                                (loops ? IGRAPH_LOOPS_SW : IGRAPH_SIMPLE_SW) | (multiple ? IGRAPH_MULTI_SW : IGRAPH_SIMPLE_SW)));
+                                                &fitness_out, &fitness_in, allowed_edge_types));
 
         igraph_vector_destroy(&fitness_in);
         IGRAPH_FINALLY_CLEAN(1);
     } else {
         IGRAPH_CHECK(igraph_static_fitness_game(graph, no_of_edges,
-                                                &fitness_out, NULL,
-                                                (loops ? IGRAPH_LOOPS_SW : IGRAPH_SIMPLE_SW) | (multiple ? IGRAPH_MULTI_SW : IGRAPH_SIMPLE_SW)));
+                                                &fitness_out, NULL, allowed_edge_types));
     }
 
     igraph_vector_destroy(&fitness_out);

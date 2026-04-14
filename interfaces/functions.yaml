@@ -381,7 +381,7 @@ igraph_static_power_law_game:
     PARAMS: |-
         OUT GRAPH graph, INTEGER no_of_nodes, INTEGER no_of_edges,
         REAL exponent_out, REAL exponent_in=-1,
-        BOOLEAN loops=False, BOOLEAN multiple=False,
+        EDGE_TYPE_SW allowed_edge_types=SIMPLE,
         BOOLEAN finite_size_correction=True
 
 igraph_k_regular_game:
