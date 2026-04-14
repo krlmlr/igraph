@@ -83,6 +83,8 @@ IGRAPH_EXPORT void igraph_strvector_remove(
     igraph_strvector_t *v, igraph_int_t elem);
 IGRAPH_EXPORT igraph_error_t igraph_strvector_init_copy(
     igraph_strvector_t *to, const igraph_strvector_t *from);
+IGRAPH_EXPORT igraph_error_t igraph_strvector_update(
+    igraph_strvector_t *to, const igraph_strvector_t *from);
 IGRAPH_EXPORT igraph_error_t igraph_strvector_append(
     igraph_strvector_t *to, const igraph_strvector_t *from);
 IGRAPH_EXPORT igraph_error_t igraph_strvector_merge(

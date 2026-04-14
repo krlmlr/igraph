@@ -124,24 +124,75 @@ __BEGIN_DECLS
  *   Python interfaces use this for attributes that hold R or Python
  *   objects. Usually ignored by igraph functions.
  */
-typedef enum { IGRAPH_ATTRIBUTE_UNSPECIFIED = 0,
-               IGRAPH_ATTRIBUTE_DEFAULT IGRAPH_DEPRECATED_ENUMVAL = IGRAPH_ATTRIBUTE_UNSPECIFIED,
-               IGRAPH_ATTRIBUTE_NUMERIC = 1,
-               IGRAPH_ATTRIBUTE_BOOLEAN = 2,
-               IGRAPH_ATTRIBUTE_STRING = 3,
-               IGRAPH_ATTRIBUTE_OBJECT = 127
-             } igraph_attribute_type_t;
+typedef enum {
+    IGRAPH_ATTRIBUTE_UNSPECIFIED = 0,
+    IGRAPH_ATTRIBUTE_NUMERIC = 1,
+    IGRAPH_ATTRIBUTE_BOOLEAN = 2,
+    IGRAPH_ATTRIBUTE_STRING = 3,
+    IGRAPH_ATTRIBUTE_OBJECT = 127
+} igraph_attribute_type_t;
+
+typedef enum {
+    IGRAPH_ATTRIBUTE_GRAPH = 0,
+    IGRAPH_ATTRIBUTE_VERTEX,
+    IGRAPH_ATTRIBUTE_EDGE
+} igraph_attribute_elemtype_t;
+
+/* -------------------------------------------------- */
+/* Attribute records                                  */
+/* -------------------------------------------------- */
 
 typedef struct igraph_attribute_record_t {
-    const char *name;
+    char *name;
     igraph_attribute_type_t type;
-    const void *value;
+    union {
+        void *as_raw;
+        igraph_vector_t *as_vector;
+        igraph_strvector_t *as_strvector;
+        igraph_vector_bool_t *as_vector_bool;
+    } value;
+    union {
+        igraph_real_t numeric;
+        igraph_bool_t boolean;
+        char *string;
+    } default_value;
 } igraph_attribute_record_t;
 
-typedef enum { IGRAPH_ATTRIBUTE_GRAPH = 0,
-               IGRAPH_ATTRIBUTE_VERTEX,
-               IGRAPH_ATTRIBUTE_EDGE
-             } igraph_attribute_elemtype_t;
+IGRAPH_EXPORT igraph_error_t igraph_attribute_record_init(
+    igraph_attribute_record_t *attr, const char* name, igraph_attribute_type_t type
+);
+IGRAPH_EXPORT igraph_error_t igraph_attribute_record_init_copy(
+    igraph_attribute_record_t *to, const igraph_attribute_record_t *from
+);
+IGRAPH_EXPORT igraph_error_t igraph_attribute_record_check_type(
+    const igraph_attribute_record_t *attr, igraph_attribute_type_t type
+);
+IGRAPH_EXPORT igraph_int_t igraph_attribute_record_size(
+    const igraph_attribute_record_t *attr
+);
+IGRAPH_EXPORT igraph_error_t igraph_attribute_record_resize(
+    igraph_attribute_record_t *attr, igraph_int_t new_size
+);
+IGRAPH_EXPORT igraph_error_t igraph_attribute_record_set_name(
+    igraph_attribute_record_t *attr, const char* name
+);
+IGRAPH_EXPORT igraph_error_t igraph_attribute_record_set_default_numeric(
+    igraph_attribute_record_t *attr, igraph_real_t value
+);
+IGRAPH_EXPORT igraph_error_t igraph_attribute_record_set_default_boolean(
+    igraph_attribute_record_t *attr, igraph_bool_t value
+);
+IGRAPH_EXPORT igraph_error_t igraph_attribute_record_set_default_string(
+    igraph_attribute_record_t *attr, const char* value
+);
+IGRAPH_EXPORT igraph_error_t igraph_attribute_record_set_type(
+    igraph_attribute_record_t *attr, igraph_attribute_type_t type
+);
+IGRAPH_EXPORT void igraph_attribute_record_destroy(igraph_attribute_record_t *attr);
+
+/* -------------------------------------------------- */
+/* Attribute combinations                             */
+/* -------------------------------------------------- */
 
 /**
  * \typedef igraph_attribute_combination_type_t
@@ -205,6 +256,22 @@ IGRAPH_EXPORT igraph_error_t igraph_attribute_combination_query(const igraph_att
                                                      const char *name,
                                                      igraph_attribute_combination_type_t *type,
                                                      igraph_function_pointer_t *func);
+
+/* -------------------------------------------------- */
+/* List of attribute records                          */
+/* -------------------------------------------------- */
+
+#define ATTRIBUTE_RECORD_LIST
+#define BASE_ATTRIBUTE_RECORD
+#include "igraph_pmt.h"
+#include "igraph_typed_list_pmt.h"
+#include "igraph_pmt_off.h"
+#undef BASE_ATTRIBUTE_RECORD
+#undef ATTRIBUTE_RECORD_LIST
+
+/* -------------------------------------------------- */
+/* Attribute handler interface                        */
+/* -------------------------------------------------- */
 
 /**
  * \struct igraph_attribute_table_t
@@ -310,11 +377,14 @@ IGRAPH_EXPORT igraph_error_t igraph_attribute_combination_query(const igraph_att
  */
 
 typedef struct igraph_attribute_table_t {
-    igraph_error_t (*init)(igraph_t *graph, igraph_vector_ptr_t *attr);
+    igraph_error_t (*init)(igraph_t *graph, const igraph_attribute_record_list_t *attr);
     void           (*destroy)(igraph_t *graph);
     igraph_error_t (*copy)(igraph_t *to, const igraph_t *from, igraph_bool_t ga,
                            igraph_bool_t va, igraph_bool_t ea);
-    igraph_error_t (*add_vertices)(igraph_t *graph, igraph_int_t nv, igraph_vector_ptr_t *attr);
+    igraph_error_t (*add_vertices)(
+        igraph_t *graph, igraph_int_t nv,
+        const igraph_attribute_record_list_t *attr
+    );
     igraph_error_t (*permute_vertices)(const igraph_t *graph,
                                        igraph_t *newgraph,
                                        const igraph_vector_int_t *idx);
@@ -322,8 +392,10 @@ typedef struct igraph_attribute_table_t {
                                        igraph_t *newgraph,
                                        const igraph_vector_int_list_t *merges,
                                        const igraph_attribute_combination_t *comb);
-    igraph_error_t (*add_edges)(igraph_t *graph, const igraph_vector_int_t *edges,
-                                igraph_vector_ptr_t *attr);
+    igraph_error_t (*add_edges)(
+        igraph_t *graph, const igraph_vector_int_t *edges,
+        const igraph_attribute_record_list_t *attr
+    );
     igraph_error_t (*permute_edges)(const igraph_t *graph,
                                     igraph_t *newgraph, const igraph_vector_int_t *idx);
     igraph_error_t (*combine_edges)(const igraph_t *graph,
@@ -336,7 +408,7 @@ typedef struct igraph_attribute_table_t {
                                igraph_strvector_t *enames, igraph_vector_int_t *etypes);
     igraph_bool_t (*has_attr)(const igraph_t *graph, igraph_attribute_elemtype_t type,
                               const char *name);
-    igraph_error_t (*gettype)(const igraph_t *graph, igraph_attribute_type_t *type,
+    igraph_error_t (*get_type)(const igraph_t *graph, igraph_attribute_type_t *type,
                               igraph_attribute_elemtype_t elemtype, const char *name);
     igraph_error_t (*get_numeric_graph_attr)(const igraph_t *graph, const char *name,
                                              igraph_vector_t *value);
@@ -364,7 +436,6 @@ typedef struct igraph_attribute_table_t {
                                          igraph_vector_bool_t *value);
 } igraph_attribute_table_t;
 
-IGRAPH_EXPORT IGRAPH_DEPRECATED igraph_attribute_table_t * igraph_i_set_attribute_table(const igraph_attribute_table_t * table);
 IGRAPH_EXPORT igraph_attribute_table_t * igraph_set_attribute_table(const igraph_attribute_table_t * table);
 
 IGRAPH_EXPORT igraph_bool_t igraph_has_attribute_table(void);
