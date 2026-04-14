@@ -140,6 +140,21 @@ igraph_error_t FUNCTION(init)(TYPE *v, igraph_int_t size) {
  * Time complexity: operating system dependent.
  */
 
+igraph_error_t FUNCTION(init_copy)(TYPE* to, const TYPE* from) {
+    igraph_int_t i, size = FUNCTION(size)(from);
+
+    IGRAPH_CHECK(FUNCTION(init)(to, 0));
+    IGRAPH_FINALLY(FUNCTION(destroy), to);
+
+    for (i = 0; i < size; i++) {
+        IGRAPH_CHECK(FUNCTION(push_back_copy)(to, FUNCTION(get_ptr)(from, i)));
+    }
+
+    IGRAPH_FINALLY_CLEAN(1);
+
+    return IGRAPH_SUCCESS;
+}
+
 void FUNCTION(destroy)(TYPE *v) {
     IGRAPH_ASSERT(v != 0);
 
