@@ -71,16 +71,20 @@ void print_vector_int_list(const igraph_vector_int_list_t *v) {
     printf("}\n");
 }
 
-/* Print elements of a matrix. Use brackets to make it clear when a vector has size zero. */
 void print_matrix_format(const igraph_matrix_t *m, FILE *f, const char *format) {
+    print_matrix_format_indent(m, f, format, "");
+}
+
+/* Print elements of a matrix. Use brackets to make it clear when a vector has size zero. */
+void print_matrix_format_indent(const igraph_matrix_t *m, FILE *f, const char *format, const char *indent) {
     igraph_int_t i, j, nrow = igraph_matrix_nrow(m), ncol = igraph_matrix_ncol(m);
     if (nrow == 0 || ncol == 0) {
         /* When the matrix is empty, output the dimensions */
-        fprintf(f, "[ %" IGRAPH_PRId "-by-%" IGRAPH_PRId" ]\n", nrow, ncol);
+        fprintf(f, "%s[ %" IGRAPH_PRId "-by-%" IGRAPH_PRId" ]\n", indent, nrow, ncol);
         return;
     }
     for (i = 0; i < nrow; i++) {
-        fprintf(f, i == 0 ? "[" : " ");
+        fprintf(f, i == 0 ? "%s[" : "%s ", indent);
         for (j = 0; j < ncol; j++) {
             fprintf(f, " ");
             print_real(f, MATRIX(*m, i, j), format);
@@ -90,7 +94,11 @@ void print_matrix_format(const igraph_matrix_t *m, FILE *f, const char *format) 
 }
 
 void print_matrix(const igraph_matrix_t *m) {
-    print_matrix_format(m, stdout, "%8g");
+    print_matrix_indent(m, "");
+}
+
+void print_matrix_indent(const igraph_matrix_t *m, const char *indent) {
+    print_matrix_format_indent(m, stdout, "%8g", indent);
 }
 
 void print_matrix_int(const igraph_matrix_int_t *m) {
@@ -133,6 +141,22 @@ void print_matrix_complex_round(const igraph_matrix_complex_t *m) {
     }
 }
 
+void print_matrix_list(const igraph_matrix_list_t *m) {
+    igraph_int_t i, n = igraph_matrix_list_size(m);
+    printf("{\n");
+    for (i = 0; i < n; ++i) {
+        igraph_matrix_t *mat = igraph_matrix_list_get_ptr(m, i);
+        if (igraph_matrix_nrow(mat) < 2) {
+            printf("  %2" IGRAPH_PRId ": ", i);
+            print_matrix(mat);
+        } else {
+            printf("  %2" IGRAPH_PRId ":\n", i);
+            print_matrix_indent(mat, "      ");
+        }
+    }
+    printf("}\n");
+}
+
 /* Print an adjacency list. Use brackets around each vector and also use
  * brackets around the entire adjacency list to make it clear when the list
  * is empty.
@@ -165,18 +189,15 @@ void print_weighted_graph(const igraph_t *graph, const igraph_vector_t* weights)
     printf("vcount: %" IGRAPH_PRId "\n", vcount);
     printf("edges: {\n");
     for (i=0; i < ecount; ++i) {
+        printf(
+            "%" IGRAPH_PRId " %" IGRAPH_PRId,
+            IGRAPH_FROM(graph, i), IGRAPH_TO(graph, i)
+        );
         if (weights) {
-            printf(
-                "%" IGRAPH_PRId " %" IGRAPH_PRId ": %g\n",
-                IGRAPH_FROM(graph, i), IGRAPH_TO(graph, i),
-                VECTOR(*weights)[i]
-            );
-        } else {
-            printf(
-                "%" IGRAPH_PRId " %" IGRAPH_PRId "\n",
-                IGRAPH_FROM(graph, i), IGRAPH_TO(graph, i)
-            );
+            printf(": ");
+            print_real(stdout, VECTOR(*weights)[i], "%g");
         }
+        printf("\n");
     }
     printf("}\n");
 }
@@ -249,29 +270,29 @@ void print_lazy_inclist(igraph_lazy_inclist_t *inclist) {
 }
 
 /* Edge comparison function used for sorting in print_graph_canon(). */
-int edge_compare(const void *e1, const void *e2) {
-    const igraph_int_t *edge1 = (const igraph_int_t *) e1;
-    const igraph_int_t *edge2 = (const igraph_int_t *) e2;
-    if (edge1[0] < edge2[0]) {
+int edge_compare(void *pedges, const void *pi1, const void *pi2) {
+    const igraph_int_t i1 = * (const igraph_int_t *) pi1;
+    const igraph_int_t i2 = * (const igraph_int_t *) pi2;
+    const igraph_vector_int_t *edges = (const igraph_vector_int_t *) pedges;
+    if (VECTOR(*edges)[2*i1] < VECTOR(*edges)[2*i2]) {
         return -1;
-    } else if (edge1[0] > edge2[0]) {
+    } else if (VECTOR(*edges)[2*i1] > VECTOR(*edges)[2*i2]) {
         return 1;
-    } else if (edge1[1] < edge2[1]) {
+    } else if (VECTOR(*edges)[2*i1+1] < VECTOR(*edges)[2*i2+1]) {
         return -1;
-    } else if (edge1[1] > edge2[1]) {
+    } else if (VECTOR(*edges)[2*i1+1] > VECTOR(*edges)[2*i2+1]) {
         return 1;
     } else {
         return 0;
     }
 }
 
-/* Print a graph using a sorted edge list. Other than sorting (i.e. canonicalizing) the edge list,
- * this function is identical to print_graph(). */
-void print_graph_canon(const igraph_t *graph) {
+/* Print a weighted graph using a sorted edge list. Other than sorting (i.e. canonicalizing)
+ * the edge list, this function is identical to print_graph(). */
+void print_weighted_graph_canon(const igraph_t *graph, const igraph_vector_t *weights) {
     igraph_int_t ecount = igraph_ecount(graph);
     igraph_int_t vcount = igraph_vcount(graph);
-    igraph_int_t i;
-    igraph_vector_int_t edges;
+    igraph_vector_int_t edges, idx;
 
     printf("directed: %s\n", igraph_is_directed(graph) ? "true" : "false");
     printf("vcount: %" IGRAPH_PRId "\n", vcount);
@@ -283,7 +304,7 @@ void print_graph_canon(const igraph_t *graph) {
     /* If the graph is undirected, we make sure that the first vertex of undirected edges
      * is always the one with the lower ID. */
     if (! igraph_is_directed(graph)) {
-        for (i=0; i < ecount; ++i) {
+        for (igraph_int_t i=0; i < ecount; i++) {
             if (VECTOR(edges)[2*i] > VECTOR(edges)[2*i+1]) {
                 igraph_int_t tmp = VECTOR(edges)[2*i];
                 VECTOR(edges)[2*i] = VECTOR(edges)[2*i+1];
@@ -292,16 +313,31 @@ void print_graph_canon(const igraph_t *graph) {
         }
     }
 
-    /* Sort the edge list */
-    igraph_qsort(&VECTOR(edges)[0], ecount, 2*sizeof(igraph_int_t), &edge_compare);
+    igraph_vector_int_init_range(&idx, 0, igraph_ecount(graph));
 
-    for (i=0; i < ecount; ++i) {
-        printf("%" IGRAPH_PRId " %" IGRAPH_PRId "\n", VECTOR(edges)[2*i], VECTOR(edges)[2*i+1]);
+    /* Sort the edge list */
+    igraph_qsort_r(&VECTOR(idx)[0], ecount, sizeof(igraph_int_t), &edges, &edge_compare);
+
+    for (igraph_int_t i=0; i < ecount; i++) {
+        const igraph_int_t k = VECTOR(idx)[i];
+        printf("%" IGRAPH_PRId " %" IGRAPH_PRId, VECTOR(edges)[2*k], VECTOR(edges)[2*k+1]);
+        if (weights) {
+            printf(": ");
+            print_real(stdout, VECTOR(*weights)[k], "%g");
+        }
+        printf("\n");
     }
 
-    igraph_vector_int_destroy(&edges);
-
     printf("}\n");
+
+    igraph_vector_int_destroy(&idx);
+    igraph_vector_int_destroy(&edges);
+}
+
+/* Print a graph using a sorted edge list. Other than sorting (i.e. canonicalizing)
+ * the edge list, this function is identical to print_graph(). */
+void print_graph_canon(const igraph_t *graph) {
+    print_weighted_graph_canon(graph, NULL);
 }
 
 /* Print a vector, ensuring that the first nonzero element is positive. */
