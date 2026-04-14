@@ -1,5 +1,21 @@
 name: Stimulus
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+      - '*-dev'
+      - next
+  pull_request:
+    branches:
+      - main
+      - '*-dev'
+      - next
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch, tag, or commit to check out"
+        required: false
+        default: ""
 
 jobs:
   ci:
@@ -14,6 +30,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
+          ref: ${{ inputs.ref || github.sha }}
           fetch-depth: 0
 
       - name: Install stimulus
