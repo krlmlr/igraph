@@ -142,15 +142,15 @@ static igraph_error_t igraph_i_average_path_length_unweighted(
 }
 
 
-/* Computes the average of pairwise distances (used for igraph_average_path_length_dijkstra),
- * or of inverse pairwise distances (used for igraph_global_efficiency), in an unweighted graph.
+/* Computes the average of pairwise distances (used for igraph_average_path_length),
+ * or of inverse pairwise distances (used for igraph_global_efficiency), in a weighted graph.
  * Uses Dijkstra's algorithm, therefore all weights must be non-negative.
  */
 static igraph_error_t igraph_i_average_path_length_dijkstra(
         const igraph_t *graph,
+        const igraph_vector_t *weights,
         igraph_real_t *res,
         igraph_real_t *unconnected_pairs,
-        const igraph_vector_t *weights,
         const igraph_bool_t directed,
         const igraph_bool_t invert, /* average inverse distances instead of distances */
         const igraph_bool_t unconn  /* average over connected pairs instead of all pairs */)
@@ -178,9 +178,7 @@ static igraph_error_t igraph_i_average_path_length_dijkstra(
     igraph_real_t no_of_pairs;
     igraph_real_t no_of_conn_pairs = 0.0; /* no. of ordered pairs between which there is a path */
 
-    if (!weights) {
-        return igraph_i_average_path_length_unweighted(graph, res, unconnected_pairs, directed, invert, unconn);
-    }
+    IGRAPH_ASSERT(weights != 0);
 
     if (igraph_vector_size(weights) != no_of_edges) {
         IGRAPH_ERRORF("Weight vector length (%" IGRAPH_PRId ") does not match the number of edges (%" IGRAPH_PRId ").",
@@ -292,7 +290,7 @@ static igraph_error_t igraph_i_average_path_length_dijkstra(
 /**
  * \ingroup structural
  * \function igraph_average_path_length
- * \brief The average unweighted shortest path length between all vertex pairs.
+ * \brief The average shortest path length between all vertex pairs.
  *
  * If no vertex pairs can be included in the calculation, for example because
  * the graph has fewer than two vertices, or if the graph has no edges and
@@ -319,64 +317,19 @@ static igraph_error_t igraph_i_average_path_length_dijkstra(
  * \example examples/simple/igraph_average_path_length.c
  */
 
-igraph_error_t igraph_average_path_length(const igraph_t *graph,
-                               igraph_real_t *res, igraph_real_t *unconn_pairs,
-                               igraph_bool_t directed, igraph_bool_t unconn)
-{
-    return igraph_i_average_path_length_unweighted(graph, res, unconn_pairs, directed, /* invert= */ 0, unconn);
-}
-
-
-/**
- * \ingroup structural
- * \function igraph_average_path_length_dijkstra
- * \brief The average weighted shortest path length between all vertex pairs.
- *
- * If no vertex pairs can be included in the calculation, for example because the graph
- * has fewer than two vertices, or if the graph has no edges and \c unconn is set to \c true,
- * NaN is returned.
- *
- * </para><para>
- * All distinct ordered vertex pairs are taken into account.
- *
- * \param graph The graph object.
- * \param res Pointer to a real number, this will contain the result.
- * \param unconn_pairs Pointer to a real number. If not a null pointer, the number of
- *    ordered vertex pairs where the second vertex is unreachable from the first one
- *    will be stored here.
- * \param weights The edge weights. All edge weights must be
- *       non-negative for Dijkstra's algorithm to work. Additionally, no
- *       edge weight may be NaN. If either case does not hold, an error
- *       is returned. If this is a null pointer, then the unweighted
- *       version, \ref igraph_average_path_length() is called. Edges with positive
- *       infinite weight are ignored.
- * \param directed Boolean, whether to consider directed paths.
- *    Ignored for undirected graphs.
- * \param unconn If \c true, only those pairs are considered for the calculation
- *    between which there is a path. If \c false, \c IGRAPH_INFINITY is returned
- *    for disconnected graphs.
- * \return Error code:
- *         \clist
- *         \cli IGRAPH_ENOMEM
- *              not enough memory for data structures
- *         \cli IGRAPH_EINVAL
- *              invalid weight vector
- *         \endclist
- *
- * Time complexity: O(|V| |E| log|E| + |V|), where |V| is the number of
- * vertices and |E| is the number of edges.
- *
- * \sa \ref igraph_average_path_length() for a slightly faster unweighted version.
- *
- * \example examples/simple/igraph_grg_game.c
- */
-
-igraph_error_t igraph_average_path_length_dijkstra(const igraph_t *graph,
-                                        igraph_real_t *res, igraph_real_t *unconn_pairs,
-                                        const igraph_vector_t *weights,
-                                        igraph_bool_t directed, igraph_bool_t unconn)
-{
-    return igraph_i_average_path_length_dijkstra(graph, res, unconn_pairs, weights, directed, /* invert= */ false, unconn);
+igraph_error_t igraph_average_path_length(
+    const igraph_t *graph, const igraph_vector_t *weights, igraph_real_t *res,
+    igraph_real_t *unconn_pairs, igraph_bool_t directed, igraph_bool_t unconn
+) {
+    if (weights) {
+        return igraph_i_average_path_length_dijkstra(
+            graph, weights, res, unconn_pairs, directed, /* invert= */ false, unconn
+        );
+    } else {
+        return igraph_i_average_path_length_unweighted(
+            graph, res, unconn_pairs, directed, /* invert = */ false, unconn
+        );
+    }
 }
 
 
@@ -431,7 +384,11 @@ igraph_error_t igraph_global_efficiency(const igraph_t *graph, igraph_real_t *re
                              const igraph_vector_t *weights,
                              igraph_bool_t directed)
 {
-    return igraph_i_average_path_length_dijkstra(graph, res, NULL, weights, directed, /* invert= */ true, /* unconn= */ false);
+    if (weights) {
+        return igraph_i_average_path_length_dijkstra(graph, weights, res, NULL, directed, /* invert= */ true, /* unconn= */ false);
+    } else {
+        return igraph_i_average_path_length_unweighted(graph, res, NULL, directed, /* invert= */ true, /* unconn= */ false);
+    }
 }
 
 
@@ -947,7 +904,7 @@ igraph_error_t igraph_average_local_efficiency(const igraph_t *graph, igraph_rea
  * \example examples/simple/igraph_diameter.c
  */
 
-igraph_error_t igraph_diameter(const igraph_t *graph, igraph_real_t *res,
+static igraph_error_t igraph_i_diameter_unweighted(const igraph_t *graph, igraph_real_t *res,
                     igraph_int_t *from, igraph_int_t *to,
                     igraph_vector_int_t *vertex_path, igraph_vector_int_t *edge_path,
                     igraph_bool_t directed, igraph_bool_t unconn) {
@@ -1123,7 +1080,7 @@ igraph_error_t igraph_diameter(const igraph_t *graph, igraph_real_t *res,
  */
 
 
-igraph_error_t igraph_diameter_dijkstra(const igraph_t *graph,
+static igraph_error_t igraph_i_diameter_dijkstra(const igraph_t *graph,
                              const igraph_vector_t *weights,
                              igraph_real_t *res,
                              igraph_int_t *from,
@@ -1182,16 +1139,9 @@ igraph_error_t igraph_diameter_dijkstra(const igraph_t *graph,
         return IGRAPH_SUCCESS;
     }
 
-    if (!weights) {
-        igraph_real_t diameter;
-        IGRAPH_CHECK(igraph_diameter(graph, &diameter, from, to, vertex_path, edge_path, directed, unconn));
-        if (res) {
-            *res = diameter;
-        }
-        return IGRAPH_SUCCESS;
-    }
+    IGRAPH_ASSERT(weights != 0);
 
-    if (weights && igraph_vector_size(weights) != no_of_edges) {
+    if (igraph_vector_size(weights) != no_of_edges) {
         IGRAPH_ERRORF("Weight vector length (%" IGRAPH_PRId ") not equal to number of edges (%" IGRAPH_PRId ").",
                       IGRAPH_EINVAL, igraph_vector_size(weights), no_of_edges);
     }
@@ -1297,6 +1247,24 @@ igraph_error_t igraph_diameter_dijkstra(const igraph_t *graph,
         }
     }
     return IGRAPH_SUCCESS;
+}
+
+igraph_error_t igraph_diameter(
+    const igraph_t *graph, const igraph_vector_t *weights, igraph_real_t *res,
+    igraph_int_t *from, igraph_int_t *to, igraph_vector_int_t *vertex_path,
+    igraph_vector_int_t *edge_path, igraph_bool_t directed, igraph_bool_t unconn
+) {
+    if (weights) {
+        return igraph_i_diameter_dijkstra(
+            graph, weights, res, from, to, vertex_path, edge_path,
+            directed, unconn
+        );
+    } else {
+        return igraph_i_diameter_unweighted(
+            graph, res, from, to, vertex_path, edge_path,
+            directed, unconn
+        );
+    }
 }
 
 /**
