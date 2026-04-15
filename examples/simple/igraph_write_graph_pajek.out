@@ -11,16 +11,6 @@
 9 10
 10 1
 *Vertices 10
-1 "A"
-2 "B"
-3 "C"
-4 "D"
-5 "E"
-6 "F"
-7 "G"
-8 "H"
-9 "I"
-10 "J"
 *Arcs
 1 2
 2 3
@@ -33,16 +23,16 @@
 9 10
 10 1
 *Vertices 10
-1 "A" "square"
-2 "B" "square"
-3 "C" "square"
-4 "D" "square"
-5 "E" "escaping spaces"
-6 "F" "square"
-7 "G" "square"
-8 "H" "escaping\nnewline"
-9 "I" "square"
-10 "J" "encoding &#34;quotes&#34;"
+1 "1" "square"
+2 "2" "square"
+3 "3" "square"
+4 "4" "square"
+5 "5" "escaping spaces"
+6 "6" "square"
+7 "7" "square"
+8 "8" "escaping\nnewline"
+9 "9" "square"
+10 "10" "encoding &#34;quotes&#34;"
 *Arcs
 1 2
 2 3

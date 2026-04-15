@@ -85,6 +85,8 @@ IGRAPH_EXPORT igraph_error_t igraph_strvector_init_copy(
     igraph_strvector_t *to, const igraph_strvector_t *from);
 IGRAPH_EXPORT igraph_error_t igraph_strvector_append(
     igraph_strvector_t *to, const igraph_strvector_t *from);
+IGRAPH_EXPORT igraph_error_t igraph_strvector_update(
+    igraph_strvector_t *to, const igraph_strvector_t *from);
 IGRAPH_EXPORT igraph_error_t igraph_strvector_merge(
     igraph_strvector_t *to, igraph_strvector_t *from);
 IGRAPH_EXPORT igraph_error_t igraph_strvector_resize(

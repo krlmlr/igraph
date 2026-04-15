@@ -599,7 +599,7 @@ ATTRIBUTES:
     # An opaque data structure that a high-level interface may use to pass
     # information about graph/vertex/edge attributes to a low-level igraph
     # C function
-    CTYPE: void
+    CTYPE: igraph_attribute_record_list_t
     FLAGS: BY_REF
 
 BLISSINFO:
