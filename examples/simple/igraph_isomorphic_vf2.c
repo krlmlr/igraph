@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2009-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -52,7 +51,10 @@ int main(void) {
 
     /* Two colors, just counting */
     for (i = 0; i < igraph_vector_int_size(&color1); i += 2) {
-        VECTOR(color1)[i] = VECTOR(color2)[VECTOR(perm)[i]] = 1;
+        VECTOR(color1)[i] = 1;
+    }
+    for (i = 0; i < igraph_vector_int_size(&color2); i++) {
+        VECTOR(color2)[i] = VECTOR(color1)[VECTOR(perm)[i]];
     }
     igraph_count_isomorphisms_vf2(&ring1, &ring2, &color1, &color2, 0, 0, &count, 0, 0, 0);
     if (count != 100) {

@@ -69,7 +69,7 @@ void print_cliques(igraph_vector_int_list_t *cliques) {
 int main(void) {
 
     igraph_t g, g2, cli;
-    igraph_vector_int_t perm;
+    igraph_vector_int_t perm, inv_perm;
     igraph_vector_int_list_t cliques;
     igraph_int_t no;
     igraph_int_t i;
@@ -80,13 +80,19 @@ int main(void) {
        relatively small cliques */
 
     igraph_vector_int_init_range(&perm, 0, NODES);
+    igraph_vector_int_init(&inv_perm, NODES);
     igraph_erdos_renyi_game_gnm(&g, NODES, NODES, IGRAPH_UNDIRECTED, IGRAPH_NO_LOOPS);
     igraph_full(&cli, CLIQUE_SIZE, IGRAPH_UNDIRECTED, IGRAPH_NO_LOOPS);
 
     for (i = 0; i < NO_CLIQUES; i++) {
-        /* Permute vertices of g */
+        /* Generate a permutation and then invert it for sake of compatibility
+         * with earlier tests when igraph_permute_vertices() took the inverse
+         * permutation */
         permutation(&perm);
-        igraph_permute_vertices(&g, &g2, &perm);
+        igraph_invert_permutation(&perm, &inv_perm);
+
+        /* Permute vertices of g */
+        igraph_permute_vertices(&g, &g2, &inv_perm);
         igraph_destroy(&g);
         g = g2;
 
@@ -97,6 +103,7 @@ int main(void) {
     }
     igraph_simplify(&g, /*remove_multiple=*/ true, /*remove_loop=*/ false, /*edge_comb=*/ NULL);
 
+    igraph_vector_int_destroy(&inv_perm);
     igraph_vector_int_destroy(&perm);
     igraph_destroy(&cli);
 
