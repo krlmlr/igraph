@@ -15,12 +15,14 @@ You are porting changes from the `next` branch to the `main-dev` branch of the i
 | Command | What it does |
 |---------|-------------|
 | `tools/port-next-helper.sh identify` | Finds the next unported entry and prints its content |
-| `tools/port-next-helper.sh before` | Saves `git diff --numstat HEAD..next` to `/tmp/igraph_numstat_before.txt` |
-| `tools/port-next-helper.sh after` | Saves `git diff --numstat HEAD..next` to `/tmp/igraph_numstat_after.txt` |
+| `tools/port-next-helper.sh before` | Saves `git diff --numstat` and `--shortstat HEAD..next` to `/tmp/igraph_numstat_before.txt` and `/tmp/igraph_shortstat_before.txt` |
+| `tools/port-next-helper.sh after` | Saves `git diff --numstat` and `--shortstat HEAD..next` to `/tmp/igraph_numstat_after.txt` and `/tmp/igraph_shortstat_after.txt` |
+| `tools/port-next-helper.sh shortstat` | Prints before/after shortstat summary for use in the commit message |
 | `tools/port-next-helper.sh table FILE...` | Prints the 4-column proof-of-work table for specified files |
 | `tools/port-next-helper.sh diff FILE` | Shows `git diff main-dev..next -- FILE` |
 | `tools/port-next-helper.sh show FILE` | Shows `FILE` from the `next` branch |
 | `tools/port-next-helper.sh setup` | Ensures build dir exists and deps are installed |
+| `tools/port-next-helper.sh stimulus` | Runs Stimulus CI validation — **must pass before committing** |
 
 ## Overview
 
@@ -109,15 +111,15 @@ If build fails, fix the issues. Common problems:
 
 Fix failures and repeat until green.
 
-### 8a. Validate Stimulus interface descriptions
+### 8a. Validate Stimulus interface descriptions (MANDATORY — must pass before committing)
 
 After a successful build, run the Stimulus CI check to ensure `interfaces/functions.yaml` matches the C function prototypes:
 
 ```bash
-cd interfaces
-.venv/bin/stimulus -f functions.yaml -t types.yaml -l ci:validate -o /tmp/test.cpp
-clang++ -std=c++14 -c /tmp/test.cpp -I ../include -I ../build/include
+tools/port-next-helper.sh stimulus
 ```
+
+This mirrors the `.github/workflows/stimulus.yml` CI check exactly. **Do not proceed to commit if this fails.**
 
 If validation fails with **prototype mismatch** errors, the `CTYPE` for a type in `interfaces/types.yaml` may be out of date. For example:
 
@@ -133,7 +135,9 @@ More generally: find the type name used in `functions.yaml` for the mismatched p
 
 Check `interfaces/functions.yaml` as well — if the ported change adds or modifies a public function, ensure its entry exists with the correct type names (or add it if missing).
 
-### 9. Create a temporary commit and capture AFTER numstat
+Fix all Stimulus failures and re-run `tools/port-next-helper.sh stimulus` until it prints `Stimulus validation passed.`
+
+### 9. Create a temporary commit and capture AFTER numstat and shortstat
 
 ```bash
 git add -A
@@ -141,16 +145,24 @@ git commit -m "temp"
 tools/port-next-helper.sh after
 ```
 
-### 10. Generate the proof-of-work table
+### 10. Generate the proof-of-work table and shortstat summary
 
 ```bash
 tools/port-next-helper.sh table changelog/TARGET_DIR/TARGET_FILE path/to/file1 path/to/file2 ...
+tools/port-next-helper.sh shortstat
 ```
 
-List all files you modified. The tool reads both before/after numstat files and prints the 4-column table:
+List all files you modified. The `table` command reads both before/after numstat files and prints the 4-column table:
 
 ```
 add-b  del-b  add-a  del-a  file
+```
+
+The `shortstat` command prints the single-line summary:
+
+```
+Before: 150 files changed, 1234 insertions(+), 567 deletions(-)
+After:  149 files changed, 1200 insertions(+), 550 deletions(-)
 ```
 
 ### 11. Update the changelog file with proof-of-work
@@ -184,6 +196,11 @@ git commit --amend -m "$(cat <<'EOF'
 
 <1-2 sentence description from the changelog entry>
 
+Proof of work: git diff --shortstat HEAD..next (before -> after)
+
+Before: <shortstat before line>
+After:  <shortstat after line>
+
 Proof of work: git diff --numstat HEAD..next (before -> after)
 
 <the four-column table>
@@ -196,7 +213,8 @@ EOF
 **Commit message format** (follow the pattern of existing commits):
 - Title: `nfc: <short description>` for NFC changes, or descriptive title for other categories
 - Body: explanation of what changed
-- Proof of work section with the numstat table
+- Shortstat section with before/after single-line summaries
+- Numstat table section with the 4-column per-file table
 - Session URL at the end
 
 ### 13. Push
