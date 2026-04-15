@@ -124,8 +124,7 @@ tools/port-next-helper.sh stimulus
 
 This mirrors the `.github/workflows/stimulus.yml` CI check exactly. **Do not proceed to commit if this fails.**
 
-If validation fails, pick the relevant changes to `interfaces/types.yaml` and/or `interfaces/functions.yaml` from the `next` branch and apply them to the current branch, if possible, verbatim.
-Deviations are acceptable if covered by subsequent changes.
+If validation fails, pick the relevant changes to `interfaces/types.yaml` and/or `interfaces/functions.yaml` from the `next` branch and apply them to the current branch, if possible, verbatim. Deviations are acceptable if covered by subsequent changes. In particular, the introduction of compatibility types (using a `_COMPAT` suffix) might be necessary to avoid failures while porting changes that depend on later entries. These compatibility types can be removed in later entries when the full change is ported.
 
 Fix all Stimulus failures and re-run `tools/port-next-helper.sh stimulus` until it prints `Stimulus validation passed.`
 
