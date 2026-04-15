@@ -488,22 +488,22 @@ igraph_closeness_cutoff:
 
 igraph_distances:
     PARAMS: |-
-        GRAPH graph, OUT MATRIX res, VERTEX_SELECTOR from=ALL,
-        VERTEX_SELECTOR to=ALL, NEIMODE mode=OUT
-    DEPS: from ON graph, to ON graph
+        GRAPH graph, OPTIONAL EDGEWEIGHTS weights, OUT MATRIX res,
+        VERTEX_SELECTOR from=ALL, VERTEX_SELECTOR to=ALL, NEIMODE mode=OUT
+    DEPS: weights ON graph, from ON graph, to ON graph
 
 igraph_distances_cutoff:
     PARAMS: |-
-        GRAPH graph, OUT MATRIX res, VERTEX_SELECTOR from=ALL,
-        VERTEX_SELECTOR to=ALL, NEIMODE mode=OUT, REAL cutoff=-1
-    DEPS: from ON graph, to ON graph
+        GRAPH graph, OPTIONAL EDGEWEIGHTS weights, OUT MATRIX res,
+        VERTEX_SELECTOR from=ALL, VERTEX_SELECTOR to=ALL, NEIMODE mode=OUT, REAL cutoff=-1
+    DEPS: weights ON graph, from ON graph, to ON graph
 
 igraph_get_shortest_path:
     PARAMS: |-
-        GRAPH graph,
+        GRAPH graph, OPTIONAL EDGEWEIGHTS weights,
         OPTIONAL OUT VERTEX_INDICES vertices, OPTIONAL OUT EDGE_INDICES edges,
         VERTEX from, VERTEX to, NEIMODE mode=OUT
-    DEPS: from ON graph, to ON graph, vertices ON graph, edges ON graph
+    DEPS: weights ON graph, from ON graph, to ON graph, vertices ON graph, edges ON graph
 
 igraph_get_shortest_path_bellman_ford:
     PARAMS: |-
@@ -529,19 +529,20 @@ igraph_get_shortest_path_astar:
 
 igraph_get_shortest_paths:
     PARAMS: |-
-        GRAPH graph,
+        GRAPH graph, OPTIONAL EDGEWEIGHTS weights,
         OPTIONAL OUT VERTEXSET_LIST vertices, OPTIONAL OUT EDGESET_LIST edges,
         VERTEX from, VERTEX_SELECTOR to=ALL, NEIMODE mode=OUT,
         OPTIONAL OUT VECTOR_INT parents,
         OPTIONAL OUT VECTOR_INT inbound_edges
-    DEPS: edges ON graph, from ON graph, to ON graph
+    DEPS: weights ON graph, edges ON graph, from ON graph, to ON graph
 
 igraph_get_all_shortest_paths:
     PARAMS: |-
-        GRAPH graph, OPTIONAL OUT VERTEXSET_LIST vertices,
+        GRAPH graph, OPTIONAL EDGEWEIGHTS weights,
+        OPTIONAL OUT VERTEXSET_LIST vertices,
         OPTIONAL OUT EDGESET_LIST edges, OPTIONAL OUT VECTOR_INT nrgeo,
         VERTEX from, VERTEX_SELECTOR to, NEIMODE mode=OUT
-    DEPS: edges ON graph, from ON graph, to ON graph
+    DEPS: weights ON graph, edges ON graph, from ON graph, to ON graph
 
 igraph_distances_dijkstra:
     PARAMS: |-

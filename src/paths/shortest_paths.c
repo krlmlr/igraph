@@ -1020,7 +1020,7 @@ static igraph_error_t igraph_i_diameter_unweighted(const igraph_t *graph, igraph
                 igraph_vector_int_clear(edge_path);
             }
         } else {
-            IGRAPH_CHECK(igraph_get_shortest_path(graph, vertex_path, edge_path,
+            IGRAPH_CHECK(igraph_get_shortest_path(graph, NULL, vertex_path, edge_path,
                                                   ifrom, ito, dirmode));
         }
     }
