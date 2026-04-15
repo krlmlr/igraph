@@ -12,3 +12,5 @@
 /src/io/parsers/
 /tests/unit/*.tmp
 /Testing/
+/interfaces/.venv/
+/interfaces/*.o
