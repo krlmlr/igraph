@@ -15,12 +15,14 @@ You are porting changes from the `next` branch to the `main-dev` branch of the i
 | Command | What it does |
 |---------|-------------|
 | `tools/port-next-helper.sh identify` | Finds the next unported entry and prints its content |
-| `tools/port-next-helper.sh before` | Saves `git diff --numstat HEAD..next` to `/tmp/igraph_numstat_before.txt` |
-| `tools/port-next-helper.sh after` | Saves `git diff --numstat HEAD..next` to `/tmp/igraph_numstat_after.txt` |
+| `tools/port-next-helper.sh before` | Saves `git diff --numstat` and `--shortstat HEAD..next` to `/tmp/igraph_numstat_before.txt` and `/tmp/igraph_shortstat_before.txt` |
+| `tools/port-next-helper.sh after` | Saves `git diff --numstat` and `--shortstat HEAD..next` to `/tmp/igraph_numstat_after.txt` and `/tmp/igraph_shortstat_after.txt` |
+| `tools/port-next-helper.sh shortstat` | Prints before/after shortstat summary for use in the commit message |
 | `tools/port-next-helper.sh table FILE...` | Prints the 4-column proof-of-work table for specified files |
 | `tools/port-next-helper.sh diff FILE` | Shows `git diff main-dev..next -- FILE` |
 | `tools/port-next-helper.sh show FILE` | Shows `FILE` from the `next` branch |
 | `tools/port-next-helper.sh setup` | Ensures build dir exists and deps are installed |
+| `tools/port-next-helper.sh stimulus` | Runs Stimulus CI validation — **must pass before committing** |
 
 ## Overview
 
@@ -70,12 +72,14 @@ Use the changelog entry description to determine which files are affected. Show 
 **IMPORTANT**: The diff between `main-dev` and `next` contains ALL remaining changes, not just this one entry. Select only the hunks that correspond to the current changelog entry.
 
 **Strategy:**
+
 - Read the changelog entry carefully — it describes specific functions, types, or behaviors that changed
 - Use `tools/port-next-helper.sh diff <file>` to see remaining differences per file
 - Select only hunks that modify the specific functions/types/behaviors described in the changelog
 - Leave other hunks untouched — they belong to later changelog entries
 
 **Applying changes:**
+
 - Use the Edit tool to make targeted edits to files on `main-dev`
 - Do NOT use `git checkout next -- <file>` (applies ALL changes, not just this entry's)
 - Do NOT use `git cherry-pick` (changes were not made as individual commits on `next`)
@@ -104,36 +108,28 @@ ctest --output-on-failure -j4 2>&1 | tail -50
 ```
 
 If build fails, fix the issues. Common problems:
+
 - Missing type definitions or declarations that are part of a different changelog entry — add minimal forward declarations or stubs
 - Conflicting changes with previously ported entries — adapt minimally
 
 Fix failures and repeat until green.
 
-### 8a. Validate Stimulus interface descriptions
+### 8a. Validate Stimulus interface descriptions (MANDATORY — must pass before committing)
 
 After a successful build, run the Stimulus CI check to ensure `interfaces/functions.yaml` matches the C function prototypes:
 
 ```bash
-cd interfaces
-.venv/bin/stimulus -f functions.yaml -t types.yaml -l ci:validate -o /tmp/test.cpp
-clang++ -std=c++14 -c /tmp/test.cpp -I ../include -I ../build/include
+tools/port-next-helper.sh stimulus
 ```
 
-If validation fails with **prototype mismatch** errors, the `CTYPE` for a type in `interfaces/types.yaml` may be out of date. For example:
+This mirrors the `.github/workflows/stimulus.yml` CI check exactly. **Do not proceed to commit if this fails.**
 
-- If a function's `attr` parameter changed from `void *` to `const igraph_attribute_record_list_t *`, update the `ATTRIBUTES` type:
+If validation fails, pick the relevant changes to `interfaces/types.yaml` and/or `interfaces/functions.yaml` from the `next` branch and apply them to the current branch, if possible, verbatim.
+Deviations are acceptable if covered by subsequent changes.
 
-  ```yaml
-  ATTRIBUTES:
-      CTYPE: igraph_attribute_record_list_t
-      FLAGS: BY_REF
-  ```
+Fix all Stimulus failures and re-run `tools/port-next-helper.sh stimulus` until it prints `Stimulus validation passed.`
 
-More generally: find the type name used in `functions.yaml` for the mismatched parameter, look it up in `types.yaml`, and update its `CTYPE` to match the actual C type shown in the error message.
-
-Check `interfaces/functions.yaml` as well — if the ported change adds or modifies a public function, ensure its entry exists with the correct type names (or add it if missing).
-
-### 9. Create a temporary commit and capture AFTER numstat
+### 9. Create a temporary commit and capture AFTER numstat and shortstat
 
 ```bash
 git add -A
@@ -141,16 +137,24 @@ git commit -m "temp"
 tools/port-next-helper.sh after
 ```
 
-### 10. Generate the proof-of-work table
+### 10. Generate the proof-of-work table and shortstat summary
 
 ```bash
 tools/port-next-helper.sh table changelog/TARGET_DIR/TARGET_FILE path/to/file1 path/to/file2 ...
+tools/port-next-helper.sh shortstat
 ```
 
-List all files you modified. The tool reads both before/after numstat files and prints the 4-column table:
+List all files you modified. The `table` command reads both before/after numstat files and prints the 4-column table:
 
 ```
 add-b  del-b  add-a  del-a  file
+```
+
+The `shortstat` command prints the single-line summary:
+
+```
+Before: 150 files changed, 1234 insertions(+), 567 deletions(-)
+After:  149 files changed, 1200 insertions(+), 550 deletions(-)
 ```
 
 ### 11. Update the changelog file with proof-of-work
@@ -184,6 +188,11 @@ git commit --amend -m "$(cat <<'EOF'
 
 <1-2 sentence description from the changelog entry>
 
+Proof of work: git diff --shortstat HEAD..next (before -> after)
+
+Before: <shortstat before line>
+After:  <shortstat after line>
+
 Proof of work: git diff --numstat HEAD..next (before -> after)
 
 <the four-column table>
@@ -194,9 +203,11 @@ EOF
 ```
 
 **Commit message format** (follow the pattern of existing commits):
+
 - Title: `nfc: <short description>` for NFC changes, or descriptive title for other categories
 - Body: explanation of what changed
-- Proof of work section with the numstat table
+- Shortstat section with before/after single-line summaries
+- Numstat table section with the 4-column per-file table
 - Session URL at the end
 
 ### 13. Push
