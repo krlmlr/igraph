@@ -72,12 +72,14 @@ Use the changelog entry description to determine which files are affected. Show 
 **IMPORTANT**: The diff between `main-dev` and `next` contains ALL remaining changes, not just this one entry. Select only the hunks that correspond to the current changelog entry.
 
 **Strategy:**
+
 - Read the changelog entry carefully — it describes specific functions, types, or behaviors that changed
 - Use `tools/port-next-helper.sh diff <file>` to see remaining differences per file
 - Select only hunks that modify the specific functions/types/behaviors described in the changelog
 - Leave other hunks untouched — they belong to later changelog entries
 
 **Applying changes:**
+
 - Use the Edit tool to make targeted edits to files on `main-dev`
 - Do NOT use `git checkout next -- <file>` (applies ALL changes, not just this entry's)
 - Do NOT use `git cherry-pick` (changes were not made as individual commits on `next`)
@@ -106,6 +108,7 @@ ctest --output-on-failure -j4 2>&1 | tail -50
 ```
 
 If build fails, fix the issues. Common problems:
+
 - Missing type definitions or declarations that are part of a different changelog entry — add minimal forward declarations or stubs
 - Conflicting changes with previously ported entries — adapt minimally
 
@@ -121,19 +124,8 @@ tools/port-next-helper.sh stimulus
 
 This mirrors the `.github/workflows/stimulus.yml` CI check exactly. **Do not proceed to commit if this fails.**
 
-If validation fails with **prototype mismatch** errors, the `CTYPE` for a type in `interfaces/types.yaml` may be out of date. For example:
-
-- If a function's `attr` parameter changed from `void *` to `const igraph_attribute_record_list_t *`, update the `ATTRIBUTES` type:
-
-  ```yaml
-  ATTRIBUTES:
-      CTYPE: igraph_attribute_record_list_t
-      FLAGS: BY_REF
-  ```
-
-More generally: find the type name used in `functions.yaml` for the mismatched parameter, look it up in `types.yaml`, and update its `CTYPE` to match the actual C type shown in the error message.
-
-Check `interfaces/functions.yaml` as well — if the ported change adds or modifies a public function, ensure its entry exists with the correct type names (or add it if missing).
+If validation fails, pick the relevant changes to `interfaces/types.yaml` and/or `interfaces/functions.yaml` from the `next` branch and apply them to the current branch, if possible, verbatim.
+Deviations are acceptable if covered by subsequent changes.
 
 Fix all Stimulus failures and re-run `tools/port-next-helper.sh stimulus` until it prints `Stimulus validation passed.`
 
@@ -211,6 +203,7 @@ EOF
 ```
 
 **Commit message format** (follow the pattern of existing commits):
+
 - Title: `nfc: <short description>` for NFC changes, or descriptive title for other categories
 - Body: explanation of what changed
 - Shortstat section with before/after single-line summaries
