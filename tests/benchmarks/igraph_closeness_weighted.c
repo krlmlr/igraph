@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -109,7 +109,7 @@ int main(void) {
 #define NAME "GNM(3000,10000)"
 #define REP 1
 
-    igraph_erdos_renyi_game_gnm(&graph, 3000, 10000, IGRAPH_DIRECTED, IGRAPH_LOOPS);
+    igraph_erdos_renyi_game_gnm(&graph, 3000, 10000, IGRAPH_DIRECTED, IGRAPH_LOOPS_SW, IGRAPH_EDGE_UNLABELED);
 
     BENCH(" 9 Closeness, unweighted, " NAME ", directed, " TOSTR(REP) "x",
           REPEAT(igraph_closeness(&graph, &closeness, NULL, NULL, igraph_vss_all(), IGRAPH_OUT, NULL, 1), REP)
@@ -137,7 +137,7 @@ int main(void) {
 #define NAME "GNM(3000,30000)"
 #define REP 1
 
-    igraph_erdos_renyi_game_gnm(&graph, 3000, 30000, IGRAPH_DIRECTED, IGRAPH_LOOPS);
+    igraph_erdos_renyi_game_gnm(&graph, 3000, 30000, IGRAPH_DIRECTED, IGRAPH_LOOPS_SW, IGRAPH_EDGE_UNLABELED);
 
     BENCH("13 Closeness, unweighted, " NAME ", directed, " TOSTR(REP) "x",
           REPEAT(igraph_closeness(&graph, &closeness, NULL, NULL, igraph_vss_all(), IGRAPH_OUT, NULL, 1), REP)

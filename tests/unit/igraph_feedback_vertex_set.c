@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -127,7 +127,7 @@ void test_undirected(void) {
     igraph_destroy(&graph);
 
     /* Random graph */
-    igraph_erdos_renyi_game_gnm(&graph, 10, 20, IGRAPH_UNDIRECTED, IGRAPH_LOOPS);
+    igraph_erdos_renyi_game_gnm(&graph, 10, 20, IGRAPH_UNDIRECTED, IGRAPH_LOOPS_SW, IGRAPH_EDGE_UNLABELED);
     igraph_feedback_vertex_set(&graph, &result, NULL, IGRAPH_FVS_EXACT_IP);
     check_fvs(&graph, &result);
     igraph_destroy(&graph);
@@ -189,7 +189,7 @@ void test_directed(void) {
     igraph_destroy(&graph);
 
     /* Random graph */
-    igraph_erdos_renyi_game_gnm(&graph, 10, 20, IGRAPH_DIRECTED, IGRAPH_LOOPS);
+    igraph_erdos_renyi_game_gnm(&graph, 10, 20, IGRAPH_DIRECTED, IGRAPH_LOOPS_SW, IGRAPH_EDGE_UNLABELED);
     igraph_feedback_vertex_set(&graph, &result, NULL, IGRAPH_FVS_EXACT_IP);
     check_fvs(&graph, &result);
     igraph_destroy(&graph);

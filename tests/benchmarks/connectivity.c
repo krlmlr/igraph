@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -28,7 +28,7 @@ void run_bench(igraph_int_t vcount, igraph_real_t meandeg, igraph_int_t rep) {
     igraph_vector_int_t ivec;
     char msg[128];
 
-    igraph_erdos_renyi_game_gnm(&g, vcount, round(meandeg * vcount / 2), IGRAPH_DIRECTED, IGRAPH_LOOPS);
+    igraph_erdos_renyi_game_gnm(&g, vcount, round(meandeg * vcount / 2), IGRAPH_DIRECTED, IGRAPH_LOOPS_SW, IGRAPH_EDGE_UNLABELED);
     igraph_vector_int_init(&ivec, igraph_vcount(&g));
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]),
