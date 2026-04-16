@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -20,9 +20,9 @@
 
 #include "bench.h"
 
-void gnp(igraph_int_t n, igraph_real_t p, igraph_bool_t directed, igraph_bool_t loops) {
+void gnp(igraph_int_t n, igraph_real_t p, igraph_bool_t directed, igraph_edge_type_sw_t allowed_edge_types) {
     igraph_t g;
-    igraph_erdos_renyi_game_gnp(&g, n, p, directed, loops);
+    igraph_erdos_renyi_game_gnp(&g, n, p, directed, allowed_edge_types, IGRAPH_EDGE_UNLABELED);
     igraph_destroy(&g);
 }
 
@@ -51,16 +51,16 @@ void run_bench(igraph_int_t vcount, igraph_real_t meandeg, igraph_int_t rep) {
     igraph_vector_init(&outdeg, 0);
     igraph_vector_init(&indeg, 0);
 
-    igraph_erdos_renyi_game_gnp(&g, vcount, p, IGRAPH_UNDIRECTED, IGRAPH_NO_LOOPS);
+    igraph_erdos_renyi_game_gnp(&g, vcount, p, IGRAPH_UNDIRECTED, IGRAPH_SIMPLE_SW, IGRAPH_EDGE_UNLABELED);
     igraph_strength(&g, &outdeg, igraph_vss_all(), IGRAPH_ALL, IGRAPH_LOOPS, NULL);
     igraph_destroy(&g);
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]),
-             " 1 G(n,p)   undirected, no loops, %s", msg2);
-    BENCH(msg, REPEAT(gnp(vcount, p, IGRAPH_UNDIRECTED, IGRAPH_NO_LOOPS), rep));
+             " 1 G(n,p)   undirected, no loops / no multi, %s", msg2);
+    BENCH(msg, REPEAT(gnp(vcount, p, IGRAPH_UNDIRECTED, IGRAPH_SIMPLE_SW), rep));
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]),
-             " 2 G(n,m)   undirected, no loops, %s", msg2);
+             " 2 G(n,m)   undirected, no loops / no multi, %s", msg2);
     BENCH(msg, REPEAT(gnm(vcount, meandeg, IGRAPH_UNDIRECTED, IGRAPH_SIMPLE_SW), rep));
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]),
@@ -70,11 +70,11 @@ void run_bench(igraph_int_t vcount, igraph_real_t meandeg, igraph_int_t rep) {
     printf("\n");
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]),
-             " 4 G(n,p)   undirected,    loops, %s", msg2);
-    BENCH(msg, REPEAT(gnp(vcount, p, IGRAPH_UNDIRECTED, IGRAPH_LOOPS), rep));
+             " 4 G(n,p)   undirected,    loops / no multi, %s", msg2);
+    BENCH(msg, REPEAT(gnp(vcount, p, IGRAPH_UNDIRECTED, IGRAPH_LOOPS_SW), rep));
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]),
-             " 5 G(n,m)   undirected,    loops, %s", msg2);
+             " 5 G(n,m)   undirected,    loops / no multi, %s", msg2);
     BENCH(msg, REPEAT(gnm(vcount, meandeg, IGRAPH_UNDIRECTED, IGRAPH_LOOPS_SW), rep));
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]),
@@ -83,17 +83,17 @@ void run_bench(igraph_int_t vcount, igraph_real_t meandeg, igraph_int_t rep) {
 
     printf("\n");
 
-    igraph_erdos_renyi_game_gnp(&g, vcount, p, IGRAPH_DIRECTED, IGRAPH_NO_LOOPS);
+    igraph_erdos_renyi_game_gnp(&g, vcount, p, IGRAPH_DIRECTED, IGRAPH_SIMPLE_SW, IGRAPH_EDGE_UNLABELED);
     igraph_strength(&g, &outdeg, igraph_vss_all(), IGRAPH_OUT, IGRAPH_LOOPS, NULL);
     igraph_strength(&g, &indeg, igraph_vss_all(), IGRAPH_IN, IGRAPH_LOOPS, NULL);
     igraph_destroy(&g);
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]),
-             " 7 G(n,p)     directed, no loops, %s", msg2);
-    BENCH(msg, REPEAT(gnp(vcount, p, IGRAPH_DIRECTED, IGRAPH_NO_LOOPS), rep));
+             " 7 G(n,p)     directed, no loops / no multi, %s", msg2);
+    BENCH(msg, REPEAT(gnp(vcount, p, IGRAPH_DIRECTED, IGRAPH_SIMPLE_SW), rep));
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]),
-             " 8 G(n,m)     directed, no loops, %s", msg2);
+             " 8 G(n,m)     directed, no loops / no multi, %s", msg2);
     BENCH(msg, REPEAT(gnm(vcount, meandeg, IGRAPH_DIRECTED, IGRAPH_SIMPLE_SW), rep));
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]),
@@ -103,11 +103,11 @@ void run_bench(igraph_int_t vcount, igraph_real_t meandeg, igraph_int_t rep) {
     printf("\n");
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]),
-             "10 G(n,p)     directed,    loops, %s", msg2);
-    BENCH(msg, REPEAT(gnp(vcount, p, IGRAPH_DIRECTED, IGRAPH_LOOPS), rep));
+             "10 G(n,p)     directed,    loops / no multi, %s", msg2);
+    BENCH(msg, REPEAT(gnp(vcount, p, IGRAPH_DIRECTED, IGRAPH_LOOPS_SW), rep));
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]),
-             "11 G(n,m)     directed,    loops, %s", msg2);
+             "11 G(n,m)     directed,    loops / no multi, %s", msg2);
     BENCH(msg, REPEAT(gnm(vcount, meandeg, IGRAPH_DIRECTED, IGRAPH_LOOPS_SW), rep));
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]),
