@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -43,7 +43,7 @@ void run_bench(const igraph_t *graph, const igraph_vector_t *weights,
     BENCH(msg, REPEAT(igraph_community_multilevel(graph, weights, 1.0, &membership, NULL, NULL), rep));
 
     snprintf(msg, sizeof(msg) / sizeof(msg[0]), "2 Leiden , %s", msg2);
-    BENCH(msg, REPEAT(igraph_community_leiden(graph, weights, &vertex_weight, 1.0 / igraph_vector_sum(weights), 0.01, false, 1, &membership, NULL, NULL), rep));
+    BENCH(msg, REPEAT(igraph_community_leiden(graph, weights, &vertex_weight, NULL, 1.0 / igraph_vector_sum(weights), 0.01, false, 1, &membership, NULL, NULL), rep));
 
     printf("\n");
 
