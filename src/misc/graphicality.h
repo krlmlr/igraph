@@ -1,6 +1,6 @@
 /*
    igraph library.
-   Copyright (C) 2008-2021  The igraph development team <igraph@igraph.org>
+   Copyright (C) 2025  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -16,19 +16,21 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef IGRAPH_INTERNAL_UTILS_H
-#define IGRAPH_INTERNAL_UTILS_H
+#ifndef IGRAPH_MISC_GRAPHICALITY_H
+#define IGRAPH_MISC_GRAPHICALITY_H
 
-#include "igraph_datatype.h"
-#include "igraph_iterators.h"
-#include "igraph_matrix.h"
+#include "igraph_decls.h"
+#include "igraph_graphicality.h"
 
-igraph_error_t igraph_i_matrix_subset_vertices(
-        igraph_matrix_t *m,
-        const igraph_t *graph,
-        igraph_vs_t from,
-        igraph_vs_t to);
+#define IGRAPH_I_MULTI_EDGES_SW 0x02 /* 010, more than one edge allowed between distinct vertices */
+#define IGRAPH_I_MULTI_LOOPS_SW 0x04 /* 100, more than one self-loop allowed on the same vertex   */
 
-igraph_error_t igraph_i_vector_int_shuffle_pairs(igraph_vector_int_t *pairs);
+__BEGIN_DECLS
 
-#endif /* IGRAPH_INTERNAL_UTILS_H */
+igraph_error_t igraph_i_edge_type_to_loops_multiple(
+    igraph_edge_type_sw_t allowed_edge_type,
+    igraph_bool_t *loops, igraph_bool_t *multiple);
+
+__END_DECLS
+
+#endif /* IGRAPH_MISC_GRAPHICALITY_H */
