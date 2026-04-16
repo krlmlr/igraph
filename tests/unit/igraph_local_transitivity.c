@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2006-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -87,7 +86,7 @@ int main(void) {
 
     /* 100 vertices */
 
-    igraph_erdos_renyi_game_gnp(&g, 100, 0.1, IGRAPH_UNDIRECTED, IGRAPH_NO_LOOPS);
+    igraph_erdos_renyi_game_gnp(&g, 100, 0.1, IGRAPH_UNDIRECTED, IGRAPH_SIMPLE_SW, IGRAPH_EDGE_UNLABELED);
 
     igraph_vs_range(&vertices, 0, igraph_vcount(&g));
 
@@ -103,7 +102,7 @@ int main(void) {
 
     /* 50 vertices */
 
-    igraph_erdos_renyi_game_gnp(&g, 50, 0.3, IGRAPH_UNDIRECTED, IGRAPH_NO_LOOPS);
+    igraph_erdos_renyi_game_gnp(&g, 50, 0.3, IGRAPH_UNDIRECTED, IGRAPH_SIMPLE_SW, IGRAPH_EDGE_UNLABELED);
 
     igraph_vs_range(&vertices, 0, igraph_vcount(&g));
 
