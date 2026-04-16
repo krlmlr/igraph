@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2021  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -46,7 +46,7 @@ int main(void) {
 
     from = 0; to = 0;
 
-    igraph_get_all_shortest_paths(&graph, &paths, NULL, &nrgeo, from, igraph_vss_1(to), IGRAPH_ALL);
+    igraph_get_all_shortest_paths(&graph, NULL, &paths, NULL, &nrgeo, from, igraph_vss_1(to), IGRAPH_ALL);
 
     printf("Vertex paths:\n");
     print_vector_int_list(&paths);
@@ -68,7 +68,7 @@ int main(void) {
 
     from = 0; to = 1;
 
-    igraph_get_all_shortest_paths(&graph, &paths, &paths_edge, &nrgeo, from, igraph_vss_1(to), IGRAPH_ALL);
+    igraph_get_all_shortest_paths(&graph, NULL, &paths, &paths_edge, &nrgeo, from, igraph_vss_1(to), IGRAPH_ALL);
 
     printf("Vertex paths:\n");
     print_vector_int_list(&paths);
@@ -88,7 +88,7 @@ int main(void) {
     from = 0; to = 4;
 
     printf("\nUnweighted\n");
-    igraph_get_all_shortest_paths(&graph, &paths, &paths_edge, &nrgeo, from, igraph_vss_1(to), IGRAPH_ALL);
+    igraph_get_all_shortest_paths(&graph, NULL, &paths, &paths_edge, &nrgeo, from, igraph_vss_1(to), IGRAPH_ALL);
 
     printf("Vertex paths:\n");
     print_vector_int_list(&paths);

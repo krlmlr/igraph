@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -47,7 +47,7 @@ int main(void) {
     }
 
     BENCH(" 1 vcount=" TOSTR(VCOUNT) ", p=" TOSTR(DENS) ", Unweighted, " TOSTR(REP) "x",
-          REPEAT(igraph_distances(&g, &res, igraph_vss_all(), igraph_vss_all(), IGRAPH_OUT), REP);
+          REPEAT(igraph_distances(&g, NULL, &res, igraph_vss_all(), igraph_vss_all(), IGRAPH_OUT), REP);
     );
     BENCH(" 2 vcount=" TOSTR(VCOUNT) ", p=" TOSTR(DENS) ", Dijkstra, " TOSTR(REP) "x",
           REPEAT(igraph_distances_dijkstra(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT), REP)
@@ -76,7 +76,7 @@ int main(void) {
           REPEAT(igraph_distances_bellman_ford(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT), REP)
     );
     BENCH(" 8 vcount=" TOSTR(VCOUNT) ", p=" TOSTR(DENS) ", Johnson (negative), " TOSTR(REP) "x",
-          REPEAT(igraph_distances_johnson(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights), REP)
+          REPEAT(igraph_distances_johnson(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT), REP)
     );
     BENCH(" 9 vcount=" TOSTR(VCOUNT) ", p=" TOSTR(DENS) ", Floyd-Warshall (negative), " TOSTR(REP) "x",
           REPEAT(igraph_distances_floyd_warshall(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT, IGRAPH_FLOYD_WARSHALL_ORIGINAL), REP)
@@ -106,7 +106,7 @@ int main(void) {
     }
 
     BENCH(" 1 vcount=" TOSTR(VCOUNT) ", p=" TOSTR(DENS) ", Unweighted, " TOSTR(REP) "x",
-          REPEAT(igraph_distances(&g, &res, igraph_vss_all(), igraph_vss_all(), IGRAPH_OUT), REP);
+          REPEAT(igraph_distances(&g, NULL, &res, igraph_vss_all(), igraph_vss_all(), IGRAPH_OUT), REP);
     );
     BENCH(" 2 vcount=" TOSTR(VCOUNT) ", p=" TOSTR(DENS) ", Dijkstra, " TOSTR(REP) "x",
           REPEAT(igraph_distances_dijkstra(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT), REP)
@@ -135,7 +135,7 @@ int main(void) {
           REPEAT(igraph_distances_bellman_ford(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT), REP)
     );
     BENCH(" 8 vcount=" TOSTR(VCOUNT) ", p=" TOSTR(DENS) ", Johnson (negative), " TOSTR(REP) "x",
-          REPEAT(igraph_distances_johnson(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights), REP)
+          REPEAT(igraph_distances_johnson(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT), REP)
     );
     BENCH(" 9 vcount=" TOSTR(VCOUNT) ", p=" TOSTR(DENS) ", Floyd-Warshall (negative), " TOSTR(REP) "x",
           REPEAT(igraph_distances_floyd_warshall(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT, IGRAPH_FLOYD_WARSHALL_ORIGINAL), REP)
@@ -165,7 +165,7 @@ int main(void) {
     }
 
     BENCH(" 1 vcount=" TOSTR(VCOUNT) ", p=" TOSTR(DENS) ", Unweighted, " TOSTR(REP) "x",
-          REPEAT(igraph_distances(&g, &res, igraph_vss_all(), igraph_vss_all(), IGRAPH_OUT), REP);
+          REPEAT(igraph_distances(&g, NULL, &res, igraph_vss_all(), igraph_vss_all(), IGRAPH_OUT), REP);
     );
     BENCH(" 2 vcount=" TOSTR(VCOUNT) ", p=" TOSTR(DENS) ", Dijkstra, " TOSTR(REP) "x",
           REPEAT(igraph_distances_dijkstra(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT), REP)
@@ -194,7 +194,7 @@ int main(void) {
           REPEAT(igraph_distances_bellman_ford(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT), REP)
     );
     BENCH(" 8 vcount=" TOSTR(VCOUNT) ", p=" TOSTR(DENS) ", Johnson (negative), " TOSTR(REP) "x",
-          REPEAT(igraph_distances_johnson(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights), REP)
+          REPEAT(igraph_distances_johnson(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT), REP)
     );
     BENCH(" 9 vcount=" TOSTR(VCOUNT) ", p=" TOSTR(DENS) ", Floyd-Warshall (negative), " TOSTR(REP) "x",
           REPEAT(igraph_distances_floyd_warshall(&g, &res, igraph_vss_all(), igraph_vss_all(), &weights, IGRAPH_OUT, IGRAPH_FLOYD_WARSHALL_ORIGINAL), REP)

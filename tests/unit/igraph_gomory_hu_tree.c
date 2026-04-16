@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2006-2013  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -59,7 +58,7 @@ igraph_error_t validate_tree(const igraph_t *graph, const igraph_t *tree,
 
     for (i = 0; i < n; i++) {
         for (j = i + 1; j < n; j++) {
-            IGRAPH_CHECK(igraph_get_shortest_path(tree, 0, &edges, i, j, IGRAPH_ALL));
+            IGRAPH_CHECK(igraph_get_shortest_path(tree, NULL, 0, &edges, i, j, IGRAPH_ALL));
             m = igraph_vector_int_size(&edges);
             if (m == 0) {
                 continue;
