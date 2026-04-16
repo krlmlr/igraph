@@ -14,7 +14,7 @@ int main(void) {
   );
 
   igraph_diameter(
-    &graph, &diameter,
+    &graph, /* weights = */ NULL, &diameter,
     /* from = */ NULL, /* to = */ NULL,
     /* vertex_path = */ NULL, /* edge_path = */ NULL,
     IGRAPH_UNDIRECTED, /* unconn= */ true

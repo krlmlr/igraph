@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2008-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -75,7 +74,7 @@ int main(void) {
             }
         }
 
-        igraph_diameter(&g, /*res=*/ 0, /*from=*/ 0, /*to=*/ 0, &path, NULL,
+        igraph_diameter(&g, NULL, /*res=*/ 0, /*from=*/ 0, /*to=*/ 0, &path, NULL,
                         IGRAPH_UNDIRECTED, /*unconn=*/ 1);
         igraph_vector_int_update(&pairs, &path);
         igraph_expand_path_to_pairs(&pairs);
