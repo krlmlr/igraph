@@ -40,12 +40,12 @@ int main(void) {
 
     printf("Unweighted distances:\n\n");
 
-    igraph_distances(&graph, &res, igraph_vss_all(), igraph_vss_all(), IGRAPH_OUT);
+    igraph_distances(&graph, NULL, &res, igraph_vss_all(), igraph_vss_all(), IGRAPH_OUT);
     igraph_matrix_print(&res);
 
     cutoff = 3; /* distances longer than this will be returned as infinity */
     printf("\nUnweighted distances with a cutoff of %g:\n\n", cutoff);
-    igraph_distances_cutoff(&graph, &res, igraph_vss_all(), igraph_vss_all(), IGRAPH_OUT, cutoff);
+    igraph_distances_cutoff(&graph, NULL, &res, igraph_vss_all(), igraph_vss_all(), IGRAPH_OUT, cutoff);
     igraph_matrix_print(&res);
 
     printf("\nWeighted distances:\n\n");
