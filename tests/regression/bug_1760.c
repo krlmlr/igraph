@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -38,7 +38,7 @@ int test_unweighted(const igraph_t* g, igraph_int_t from, const igraph_vs_t* to)
     IGRAPH_CHECK(igraph_vector_int_init(&inbound_edges, 0));
 
     IGRAPH_CHECK(igraph_get_shortest_paths(
-        g, &vpath, &epath, from, *to, IGRAPH_IN,
+        g, NULL, &vpath, &epath, from, *to, IGRAPH_IN,
         &parents, &inbound_edges
     ));
 
