@@ -30,7 +30,7 @@ void run_leiden_CPM(const igraph_t *graph, const igraph_vector_t *edge_weights, 
 
     igraph_vector_int_t membership;
     igraph_int_t nb_clusters = igraph_vcount(graph);
-    igraph_real_t quality;
+    igraph_real_t quality, quality2;
 
     /* Initialize with singleton partition. */
     igraph_vector_int_init(&membership, igraph_vcount(graph));
@@ -51,6 +51,20 @@ void run_leiden_CPM(const igraph_t *graph, const igraph_vector_t *edge_weights, 
     printf("Membership: ");
     igraph_vector_int_print(&membership);
     printf("\n");
+
+    quality2 = quality;
+
+    /* Use same seed as for the generic interface above, to ensure the same result. */
+    igraph_rng_seed(igraph_rng_default(), 123);
+    igraph_community_leiden_simple(graph,
+                                   edge_weights,
+                                   IGRAPH_LEIDEN_OBJECTIVE_CPM,
+                                   resolution, 0.01, false, 2, &membership,
+                                   NULL,
+                                   &quality);
+    if (fabs(quality) < TOL) quality = 0.0;
+    IGRAPH_ASSERT((isnan(quality) && isnan(quality2)) ||
+                  igraph_almost_equals(quality, quality2, TOL));
 
     igraph_vector_int_destroy(&membership);
 }
@@ -103,6 +117,16 @@ void run_leiden_modularity(igraph_t *graph, igraph_vector_t *edge_weights) {
     printf("Membership: ");
     igraph_vector_int_print(&membership);
     printf("\n");
+
+    /* Use same seed as for the generic interface above, to ensure the same result. */
+    igraph_rng_seed(igraph_rng_default(), 123);
+    igraph_community_leiden_simple(graph,
+                                   edge_weights,
+                                   IGRAPH_LEIDEN_OBJECTIVE_MODULARITY,
+                                   1.0, 0.01, false, 2, &membership, NULL, &quality);
+    if (fabs(quality) < TOL) quality = 0.0;
+    IGRAPH_ASSERT((isnan(quality) && isnan(quality2)) ||
+                  igraph_almost_equals(quality, quality2, TOL));
 
     igraph_vector_int_destroy(&membership);
     if (directed) igraph_vector_destroy(&in_strength);
@@ -248,6 +272,43 @@ int main(void) {
     /* Edgeless graph */
     igraph_empty(&graph, 5, IGRAPH_UNDIRECTED);
     run_leiden_modularity(&graph, &weights);
+    igraph_destroy(&graph);
+
+    /* Check that the input is validated properly. */
+
+    /* Small test graph. */
+    igraph_small(&graph, 4, IGRAPH_UNDIRECTED,
+                 0,1, 1,2, 2,0, 0,3, 3,3,
+                 -1);
+    igraph_vector_resize(&weights, igraph_ecount(&graph));
+    for (igraph_int_t i = 0; i < igraph_ecount(&graph); i++) {
+        VECTOR(weights)[i] = i + 1;
+    }
+
+    /* Omitting membership should raise no error. */
+    igraph_community_leiden_simple(&graph, &weights, IGRAPH_LEIDEN_OBJECTIVE_MODULARITY,
+                                   1.0, 0.01, false, 1, NULL, NULL, NULL);
+
+    /* Negative weight. */
+    VECTOR(weights)[0] = -1;
+    CHECK_ERROR(igraph_community_leiden_simple(&graph, &weights, IGRAPH_LEIDEN_OBJECTIVE_MODULARITY,
+                                               1.0, 0.01, false, 1, NULL, NULL, NULL), IGRAPH_EINVAL);
+    CHECK_ERROR(igraph_community_leiden_simple(&graph, &weights, IGRAPH_LEIDEN_OBJECTIVE_ER,
+                                               1.0, 0.01, false, 1, NULL, NULL, NULL), IGRAPH_EINVAL);
+
+    /* NaN weight. */
+    VECTOR(weights)[0] = IGRAPH_NAN;
+    CHECK_ERROR(igraph_community_leiden_simple(&graph, &weights, IGRAPH_LEIDEN_OBJECTIVE_CPM,
+                                               1.0, 0.01, false, 1, NULL, NULL, NULL), IGRAPH_EINVAL);
+
+    /* Invalid weight vector length. */
+    igraph_vector_resize(&weights, igraph_ecount(&graph) + 1);
+    for (igraph_int_t i = 0; i < igraph_ecount(&graph) + 1; i++) {
+        VECTOR(weights)[i] = i + 1;
+    }
+    CHECK_ERROR(igraph_community_leiden_simple(&graph, &weights, IGRAPH_LEIDEN_OBJECTIVE_MODULARITY,
+                                               1.0, 0.01, false, 1, NULL, NULL, NULL), IGRAPH_EINVAL);
+
     igraph_destroy(&graph);
 
     igraph_vector_destroy(&weights);
