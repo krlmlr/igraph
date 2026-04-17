@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2013-2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -42,7 +42,7 @@ int main(void) {
 
     BENCH(" 1 Maximal cliques of almost complete graph",
           igraph_maximal_cliques(&g, &res, /* min_size= */ 0,
-                                 /* max_size= */ 0);
+                                 /* max_size= */ 0, IGRAPH_UNLIMITED);
          );
 
     igraph_destroy(&g);

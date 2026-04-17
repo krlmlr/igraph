@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2013  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -54,14 +53,14 @@ int main(void) {
 
     igraph_maximal_cliques_subset(&graph, /*subset=*/ 0,
                                   &cliques, &n, /*outfile=*/ 0,
-                                  /*min_size=*/ 9, /*max_size=*/ 0);
+                                  /*min_size=*/ 9, /*max_size=*/ 0, IGRAPH_UNLIMITED);
 
     igraph_vector_int_init_range(&v1,  0, 13);
     igraph_vector_int_init_range(&v2, 13, 100);
     igraph_maximal_cliques_subset(&graph, &v1, &cl1, &n1, /*outfile=*/ 0,
-                                  /*min_size=*/ 9, /*max_size=*/ 0);
+                                  /*min_size=*/ 9, /*max_size=*/ 0, IGRAPH_UNLIMITED);
     igraph_maximal_cliques_subset(&graph, &v2, &cl2, &n2, /*outfile=*/ 0,
-                                  /*min_size=*/ 9, /*max_size=*/ 0);
+                                  /*min_size=*/ 9, /*max_size=*/ 0, IGRAPH_UNLIMITED);
 
     igraph_vector_int_destroy(&v1);
     igraph_vector_int_destroy(&v2);

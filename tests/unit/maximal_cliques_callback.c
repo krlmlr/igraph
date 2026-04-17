@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2020-2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -85,7 +85,7 @@ int main(void) {
                  -1);
 
     igraph_vector_int_list_init(&list, 0);
-    igraph_maximal_cliques(&graph, &list, 0, 0);
+    igraph_maximal_cliques(&graph, &list, 0, 0, IGRAPH_UNLIMITED);
 
     ud.i = 0;
     ud.list = &list;

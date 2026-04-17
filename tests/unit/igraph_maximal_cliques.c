@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2023  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -111,7 +111,7 @@ int main(void) {
 
     igraph_vector_int_list_init(&cliques, 0);
     igraph_maximal_cliques(&g, &cliques, /*min_size=*/ 3,
-                           /*max_size=*/ 0 /*no limit*/);
+                           /*max_size=*/ 0 /*no limit*/, IGRAPH_UNLIMITED);
     igraph_maximal_cliques_count(&g, &no, /*min_size=*/ 3,
                                  /*max_size=*/ 0 /*no limit*/);
 
@@ -136,7 +136,7 @@ int main(void) {
 
     igraph_vector_int_list_init(&cliques, 0);
     igraph_maximal_cliques(&g, &cliques, /*min_size=*/ 3,
-                           /*max_size=*/ 0 /*no limit*/);
+                           /*max_size=*/ 0 /*no limit*/, IGRAPH_UNLIMITED);
     igraph_maximal_cliques_count(&g, &no, /*min_size=*/ 3,
                                  /*max_size=*/ 0 /*no limit*/);
 
