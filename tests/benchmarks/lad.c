@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@ void match(const igraph_t *graph,
 
     igraph_vector_int_list_clear(maps);
     for (igraph_int_t i=0; i < n; i++) {
-        igraph_subisomorphic_lad(&patt[i], graph, NULL, NULL, NULL, maps, false, 0);
+        igraph_subisomorphic_lad(&patt[i], graph, NULL, NULL, NULL, maps, false);
     }
 }
 
