@@ -923,6 +923,16 @@ add_legacy_tests(
   igraph_realize_bipartite_degree_sequence
 )
 
+# spatial
+add_legacy_tests(
+  FOLDER tests/unit NAMES
+  beta_skeletons
+  igraph_delaunay_graph
+  igraph_nearest_neighbor_graph
+  igraph_spatial_edge_lengths
+)
+
+
 # cycle bases
 add_legacy_tests(
   FOLDER tests/unit NAMES
@@ -1001,6 +1011,7 @@ add_benchmarks(
   graphicality
   igraph_adjacency
   igraph_average_path_length_unweighted
+  beta_skeletons
   igraph_betweenness
   igraph_betweenness_weighted
   igraph_cliques
@@ -1009,6 +1020,7 @@ add_benchmarks(
   igraph_decompose
   igraph_degree
   igraph_degree_sequence_game
+  igraph_delaunay_graph
   igraph_distances
   igraph_ecc
   igraph_induced_subgraph
@@ -1016,6 +1028,7 @@ add_benchmarks(
   igraph_layout_umap
   igraph_matrix_transpose
   igraph_maximal_cliques
+  igraph_nearest_neighbor_graph
   igraph_neighborhood
   igraph_pagerank
   igraph_pagerank_weighted
