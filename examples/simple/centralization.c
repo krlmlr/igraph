@@ -65,7 +65,6 @@ int main(void) {
                 /*vector=*/ NULL,
                 /*value=*/ NULL,
                 /*mode=*/ IGRAPH_ALL,
-                /*scale=*/ true,
                 /*options=*/ NULL,
                 &cent,
                 /*theoretical_max=*/ NULL,
