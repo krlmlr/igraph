@@ -23,5 +23,5 @@ add-b  del-b  add-a  del-a  file
 ```
 
 Notes on remaining differences:
-- `changelog/1-nfc/0870-eigenvector-centrality-3.md`: Fully ported (11→0 add).
-- `src/centrality/eigenvector.c`: Reduced from 25→5 add. The 20-line reduction reflects the documentation comments added to `warn_zero_entries()`, the zero-degree/zero-strength starting value comments, and the zero-eigenvalue note. The warning function itself already existed on main-dev. Remaining 5 add / 6 del are from other entries: copyright/license header changes.
+- `changelog/1-nfc/0870-eigenvector-centrality-3.md`: Fully resolved (11→0).
+- `src/centrality/eigenvector.c`: Reduced from 25/6 to 5/6 (20-line reduction). Added doc comments for `warn_zero_entries()`, tolerance choice, starting value branches, and zero eigenvalue handling. Remaining diffs (5/6) are from other entries: copyright header, include changes (`igraph_cycles.h`, `math.h`, removing `igraph_isomorphism.h`), and whitespace reformatting.
