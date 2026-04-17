@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2011-2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -59,7 +59,7 @@ int main(void) {
         SEED();
         igraph_watts_strogatz_game(&ws, /*dim=*/ 1, /*size=*/ 5, /*nei=*/ 1,
                                    /*p=*/ 0.5, IGRAPH_SIMPLE_SW);
-        igraph_is_simple(&ws, &sim);
+        igraph_is_simple(&ws, &sim, IGRAPH_DIRECTED);
         if (!sim) {
             ERR();
             return 1;
