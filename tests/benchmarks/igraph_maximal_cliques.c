@@ -42,7 +42,7 @@ int main(void) {
 
     BENCH(" 1 Maximal cliques of almost complete graph",
           igraph_maximal_cliques(&g, &res, /* min_size= */ 0,
-                                 /* max_size= */ 0);
+                                 /* max_size= */ 0, IGRAPH_UNLIMITED);
          );
 
     igraph_destroy(&g);

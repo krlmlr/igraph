@@ -51,7 +51,7 @@ int main(void) {
     igraph_vector_int_list_init(&cliques, 0);
 
     igraph_maximal_cliques(&graph, &cliques, /*min_size=*/ 0,
-                           /*max_size=*/ 0);
+                           /*max_size=*/ 0, IGRAPH_UNLIMITED);
     igraph_maximal_cliques_count(&graph, &no, /*min_size=*/ 0,
                                  /*max_size=*/ 0 /*no limit*/);
     IGRAPH_ASSERT(no == igraph_vector_int_list_size(&cliques));
@@ -67,7 +67,7 @@ int main(void) {
     igraph_vector_int_list_init(&cliques, 0);
 
     igraph_maximal_cliques(&graph, &cliques, /*min_size=*/ 8,
-                           /*max_size=*/ 0);
+                           /*max_size=*/ 0, IGRAPH_UNLIMITED);
     igraph_maximal_cliques_count(&graph, &no, /*min_size=*/ 8,
                                  /*max_size=*/ 0 /*no limit*/);
     IGRAPH_ASSERT(no == igraph_vector_int_list_size(&cliques));
