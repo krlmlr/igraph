@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2006-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -25,7 +24,7 @@
 
 #include "test_utilities.h"
 
-igraph_error_t print_motif(const igraph_t *graph, igraph_vector_int_t *vids,
+igraph_error_t print_motif(const igraph_t *graph, const igraph_vector_int_t *vids,
                           igraph_int_t isoclass, void* extra) {
     IGRAPH_UNUSED(graph);
     IGRAPH_UNUSED(extra);
