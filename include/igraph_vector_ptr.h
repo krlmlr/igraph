@@ -62,6 +62,7 @@ IGRAPH_EXPORT igraph_error_t igraph_vector_ptr_reserve(igraph_vector_ptr_t* v, i
 IGRAPH_EXPORT IGRAPH_FUNCATTR_PURE igraph_bool_t igraph_vector_ptr_empty(const igraph_vector_ptr_t* v);
 IGRAPH_EXPORT IGRAPH_FUNCATTR_PURE igraph_int_t igraph_vector_ptr_size(const igraph_vector_ptr_t* v);
 IGRAPH_EXPORT IGRAPH_FUNCATTR_PURE igraph_int_t igraph_vector_ptr_capacity(const igraph_vector_ptr_t* v);
+IGRAPH_EXPORT void igraph_vector_ptr_resize_min(igraph_vector_ptr_t* v);
 IGRAPH_EXPORT void igraph_vector_ptr_clear(igraph_vector_ptr_t* v);
 IGRAPH_EXPORT void igraph_vector_ptr_null(igraph_vector_ptr_t* v);
 IGRAPH_EXPORT igraph_error_t igraph_vector_ptr_push_back(igraph_vector_ptr_t* v, void* e);

@@ -281,6 +281,39 @@ igraph_int_t igraph_vector_ptr_capacity(const igraph_vector_ptr_t* v) {
 
 /**
  * \ingroup vectorptr
+ * \function igraph_vector_ptr_resize_min
+ * \brief Deallocate the unused memory of a pointer vector.
+ *
+ * This function attempts to deallocate the unused reserved storage
+ * of a pointer vector. If it succeeds, \ref igraph_vector_ptr_size() and
+ * \ref igraph_vector_ptr_capacity() will be the same. The data in the
+ * pointer vector is always preserved, even if deallocation is not successful.
+ *
+ * \param v Pointer to an initialized pointer vector.
+ *
+ * \sa \ref igraph_vector_ptr_resize(), \ref igraph_vector_ptr_reserve().
+ *
+ * Time complexity: operating system dependent, O(n) at worst.
+ */
+
+void igraph_vector_ptr_resize_min(igraph_vector_ptr_t* v) {
+    igraph_int_t size;
+    void **tmp;
+    if (v->stor_end == v->end) {
+        return;
+    }
+
+    size = (v->end - v->stor_begin);
+    tmp = IGRAPH_REALLOC(v->stor_begin, size, void *);
+
+    if (tmp != NULL) {
+        v->stor_begin = tmp;
+        v->stor_end = v->end = v->stor_begin + size;
+    }
+}
+
+/**
+ * \ingroup vectorptr
  * \function igraph_vector_ptr_clear
  * \brief Removes all elements from a pointer vector.
  *
