@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -61,7 +61,6 @@ int main(void) {
                 /*vector=*/ NULL,
                 /*value=*/ NULL,
                 /*mode=*/ IGRAPH_OUT,
-                /*scale=*/ false,
                 &arpack_options, &cent,
                 /*theoretical_max=*/ NULL,
                 /*normalized=*/ true);

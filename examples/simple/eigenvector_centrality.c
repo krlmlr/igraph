@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2007-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard street, Cambridge, MA 02139 USA
 
@@ -37,8 +36,8 @@ int main(void) {
     igraph_vector_init(&vector, 0);
 
     /* Compute eigenvector centrality. */
-    igraph_eigenvector_centrality(&graph, &vector, &value, IGRAPH_ALL,
-                                  /*scale=*/ true, &weights, /*options=*/ NULL);
+    igraph_eigenvector_centrality(&graph, &vector, &value, IGRAPH_OUT,
+                                  &weights, /*options=*/ NULL);
 
     /* Print results. */
     printf("eigenvalue: %g\n", value);
