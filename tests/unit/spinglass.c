@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2021  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -27,8 +26,7 @@ int main(void) {
     igraph_vector_int_t membership, csize;
     /* igraph_int_t i; */
     igraph_real_t cohesion, adhesion;
-    igraph_int_t inner_links;
-    igraph_int_t outer_links;
+    igraph_real_t inner_links, outer_links;
 
     igraph_rng_seed(igraph_rng_default(), 137);
 
