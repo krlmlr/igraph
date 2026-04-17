@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2015-2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -161,12 +161,12 @@ void test_bliss(void) {
         printf("Biss automorphism count failed: directed_ring.\n");
     }
 
-    // The follwing test is included so there is at least one call to igraph_automorphism_group
+    // The following test is included so there is at least one call to igraph_automorphism_group_bliss
     // in the test suite. However, the generator set returned may depend on the splitting
     // heursitics as well as on the Bliss version. If the test fails, please verify manually
     // that the generating set is valid. For a undirected cycle graph like ring2, there should
     // be two generators: a cyclic permutation and a reversal of the vertex order.
-    igraph_automorphism_group(&ring2, NULL, &generators, IGRAPH_BLISS_F, NULL);
+    igraph_automorphism_group_bliss(&ring2, NULL, &generators, IGRAPH_BLISS_F, NULL);
     if (igraph_vector_int_list_size(&generators) != 2)
         printf("Bliss automorphism generators may have failed with ring2. "
                "Please verify the generators manually. "
@@ -174,7 +174,7 @@ void test_bliss(void) {
     igraph_vector_int_list_clear(&generators);
 
     // For a directed ring, the only generator should be a cyclic permutation.
-    igraph_automorphism_group(&directed_ring, NULL, &generators, IGRAPH_BLISS_F, NULL);
+    igraph_automorphism_group_bliss(&directed_ring, NULL, &generators, IGRAPH_BLISS_F, NULL);
     if (igraph_vector_int_list_size(&generators) != 1)
         printf("Bliss automorphism generators may have failed with directed_ring. "
                "Please verify the generators manually. "
@@ -190,7 +190,7 @@ void test_bliss(void) {
     igraph_free(info.group_size);
 
     // There's only one automorphism for this coloured graph, so the generating set is empty.
-    igraph_automorphism_group(&ring1, &color, &generators, IGRAPH_BLISS_F, NULL);
+    igraph_automorphism_group_bliss(&ring1, &color, &generators, IGRAPH_BLISS_F, NULL);
     if (igraph_vector_int_list_size(&generators) != 0) {
         printf("Bliss automorphism generators failed with colored graph.\n");
     }
