@@ -114,7 +114,7 @@ int check_lattice_properties(const igraph_t *lattice) {
     }
 
     /* Simple */
-    igraph_is_simple(lattice, &res);
+    igraph_is_simple(lattice, &res, IGRAPH_DIRECTED);
     if (!res) {
         printf("Not simple\n");
         return 2;

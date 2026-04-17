@@ -46,7 +46,7 @@ int main(void) {
     if (igraph_vcount(&g) != 100) {
         return 2;
     }
-    igraph_is_simple(&g, &simple);
+    igraph_is_simple(&g, &simple, IGRAPH_DIRECTED);
     if (!simple) {
         return 3;
     }
@@ -72,7 +72,7 @@ int main(void) {
     if (igraph_vcount(&g) != 100) {
         return 5;
     }
-    igraph_is_simple(&g, &simple);
+    igraph_is_simple(&g, &simple, IGRAPH_DIRECTED);
     if (simple) {
         return 6;
     }
@@ -98,7 +98,7 @@ int main(void) {
     if (igraph_vcount(&g) != 100) {
         return 8;
     }
-    igraph_is_simple(&g, &simple);
+    igraph_is_simple(&g, &simple, IGRAPH_DIRECTED);
     if (simple) {
         return 9;
     }

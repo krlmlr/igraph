@@ -79,7 +79,7 @@ int main(void) {
     IGRAPH_ASSERT(igraph_ecount(&g) == 55);
     IGRAPH_ASSERT(igraph_is_directed(&g));
 
-    igraph_is_simple(&g, &simple);
+    igraph_is_simple(&g, &simple, IGRAPH_DIRECTED);
     IGRAPH_ASSERT(simple);
 
     igraph_destroy(&g);
@@ -95,7 +95,7 @@ int main(void) {
     IGRAPH_ASSERT(igraph_ecount(&g) == 3);
     IGRAPH_ASSERT(! igraph_is_directed(&g));
 
-    igraph_is_simple(&g, &simple);
+    igraph_is_simple(&g, &simple, IGRAPH_DIRECTED);
     IGRAPH_ASSERT(simple);
 
     igraph_destroy(&g);

@@ -105,7 +105,7 @@ int main(void) {
     IGRAPH_ASSERT(! igraph_is_directed(&g));
     IGRAPH_ASSERT(igraph_vcount(&g) == n);
 
-    igraph_is_simple(&g, &is_simple);
+    igraph_is_simple(&g, &is_simple, IGRAPH_DIRECTED);
     IGRAPH_ASSERT(is_simple);
 
     igraph_degree(&g, &degrees, igraph_vss_all(), IGRAPH_ALL, IGRAPH_LOOPS);
@@ -122,7 +122,7 @@ int main(void) {
 
     igraph_degree_sequence_game(&g, &rg_degrees, NULL, IGRAPH_DEGSEQ_CONFIGURATION_SIMPLE);
 
-    igraph_is_simple(&g, &is_simple);
+    igraph_is_simple(&g, &is_simple, IGRAPH_DIRECTED);
     IGRAPH_ASSERT(is_simple);
 
     igraph_degree(&g, &degrees, igraph_vss_all(), IGRAPH_ALL, IGRAPH_LOOPS);
@@ -139,7 +139,7 @@ int main(void) {
     IGRAPH_ASSERT(igraph_is_directed(&g));
     IGRAPH_ASSERT(igraph_vcount(&g) == n);
 
-    igraph_is_simple(&g, &is_simple);
+    igraph_is_simple(&g, &is_simple, IGRAPH_DIRECTED);
     IGRAPH_ASSERT(is_simple);
 
     igraph_degree(&g, &degrees, igraph_vss_all(), IGRAPH_OUT, IGRAPH_LOOPS);
@@ -162,7 +162,7 @@ int main(void) {
     IGRAPH_ASSERT(! igraph_is_directed(&g));
     IGRAPH_ASSERT(igraph_vcount(&g) == n);
 
-    igraph_is_simple(&g, &is_simple);
+    igraph_is_simple(&g, &is_simple, IGRAPH_DIRECTED);
     IGRAPH_ASSERT(is_simple);
 
     igraph_degree(&g, &degrees, igraph_vss_all(), IGRAPH_ALL, IGRAPH_LOOPS);
@@ -182,7 +182,7 @@ int main(void) {
     IGRAPH_ASSERT(igraph_is_directed(&g));
     IGRAPH_ASSERT(igraph_vcount(&g) == n);
 
-    igraph_is_simple(&g, &is_simple);
+    igraph_is_simple(&g, &is_simple, IGRAPH_DIRECTED);
     IGRAPH_ASSERT(is_simple);
 
     igraph_degree(&g, &degrees, igraph_vss_all(), IGRAPH_OUT, IGRAPH_LOOPS);
@@ -202,7 +202,7 @@ int main(void) {
 
     igraph_degree_sequence_game(&g, &outdeg, NULL, IGRAPH_DEGSEQ_EDGE_SWITCHING_SIMPLE);
 
-    igraph_is_simple(&g, &is_simple);
+    igraph_is_simple(&g, &is_simple, IGRAPH_DIRECTED);
     IGRAPH_ASSERT(is_simple);
 
     igraph_degree(&g, &degrees, igraph_vss_all(), IGRAPH_OUT, IGRAPH_LOOPS);
@@ -215,7 +215,7 @@ int main(void) {
 
     igraph_degree_sequence_game(&g, &outdeg, &indeg, IGRAPH_DEGSEQ_EDGE_SWITCHING_SIMPLE);
 
-    igraph_is_simple(&g, &is_simple);
+    igraph_is_simple(&g, &is_simple, IGRAPH_DIRECTED);
     IGRAPH_ASSERT(is_simple);
 
     igraph_degree(&g, &degrees, igraph_vss_all(), IGRAPH_OUT, IGRAPH_LOOPS);
@@ -234,7 +234,7 @@ int main(void) {
     IGRAPH_ASSERT(! igraph_is_directed(&g));
     IGRAPH_ASSERT(igraph_vcount(&g) == n);
 
-    igraph_is_simple(&g, &is_simple);
+    igraph_is_simple(&g, &is_simple, IGRAPH_DIRECTED);
     IGRAPH_ASSERT(is_simple);
 
     igraph_is_connected(&g, &is_connected, IGRAPH_WEAK);
