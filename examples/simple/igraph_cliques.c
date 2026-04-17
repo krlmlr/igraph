@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2006-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard street, Cambridge, MA 02139 USA
 
@@ -82,7 +81,7 @@ void test_callback(const igraph_t *graph) {
     struct userdata ud;
 
     igraph_vector_int_list_init(&list, 0);
-    igraph_cliques(graph, &list, 0, 0);
+    igraph_cliques(graph, &list, 0, 0, IGRAPH_UNLIMITED);
 
     ud.i = 0;
     ud.list = &list;
@@ -112,7 +111,7 @@ int main(void) {
 
     for (j = 0; j < sizeof(params) / (2 * sizeof(params[0])); j++) {
         if (params[2 * j + 1] != 0) {
-            igraph_cliques(&g, &result, params[2 * j], params[2 * j + 1]);
+            igraph_cliques(&g, &result, params[2 * j], params[2 * j + 1], IGRAPH_UNLIMITED);
         } else {
             igraph_largest_cliques(&g, &result);
         }
@@ -133,7 +132,7 @@ int main(void) {
     igraph_destroy(&g);
 
     igraph_kary_tree(&g, 5, 2, IGRAPH_TREE_OUT);
-    igraph_cliques(&g, &result, 5, 5);
+    igraph_cliques(&g, &result, 5, 5, IGRAPH_UNLIMITED);
     if (igraph_vector_int_list_size(&result) != 0) {
         return 1;
     }

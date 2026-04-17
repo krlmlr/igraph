@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2006-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -38,7 +37,7 @@ int main(void) {
     igraph_kary_tree(&g, 5, 2, IGRAPH_TREE_OUT);
     for (j = 0; j < sizeof(params) / (2 * sizeof(params[0])); j++) {
         if (params[2 * j + 1] != 0) {
-            igraph_independent_vertex_sets(&g, &result, params[2 * j], params[2 * j + 1]);
+            igraph_independent_vertex_sets(&g, &result, params[2 * j], params[2 * j + 1], IGRAPH_UNLIMITED);
         } else {
             igraph_largest_independent_vertex_sets(&g, &result);
         }
@@ -51,7 +50,7 @@ int main(void) {
     igraph_destroy(&g);
 
     igraph_kary_tree(&g, 10, 2, IGRAPH_TREE_OUT);
-    igraph_maximal_independent_vertex_sets(&g, &result);
+    igraph_maximal_independent_vertex_sets(&g, &result, 0, 0, IGRAPH_UNLIMITED);
     n = igraph_vector_int_list_size(&result);
     printf("%" IGRAPH_PRId " maximal independent sets found\n", n);
     for (i = 0; i < n; i++) {

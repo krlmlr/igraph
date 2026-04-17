@@ -15,7 +15,7 @@ int main(void) {
 
     /* Find all maximal cliques in the graph */
     igraph_vector_int_list_init(&cliques, 0);
-    igraph_maximal_cliques(&graph, &cliques, -1, -1);
+    igraph_maximal_cliques(&graph, &cliques, -1, -1, IGRAPH_UNLIMITED);
 
     /* Print the cliques in lexicographical order */
     printf("Maximal cliques in lexicographical order:\n");
