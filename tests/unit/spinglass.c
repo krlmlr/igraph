@@ -27,8 +27,7 @@ int main(void) {
     igraph_vector_int_t membership, csize;
     /* igraph_int_t i; */
     igraph_real_t cohesion, adhesion;
-    igraph_int_t inner_links;
-    igraph_int_t outer_links;
+    igraph_real_t inner_links, outer_links;
 
     igraph_rng_seed(igraph_rng_default(), 137);
 
