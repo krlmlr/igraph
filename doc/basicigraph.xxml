@@ -120,6 +120,12 @@ as the number of vertices is stored in a variable of type
 <type>igraph_int_t</type>.
 </para>
 
+<para>
+Before igraph 1.0, <type>igraph_int_t</type> was called <type>igraph_integer_t</type>.
+This is still available as an alias to <type>igraph_int_t</type> and will remain
+accessible until at least version 2.0 of the library.
+</para>
+
 <para>Since the size of a variable of type <type>igraph_int_t</type> may
 change depending on how &igraph; is compiled, you cannot simply use
 <code>%d</code> or <code>%ld</code> as a placeholder for &igraph; integers in
@@ -169,6 +175,21 @@ Upper and lower limits of <type>igraph_int_t</type> and
 
 </section>
 
+<section><title>Setup and initialization</title>
+<para>
+Certain parts of &igraph; must be initialized before first use, which can be
+accomplished using the setup functions below. As of igraph 1.0, most functions
+will work correctly even if setup is not performed, as currently the only setup
+action is seeding the random number generator. That said, it is strongly
+recommended to call
+<link linkend="igraph_setup"><function>igraph_setup()</function></link>
+before using any other function, as future &igraph; versions may add critical
+initialization steps.
+</para>
+
+<!-- doxrox-include igraph_setup -->
+</section>
+
 <section id="basic-interface"><title>The basic interface</title>
 <!-- doxrox-include about_basic_interface -->
 
@@ -211,6 +232,7 @@ Upper and lower limits of <type>igraph_int_t</type> and
 <section id="misc-helper-functions"><title>Miscellaneous macros and helper functions</title>
 <!-- doxrox-include IGRAPH_VCOUNT_MAX -->
 <!-- doxrox-include IGRAPH_ECOUNT_MAX -->
+<!-- doxrox-include IGRAPH_UNLIMITED -->
 <!-- doxrox-include igraph_expand_path_to_pairs -->
 <!-- doxrox-include igraph_invalidate_cache -->
 <!-- doxrox-include igraph_is_same_graph -->
