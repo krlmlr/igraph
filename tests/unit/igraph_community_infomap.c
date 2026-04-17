@@ -58,6 +58,7 @@ igraph_real_t infomap_weighted_test(const igraph_t * g, const igraph_vector_t *w
     igraph_vector_int_init(&membership, 0);
 
     igraph_community_infomap(/*in */ g, /*edge_weights=*/ weights, NULL, /*nb_trials=*/5,
+                                     /*is_regularized=*/ false, /*regularization_strength=*/ 0,
                                      /*out*/ &membership, &codelength);
     if (!smoke_test) {
         if (igraph_vcount(g) > 500) {
