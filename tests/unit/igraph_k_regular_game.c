@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2006-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard street, Cambridge, MA 02139 USA
 
@@ -38,7 +37,7 @@ int main(void) {
     igraph_k_regular_game(&g, 10, 4, 0, 0);
     igraph_degree(&g, &deg, igraph_vss_all(), IGRAPH_ALL, 1);
     igraph_vector_int_print(&deg);
-    igraph_is_simple(&g, &is_simple);
+    igraph_is_simple(&g, &is_simple, IGRAPH_DIRECTED);
     if (!is_simple) {
         return 1;
     }
@@ -51,7 +50,7 @@ int main(void) {
     igraph_k_regular_game(&g, 10, 3, 0, 0);
     igraph_degree(&g, &deg, igraph_vss_all(), IGRAPH_ALL, 1);
     igraph_vector_int_print(&deg);
-    igraph_is_simple(&g, &is_simple);
+    igraph_is_simple(&g, &is_simple, IGRAPH_DIRECTED);
     if (!is_simple) {
         return 2;
     }
@@ -94,7 +93,7 @@ int main(void) {
     igraph_vector_int_print(&deg);
     igraph_degree(&g, &deg, igraph_vss_all(), IGRAPH_OUT, 1);
     igraph_vector_int_print(&deg);
-    igraph_is_simple(&g, &is_simple);
+    igraph_is_simple(&g, &is_simple, IGRAPH_DIRECTED);
     if (!is_simple) {
         return 5;
     }
@@ -109,7 +108,7 @@ int main(void) {
     igraph_vector_int_print(&deg);
     igraph_degree(&g, &deg, igraph_vss_all(), IGRAPH_OUT, 1);
     igraph_vector_int_print(&deg);
-    igraph_is_simple(&g, &is_simple);
+    igraph_is_simple(&g, &is_simple, IGRAPH_DIRECTED);
     if (!is_simple) {
         return 6;
     }
@@ -124,7 +123,7 @@ int main(void) {
     igraph_vector_int_print(&deg);
     igraph_degree(&g, &deg, igraph_vss_all(), IGRAPH_OUT, 1);
     igraph_vector_int_print(&deg);
-    igraph_is_simple(&g, &is_simple);
+    igraph_is_simple(&g, &is_simple, IGRAPH_DIRECTED);
     if (!is_simple) {
         return 7;
     }

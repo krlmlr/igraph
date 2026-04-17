@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2010-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard street, Cambridge, MA 02139 USA
 
@@ -46,7 +45,7 @@ int main(void) {
     if (igraph_vcount(&g) != 100) {
         return 2;
     }
-    igraph_is_simple(&g, &simple);
+    igraph_is_simple(&g, &simple, IGRAPH_DIRECTED);
     if (!simple) {
         return 3;
     }
@@ -72,7 +71,7 @@ int main(void) {
     if (igraph_vcount(&g) != 100) {
         return 5;
     }
-    igraph_is_simple(&g, &simple);
+    igraph_is_simple(&g, &simple, IGRAPH_DIRECTED);
     if (simple) {
         return 6;
     }
@@ -98,7 +97,7 @@ int main(void) {
     if (igraph_vcount(&g) != 100) {
         return 8;
     }
-    igraph_is_simple(&g, &simple);
+    igraph_is_simple(&g, &simple, IGRAPH_DIRECTED);
     if (simple) {
         return 9;
     }

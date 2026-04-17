@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2006-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -114,7 +113,7 @@ int check_lattice_properties(const igraph_t *lattice) {
     }
 
     /* Simple */
-    igraph_is_simple(lattice, &res);
+    igraph_is_simple(lattice, &res, IGRAPH_DIRECTED);
     if (!res) {
         printf("Not simple\n");
         return 2;

@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2021-2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -77,7 +77,7 @@ void stress_test(void) {
 
             igraph_erdos_renyi_game_gnp(&g, size, 0.5, IGRAPH_DIRECTED, IGRAPH_SIMPLE_SW, IGRAPH_EDGE_UNLABELED);
 
-            igraph_is_simple(&g, &simple);
+            igraph_is_simple(&g, &simple, IGRAPH_DIRECTED);
             if (! simple) {
                 printf("Erdos-Renyi GNP graph is not simple! size=%" IGRAPH_PRId ", i=%" IGRAPH_PRId ".\n",
                        size, i);
@@ -96,7 +96,7 @@ void stress_test(void) {
 
             igraph_erdos_renyi_game_gnp(&g, size, 0.5, IGRAPH_UNDIRECTED, IGRAPH_SIMPLE_SW, IGRAPH_EDGE_UNLABELED);
 
-            igraph_is_simple(&g, &simple);
+            igraph_is_simple(&g, &simple, IGRAPH_DIRECTED);
             if (! simple) {
                 printf("Erdos-Renyi GNP graph is not simple! size=%" IGRAPH_PRId ", i=%" IGRAPH_PRId ".\n",
                        size, i);
