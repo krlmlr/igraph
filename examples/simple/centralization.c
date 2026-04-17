@@ -64,7 +64,7 @@ int main(void) {
                 &graph,
                 /*vector=*/ NULL,
                 /*value=*/ NULL,
-                IGRAPH_DIRECTED,
+                /*mode=*/ IGRAPH_ALL,
                 /*scale=*/ true,
                 /*options=*/ NULL,
                 &cent,
