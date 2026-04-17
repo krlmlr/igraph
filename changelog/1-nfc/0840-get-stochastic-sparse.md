@@ -19,9 +19,9 @@ Before and after the change, side by side (add-before, del-before, add-after, de
 ```
 add-b  del-b  add-a  del-a  file
   11     0     0     0  changelog/1-nfc/0840-get-stochastic-sparse.md
-  48   130    46   128  src/misc/conversion.c
+  48   130    42   124  src/misc/conversion.c
 ```
 
 Notes on remaining differences:
-- `changelog/1-nfc/0840-get-stochastic-sparse.md`: Fully ported (11→0 add).
-- `src/misc/conversion.c`: Reduced from 48→46 add, 130→128 del. The 2-line reduction corresponds to the `allow_zeros` change from `false` to `true` in both `igraph_sparsemat_normalize_cols` and `igraph_sparsemat_normalize_rows`. Remaining diff (46/128) is from other entries: copyright changes, deprecated function removals (`igraph_get_adjacency`, `igraph_get_stochastic_sparsemat`, `igraph_to_prufer`), doc updates, and other refactoring.
+- `changelog/1-nfc/0840-get-stochastic-sparse.md`: Fully resolved (11→0).
+- `src/misc/conversion.c`: Reduced from 48/130 to 42/124 (6 lines each). The change ported the doc comment update and `allow_zeros` parameter change. Remaining diffs are unrelated: copyright header, `igraph_get_stochastic()` refactoring, deprecated function removal, error message punctuation, and other function changes.
