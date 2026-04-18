@@ -51,7 +51,7 @@ static igraph_error_t igraph_i_vertex_coloring_greedy_cn(const igraph_t *graph, 
         igraph_vector_int_t degree;
 
         IGRAPH_VECTOR_INT_INIT_FINALLY(&degree, 0);
-        IGRAPH_CHECK(igraph_degree(graph, &degree, igraph_vss_all(), IGRAPH_ALL, false));
+        IGRAPH_CHECK(igraph_degree(graph, &degree, igraph_vss_all(), IGRAPH_ALL, IGRAPH_NO_LOOPS));
 
         vertex = igraph_vector_int_which_max(&degree);
         maxdeg = VECTOR(degree)[vertex];
@@ -314,8 +314,6 @@ igraph_error_t igraph_vertex_coloring_greedy(const igraph_t *graph, igraph_vecto
  * \function igraph_is_vertex_coloring
  * \brief Checks whether a vertex coloring is valid.
  *
- * \experimental
- *
  * This function checks whether the given vertex type/color assignment is a valid
  * vertex coloring, i.e., no two adjacent vertices have the same color.
  * Self-loops are ignored.
@@ -367,8 +365,6 @@ igraph_error_t igraph_is_vertex_coloring(
 /**
  * \function igraph_is_bipartite_coloring
  * \brief Checks whether a bipartite vertex coloring is valid.
- *
- * \experimental
  *
  * This function checks whether the given vertex type assignment is a valid
  * bipartite coloring, i.e., no two adjacent vertices have the same type.
@@ -459,8 +455,6 @@ igraph_error_t igraph_is_bipartite_coloring(
 /**
  * \function igraph_is_edge_coloring
  * \brief Checks whether an edge coloring is valid.
- *
- * \experimental
  *
  * This function checks whether the given edge color assignment is a valid
  * edge coloring, i.e., no two adjacent edges have the same color.
