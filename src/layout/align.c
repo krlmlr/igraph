@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2025  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -29,8 +29,6 @@
  * \ingroup layout
  * \function igraph_layout_align
  * \brief Aligns a graph layout with the coordinate axes.
- *
- * \experimental
  *
  * This function centers a vertex layout on the coordinate system origin and
  * rotates the layout to achieve a visually pleasing alignment with the coordinate
