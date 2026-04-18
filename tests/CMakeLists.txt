@@ -799,6 +799,7 @@ add_legacy_tests(
   igraph_bipartite_create
   igraph_bipartite_projection
   igraph_biadjacency
+  igraph_weighted_biadjacency
   igraph_get_biadjacency
 )
 
