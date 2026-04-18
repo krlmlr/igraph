@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -248,8 +248,6 @@ static igraph_error_t triangular_lattice_hex_shape(
 /**
  * \function igraph_triangular_lattice
  * \brief A triangular lattice with the given shape.
- *
- * \experimental
  *
  * Creates a triangular lattice whose vertices have the form (i, j) for non-negative
  * integers i and j and (i, j) is generally connected with (i + 1, j), (i, j + 1),
@@ -533,8 +531,6 @@ static igraph_error_t hexagonal_lattice_hex_shape(
 /**
  * \function igraph_hexagonal_lattice
  * \brief A hexagonal lattice with the given shape.
- *
- * \experimental
  *
  * Creates a hexagonal lattice whose vertices have the form (i, j) for non-negative
  * integers i and j and (i, j) is generally connected with (i + 1, j), and if i is
