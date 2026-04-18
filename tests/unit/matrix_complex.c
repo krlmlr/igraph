@@ -1,4 +1,4 @@
-/* IGraph library.
+/* igraph library.
    Copyright (C) 2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -61,6 +61,7 @@ int main(void) {
         igraph_real_t theta_e[] = {0, .5 * M_PI, M_PI, 1.5 * M_PI};
         const igraph_matrix_t r = igraph_matrix_view(r_e, 2, 2);
         const igraph_matrix_t theta = igraph_matrix_view(theta_e, 2, 2);
+
         igraph_matrix_complex_create_polar(&p, &r, &theta);
         print_matrix_complex_round(&p);
         igraph_matrix_complex_destroy(&p);
