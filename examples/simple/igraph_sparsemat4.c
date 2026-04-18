@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2009-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -66,7 +65,6 @@ int main(void) {
     igraph_vector_t b, x;
     igraph_integer_t i;
 
-    RNG_BEGIN();
 
     /* lsolve */
 
@@ -305,7 +303,6 @@ int main(void) {
 #undef DIM
 #undef EDGES
 
-    RNG_END();
 
     return 0;
 }

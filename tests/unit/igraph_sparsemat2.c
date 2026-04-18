@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2009-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -53,7 +52,6 @@ int main(void) {
     igraph_matrix_t M, N, O;
     igraph_int_t i;
 
-    RNG_BEGIN();
 
     /* Matrix-vector product */
 #define NROW 10
@@ -146,7 +144,6 @@ int main(void) {
 
     VERIFY_FINALLY_STACK();
 
-    RNG_END();
 
     return 0;
 }

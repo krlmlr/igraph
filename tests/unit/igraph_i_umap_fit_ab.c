@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2006-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -36,7 +35,6 @@ int main(void) {
     igraph_rng_seed(igraph_rng_default(), 42); /* make tests deterministic */
     igraph_real_t min_dists[8] = {0, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1.0};
 
-    RNG_BEGIN();
 
     /* test with various typical min_dist values. Originally there is a scaling sigma
      * factor, but it's 1.0 in all default cases so we fix it for now */
@@ -45,7 +43,6 @@ int main(void) {
         printf("%g, %.1g, %.1g\n", min_dists[i], a, b);
     }
 
-    RNG_END();
 
     VERIFY_FINALLY_STACK();
 
