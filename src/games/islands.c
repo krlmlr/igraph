@@ -1,7 +1,5 @@
-/* -*- mode: C -*-  */
-/* vim:set ts=4 sw=4 sts=4 et: */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2003-2021 The igraph development team
 
    This program is free software; you can redistribute it and/or modify
@@ -114,7 +112,6 @@ igraph_error_t igraph_simple_interconnected_islands_game(
     IGRAPH_VECTOR_INIT_FINALLY(&s, 0);
     IGRAPH_CHECK(igraph_vector_reserve(&s, 1.1 * avg_edges_per_island));
 
-
     /* first create all the islands */
     for (is = 0; is < islands_n; is++) { /* for each island */
         /* index for start and end of nodes in this island, both inclusive */
@@ -161,7 +158,6 @@ igraph_error_t igraph_simple_interconnected_islands_game(
 
     igraph_vector_destroy(&s);
     IGRAPH_FINALLY_CLEAN(1);
-
 
     /* actually fill the graph object */
     IGRAPH_CHECK(igraph_create(graph, &edges, number_of_nodes, 0));
