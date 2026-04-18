@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2025  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -329,7 +329,7 @@ int main(void) {
 
     // MODULAR PRODUCT TEST
     test_c4_p2_modular();
-    
+
     VERIFY_FINALLY_STACK();
 
     return 0;
