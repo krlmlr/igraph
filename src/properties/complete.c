@@ -1,5 +1,5 @@
 /*
-  IGraph library.
+  igraph library.
   Copyright (C) 2024 The igraph development team <igraph@igraph.org>
 
   This program is free software; you can redistribute it and/or modify it under
@@ -25,8 +25,6 @@
  * \ingroup structural
  * \function igraph_is_complete
  * \brief Decides whether the graph is complete.
- *
- * \experimental
  *
  * A graph is considered complete if all pairs of different vertices are
  * adjacent.
@@ -133,8 +131,8 @@ igraph_error_t igraph_is_complete(const igraph_t *graph, igraph_bool_t *res) {
         IGRAPH_ALLOW_INTERRUPTION_LIMITED(iter, 1 << 8);
 
         IGRAPH_CHECK(igraph_neighbors(
-            graph, &neighbours, i, IGRAPH_OUT,
-            IGRAPH_NO_LOOPS, IGRAPH_NO_MULTIPLE
+            graph, &neighbours, i, IGRAPH_OUT, IGRAPH_NO_LOOPS,
+            IGRAPH_NO_MULTIPLE
         ));
 
         if ((igraph_vector_int_size(&neighbours) < vcount - 1)) {
@@ -214,8 +212,6 @@ done:
  * \function igraph_is_clique
  * \brief Does a set of vertices form a clique?
  *
- * \experimental
- *
  * Tests if all pairs within a set of vertices are adjacent, i.e. whether they
  * form a clique. An empty set and singleton set are considered to be a clique.
  *
@@ -251,8 +247,6 @@ igraph_error_t igraph_is_clique(const igraph_t *graph, igraph_vs_t candidate,
  * \ingroup structural
  * \function igraph_is_independent_vertex_set
  * \brief Does a set of vertices form an independent set?
- *
- * \experimental
  *
  * Tests if no pairs within a set of vertices are adjacenct, i.e. whether they
  * form an independent set. An empty set and singleton set are both considered
