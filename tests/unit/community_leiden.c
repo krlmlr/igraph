@@ -280,10 +280,7 @@ int main(void) {
     igraph_small(&graph, 4, IGRAPH_UNDIRECTED,
                  0,1, 1,2, 2,0, 0,3, 3,3,
                  -1);
-    igraph_vector_resize(&weights, igraph_ecount(&graph));
-    for (igraph_int_t i = 0; i < igraph_ecount(&graph); i++) {
-        VECTOR(weights)[i] = i + 1;
-    }
+    igraph_vector_range(&weights, 1, igraph_ecount(&graph) + 1);
 
     /* Omitting membership should raise no error. */
     igraph_community_leiden_simple(&graph, &weights, IGRAPH_LEIDEN_OBJECTIVE_MODULARITY,
@@ -302,10 +299,7 @@ int main(void) {
                                                1.0, 0.01, false, 1, NULL, NULL, NULL), IGRAPH_EINVAL);
 
     /* Invalid weight vector length. */
-    igraph_vector_resize(&weights, igraph_ecount(&graph) + 1);
-    for (igraph_int_t i = 0; i < igraph_ecount(&graph) + 1; i++) {
-        VECTOR(weights)[i] = i + 1;
-    }
+    igraph_vector_range(&weights, 1, igraph_ecount(&graph) + 2);
     CHECK_ERROR(igraph_community_leiden_simple(&graph, &weights, IGRAPH_LEIDEN_OBJECTIVE_MODULARITY,
                                                1.0, 0.01, false, 1, NULL, NULL, NULL), IGRAPH_EINVAL);
 
