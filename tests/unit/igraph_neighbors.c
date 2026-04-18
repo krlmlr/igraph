@@ -25,10 +25,10 @@ int main(void) {
     igraph_vector_int_init(&v, 0);
     igraph_small(&g, 4, IGRAPH_UNDIRECTED, 0,1, 1,2, 2,3, 2,2, -1);
     /* Wrong mode */
-    CHECK_ERROR(igraph_neighbors(&g, &v, 2, (igraph_neimode_t)0), IGRAPH_EINVMODE); /* conv for c++ */
+    CHECK_ERROR(igraph_neighbors(&g, &v, 2, (igraph_neimode_t)0, IGRAPH_LOOPS, IGRAPH_MULTIPLE), IGRAPH_EINVMODE); /* conv for c++ */
 
     /* Vertex does not exist */
-    CHECK_ERROR(igraph_neighbors(&g, &v, 4, IGRAPH_ALL), IGRAPH_EINVVID);
+    CHECK_ERROR(igraph_neighbors(&g, &v, 4, IGRAPH_ALL, IGRAPH_LOOPS, IGRAPH_MULTIPLE), IGRAPH_EINVVID);
 
     igraph_vector_int_destroy(&v);
     igraph_destroy(&g);
