@@ -44,10 +44,6 @@ IGRAPH_EXPORT IGRAPH_FUNCATTR_PURE igraph_int_t FUNCTION(igraph_matrix, capacity
 /*--------------------*/
 
 /* MATRIX */
-IGRAPH_EXPORT IGRAPH_DEPRECATED BASE FUNCTION(igraph_matrix, e)(
-    const TYPE(igraph_matrix) *m, igraph_int_t row, igraph_int_t col);
-IGRAPH_EXPORT IGRAPH_DEPRECATED BASE* FUNCTION(igraph_matrix, e_ptr)(
-    const TYPE(igraph_matrix) *m, igraph_int_t row, igraph_int_t col);
 IGRAPH_EXPORT IGRAPH_FUNCATTR_PURE BASE FUNCTION(igraph_matrix, get)(
     const TYPE(igraph_matrix) *m, igraph_int_t row, igraph_int_t col);
 IGRAPH_EXPORT IGRAPH_FUNCATTR_PURE BASE* FUNCTION(igraph_matrix, get_ptr)(
