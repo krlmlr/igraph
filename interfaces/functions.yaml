@@ -1261,8 +1261,6 @@ igraph_bipartite_iea_game:
     DEPS: |-
         types ON graph
 
-
-
 #######################################
 # Spectral properties
 #######################################
