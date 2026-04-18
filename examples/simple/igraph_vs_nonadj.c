@@ -27,7 +27,10 @@ int main(void) {
     igraph_t g;
     igraph_vs_t vs;
     igraph_vit_t vit;
-    igraph_integer_t size;
+    igraph_int_t size;
+
+    /* Initialize the library. */
+    igraph_setup();
 
     /* empty graph, all vertices */
     igraph_empty(&g, 10, IGRAPH_DIRECTED);
