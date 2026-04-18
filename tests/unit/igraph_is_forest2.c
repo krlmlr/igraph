@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2021  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -58,7 +58,6 @@ int main(void) {
 
     igraph_vector_int_init(&edges, 2 * m);
 
-
     true_count = 0;
     for (igraph_int_t k = 0; k < trials; ++k) {
         igraph_t graph;
@@ -89,7 +88,6 @@ int main(void) {
             true_count += 1;
         }
     }
-
 
     igraph_vector_int_destroy(&edges);
 
