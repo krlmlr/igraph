@@ -1,7 +1,6 @@
 /*
    igraph library.
-   Copyright (C) 2009-2012  Gabor Csardi <csardi.gabor@gmail.com>
-   334 Harvard street, Cambridge, MA 02139 USA
+   Copyright (C) 2009-2025  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -14,10 +13,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc.,  51 Franklin Street, Fifth Floor, Boston, MA
-   02110-1301 USA
-
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #ifndef IGRAPH_ITERATORS_H
@@ -30,7 +26,7 @@
 #include "igraph_types.h"
 #include "igraph_vector.h"
 
-__BEGIN_DECLS
+IGRAPH_BEGIN_C_DECLS
 
 /* -------------------------------------------------- */
 /* Vertex selectors                                   */
@@ -240,7 +236,6 @@ typedef enum {
     IGRAPH_ES_RANGE,
     IGRAPH_ES_PAIRS,
     IGRAPH_ES_PATH,
-    IGRAPH_ES_UNUSED_WAS_MULTIPAIRS,  /* placeholder for deprecated IGRAPH_ES_MULTIPAIRS from igraph 0.10 */
     IGRAPH_ES_ALL_BETWEEN,
 } igraph_es_type_t;
 
@@ -416,6 +411,6 @@ IGRAPH_EXPORT void igraph_eit_destroy(const igraph_eit_t *eit);
 
 IGRAPH_EXPORT igraph_error_t igraph_eit_as_vector(const igraph_eit_t *eit, igraph_vector_int_t *v);
 
-__END_DECLS
+IGRAPH_END_C_DECLS
 
 #endif
