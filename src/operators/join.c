@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -25,8 +24,6 @@
 /**
  * \function igraph_join
  * \brief Creates the join of two disjoint graphs.
- *
- * \experimental
  *
  * First the vertices of the second graph will be relabeled with new
  * vertex IDs to have two disjoint sets of vertex IDs, then the union
