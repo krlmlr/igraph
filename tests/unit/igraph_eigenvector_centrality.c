@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -17,13 +16,10 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#include "igraph.h"
+#include <igraph.h>
 #include "test_utilities.h"
 
-#include <math.h>
-
-void print_and_destroy(igraph_t *g, igraph_neimode_t mode, igraph_vector_t *weights)
-{
+void print_and_destroy(igraph_t *g, igraph_neimode_t mode, igraph_vector_t *weights) {
     igraph_vector_t v;
     igraph_real_t value;
 
