@@ -12,12 +12,6 @@ on:
       - main
       - '*-dev'
       - next
-  workflow_dispatch:
-    inputs:
-      ref:
-        description: "Branch, tag, or commit to check out"
-        required: false
-        default: ""
 
 env:
   CMAKE_COLOR_DIAGNOSTICS: ON
@@ -27,27 +21,7 @@ env:
   CTEST_PARALLEL_LEVEL: 4 # Since CMake 3.29, a setting of 0 will try to use all available resources
 
 jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    permissions:
-      statuses: write
-    steps:
-      - name: Set pending status
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          sha="${{ inputs.ref || github.sha }}"
-          html_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          gh api --method POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            repos/${{ github.repository }}/statuses/${sha} \
-            -f state=pending -f target_url="${html_url}" \
-            -f description="MINGW build running" -f context=build-cmake
-        shell: bash
-
   build:
-    needs: [prepare]
     runs-on: windows-latest
     strategy:
       fail-fast: false
@@ -73,7 +47,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          ref: ${{ inputs.ref || github.sha }}
           fetch-depth: 0
 
       - name: Configuration
@@ -112,32 +85,3 @@ jobs:
           path: |
             build-${{ matrix.arch }}/tests/*
             !build-${{ matrix.arch }}/tests/*.exe
-
-  report:
-    needs: [build]
-    runs-on: ubuntu-latest
-    if: always()
-    permissions:
-      statuses: write
-    steps:
-      - name: Set final status
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [ "${{ needs.build.result }}" == "success" ]; then
-            state="success"
-          else
-            state="failure"
-          fi
-          sha="${{ inputs.ref || github.sha }}"
-          html_url=$(gh api \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            repos/${{ github.repository }}/actions/runs/${{ github.run_id }} | jq -r .html_url)
-          gh api --method POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            repos/${{ github.repository }}/statuses/${sha} \
-            -f state="${state}" -f target_url="${html_url}" \
-            -f description="MINGW build ${{ needs.build.result }}" -f context=build-cmake
-        shell: bash
