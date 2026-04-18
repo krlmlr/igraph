@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2009-2020  The igraph development team
 
    This program is free software; you can redistribute it and/or modify
@@ -29,7 +28,7 @@
 #include "igraph_vector.h"
 #include "igraph_vector_ptr.h"
 
-__BEGIN_DECLS
+IGRAPH_BEGIN_C_DECLS
 
 /**
  * Trie data type
@@ -67,6 +66,6 @@ IGRAPH_PRIVATE_EXPORT IGRAPH_FUNCATTR_PURE igraph_int_t igraph_trie_size(igraph_
 
 const igraph_strvector_t* igraph_i_trie_borrow_keys(igraph_trie_t *t);
 
-__END_DECLS
+IGRAPH_END_C_DECLS
 
 #endif
