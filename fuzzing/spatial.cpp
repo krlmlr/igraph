@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2025  The igraph development team
 
    This program is free software; you can redistribute it and/or modify
@@ -110,6 +110,7 @@ extern "C" size_t LLVMFuzzerCustomCrossOver(const uint8_t *Data1, size_t Size1,
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) {
     igraph_matrix_t points1d, points2d, points3d, points4d;
+    igraph_t graph;
 
     igraph_set_error_handler(igraph_error_handler_ignore);
     igraph_set_warning_handler(igraph_warning_handler_ignore);
@@ -121,10 +122,10 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) {
     size_t coord_count = Size / sizeof(double);
     igraph_real_t *coords = (igraph_real_t *) Data;
 
-    igraph_matrix_view(&points1d, coords, coord_count / 1, 1);
-    igraph_matrix_view(&points2d, coords, coord_count / 2, 2);
-    igraph_matrix_view(&points3d, coords, coord_count / 3, 3);
-    igraph_matrix_view(&points4d, coords, coord_count / 4, 4);
+    points1d = igraph_matrix_view(coords, coord_count / 1, 1);
+    points2d = igraph_matrix_view(coords, coord_count / 2, 2);
+    points3d = igraph_matrix_view(coords, coord_count / 3, 3);
+    points4d = igraph_matrix_view(coords, coord_count / 4, 4);
 
     {
         igraph_vector_int_t iv;
@@ -132,6 +133,35 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) {
         igraph_convex_hull_2d(&points2d, &iv, NULL);
         igraph_vector_int_destroy(&iv);
     }
+
+    if (igraph_nearest_neighbor_graph(&graph, &points1d, IGRAPH_METRIC_EUCLIDEAN, 2, IGRAPH_INFINITY, IGRAPH_UNDIRECTED) == IGRAPH_SUCCESS) {
+        igraph_destroy(&graph);
+    }
+    if (igraph_nearest_neighbor_graph(&graph, &points2d, IGRAPH_METRIC_EUCLIDEAN, 1, IGRAPH_INFINITY, IGRAPH_DIRECTED) == IGRAPH_SUCCESS) {
+        igraph_destroy(&graph);
+    }
+    if (igraph_nearest_neighbor_graph(&graph, &points3d, IGRAPH_METRIC_EUCLIDEAN, 3, IGRAPH_INFINITY, IGRAPH_UNDIRECTED) == IGRAPH_SUCCESS) {
+        igraph_destroy(&graph);
+    }
+    if (igraph_nearest_neighbor_graph(&graph, &points4d, IGRAPH_METRIC_EUCLIDEAN, 2, IGRAPH_INFINITY, IGRAPH_DIRECTED) == IGRAPH_SUCCESS) {
+        igraph_destroy(&graph);
+    }
+
+    /* Re-enable after https://github.com/qhull/qhull/issues/166 is fixed. */
+    /*
+    if (igraph_delaunay_graph(&graph, &points1d) == IGRAPH_SUCCESS) {
+        igraph_destroy(&graph);
+    }
+    if (igraph_delaunay_graph(&graph, &points2d) == IGRAPH_SUCCESS) {
+        igraph_destroy(&graph);
+    }
+    if (igraph_delaunay_graph(&graph, &points3d) == IGRAPH_SUCCESS) {
+        igraph_destroy(&graph);
+    }
+    if (igraph_delaunay_graph(&graph, &points4d) == IGRAPH_SUCCESS) {
+        igraph_destroy(&graph);
+    }
+    */
 
     IGRAPH_ASSERT(IGRAPH_FINALLY_STACK_EMPTY);
 
