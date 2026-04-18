@@ -58,7 +58,6 @@ int main(void) {
 
     igraph_vector_int_init(&edges, 2 * m);
 
-    RNG_BEGIN();
 
     true_count = 0;
     for (igraph_int_t k = 0; k < trials; ++k) {
@@ -91,7 +90,6 @@ int main(void) {
         }
     }
 
-    RNG_END();
 
     igraph_vector_int_destroy(&edges);
 
