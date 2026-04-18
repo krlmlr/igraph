@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2009-2020  The igraph development team
 
    This program is free software; you can redistribute it and/or modify
@@ -28,7 +27,7 @@
 #include "igraph_matrix.h"
 #include "igraph_vector.h"
 
-__BEGIN_DECLS
+IGRAPH_BEGIN_C_DECLS
 
 /**
  * 2d grid containing points
@@ -73,6 +72,6 @@ igraph_int_t igraph_2dgrid_next(igraph_2dgrid_t *grid,
 igraph_int_t igraph_2dgrid_next_nei(igraph_2dgrid_t *grid,
                                         igraph_2dgrid_iterator_t *it);
 
-__END_DECLS
+IGRAPH_END_C_DECLS
 
 #endif
