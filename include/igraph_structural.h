@@ -181,11 +181,6 @@ IGRAPH_EXPORT igraph_error_t igraph_get_laplacian_sparse(
    igraph_laplacian_normalization_t normalization,
    const igraph_vector_t *weights
 );
-IGRAPH_EXPORT IGRAPH_DEPRECATED igraph_error_t igraph_laplacian(
-   const igraph_t *graph, igraph_matrix_t *res, igraph_sparsemat_t *sparseres,
-   igraph_bool_t normalized, const igraph_vector_t *weights
-);
-
 __END_DECLS
 
 #endif
