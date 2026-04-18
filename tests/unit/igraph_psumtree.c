@@ -33,7 +33,6 @@ int main(void) {
 
     igraph_rng_seed(igraph_rng_default(), 42);
 
-
     /* Uniform random numbers */
     igraph_vector_init(&vec, 16);
     igraph_psumtree_init(&tree, 16);
@@ -207,7 +206,6 @@ int main(void) {
     igraph_set_error_handler(oldhandler);
 
     igraph_psumtree_destroy(&tree);
-
 
     VERIFY_FINALLY_STACK();
 
