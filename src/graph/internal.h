@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2021  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -23,10 +23,10 @@
 #include "igraph_decls.h"
 #include "igraph_error.h"
 
-__BEGIN_DECLS
+IGRAPH_BEGIN_C_DECLS
 
 igraph_error_t igraph_i_reverse(igraph_t *graph);
 
-__END_DECLS
+IGRAPH_END_C_DECLS
 
 #endif /* IGRAPH_GRAPH_INTERNAL_H */
