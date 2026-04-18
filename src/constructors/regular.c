@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2005-2021 The igraph development team
 
    This program is free software; you can redistribute it and/or modify
@@ -704,7 +703,6 @@ igraph_error_t igraph_kary_tree(igraph_t *graph, igraph_int_t n, igraph_int_t ch
     return IGRAPH_SUCCESS;
 }
 
-
 /**
  * \ingroup generators
  * \function igraph_symmetric_tree
@@ -965,8 +963,6 @@ igraph_error_t igraph_extended_chordal_ring(
 /**
  * \function igraph_hypercube
  * \brief The n-dimensional hypercube graph.
- *
- * \experimental
  *
  * The hypercube graph \c Q_n has <code>2^n</code> vertices and
  * <code>2^(n-1) n</code> edges. Two vertices are connected when the binary
