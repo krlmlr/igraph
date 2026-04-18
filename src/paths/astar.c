@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2022 The igraph development team
 
    This program is free software; you can redistribute it and/or modify
@@ -43,8 +43,6 @@ static igraph_error_t null_heuristic(
 /**
  * \function igraph_get_shortest_path_astar
  * \brief A* gives the shortest path from one vertex to another, with heuristic.
- *
- * \experimental
  *
  * Calculates a shortest path from a single source vertex to a single
  * target, using the A* algorithm. A* tries to find a shortest path by
