@@ -1,7 +1,5 @@
-/* -*- mode: C -*-  */
-/* vim:set ts=4 sw=4 sts=4 et: */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2005-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard street, Cambridge, MA 02139 USA
 
@@ -62,7 +60,7 @@ for (i = 0; i < no_of_nodes; i++) {
 }
 
 maxdegree = igraph_vector_int_max(&degree) + 1;
-IGRAPH_CHECK(igraph_vector_int_order1(&degree, &order, maxdegree));
+IGRAPH_CHECK(igraph_i_vector_int_order(&degree, &order, maxdegree));
 IGRAPH_VECTOR_INT_INIT_FINALLY(&rank, no_of_nodes);
 for (i = 0; i < no_of_nodes; i++) {
     VECTOR(rank)[ VECTOR(order)[i] ] = no_of_nodes - i - 1;
