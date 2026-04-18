@@ -12,7 +12,7 @@
 
 INTEGER:
     # An ordinary igraph integer
-    CTYPE: igraph_integer_t
+    CTYPE: igraph_int_t
 
 REAL:
     # An ordinary igraph floating-point number
@@ -37,10 +37,6 @@ ERROR:
 INT:
     # A C integer
     CTYPE: int
-
-LONGINT:
-    # A C long integer
-    CTYPE: long int
 
 CSTRING:
     # A null-terminated immutable C string
@@ -137,7 +133,7 @@ SPARSEMAT:
 
 EDGE:
     # A single edge index
-    CTYPE: igraph_integer_t
+    CTYPE: igraph_int_t
 
 EDGE_INDICES:
     # An integer vector containing edge indices.
@@ -150,17 +146,12 @@ EDGE_SELECTOR:
 
 VERTEX:
     # A single vertex index
-    CTYPE: igraph_integer_t
+    CTYPE: igraph_int_t
 
 VERTEX_INDICES:
     # An integer vector containing vertex indices.
     CTYPE: igraph_vector_int_t
     FLAGS: BY_REF
-
-VERTEX_INDICES_LIST:
-    # A list containing vectors of igraph integers where each such
-    # vector represents a sequence of vertex indices.
-    CTYPE: igraph_vector_int_list_t
 
 VERTEX_INDEX_PAIRS:
     # An integer vector containing pairs of vertex indices, in a flattened
@@ -182,12 +173,12 @@ BIPARTITE_TYPES:
     CTYPE: igraph_vector_bool_t
     FLAGS: BY_REF
 
-EDGE_CAPACITY:
+EDGE_CAPACITIES:
     # A vector containing edge capacities (typically for max-flow algorithms)
     CTYPE: igraph_vector_t
     FLAGS: BY_REF
 
-EDGE_COLOR:
+EDGE_COLORS:
     # A vector containing edge colors
     CTYPE: igraph_vector_int_t
     FLAGS: BY_REF
@@ -197,12 +188,12 @@ EDGE_LENGTHS:
     CTYPE: igraph_vector_t
     FLAGS: BY_REF
 
-EDGEWEIGHTS:
+EDGE_WEIGHTS:
     # A vector containing edge weights
     CTYPE: igraph_vector_t
     FLAGS: BY_REF
 
-EDGESET_LIST:
+EDGE_INDICES_LIST:
     # A list containing vectors of igraph integers where each such
     # vector represents a sequence of edge indices.
     CTYPE: igraph_vector_int_list_t
@@ -238,18 +229,18 @@ SIR_LIST:
     CTYPE: igraph_vector_ptr_t
     FLAGS: BY_REF
 
-VERTEXSET_LIST:
+VERTEX_INDICES_LIST:
     # A list containing vectors of igraph integers where each such
     # vector represents a sequence of vertex indices.
     CTYPE: igraph_vector_int_list_t
     FLAGS: BY_REF
 
-VERTEX_COLOR:
+VERTEX_COLORS:
     # A vector containing vertex colors
     CTYPE: igraph_vector_int_t
     FLAGS: BY_REF
 
-VERTEXWEIGHTS:
+VERTEX_WEIGHTS:
     # A vector containing vertex weights
     CTYPE: igraph_vector_t
     FLAGS: BY_REF
@@ -332,13 +323,6 @@ EIGENWHICHPOS:
     CTYPE: igraph_eigen_which_position_t
     FLAGS: ENUM
 
-ERDOS_RENYI_TYPE:
-    # Enum that says wheter a GNM (n vertices, m edges) or
-    # GNP (n vertices, every edge exists with probability p)
-    # graph is created
-    CTYPE: igraph_erdos_renyi_t
-    FLAGS: ENUM
-
 FAS_ALGORITHM:
     # Enum representing feedback arc set algorithms
     CTYPE: igraph_fas_algorithm_t
@@ -378,6 +362,12 @@ LAYOUT_GRID:
     CTYPE: igraph_layout_grid_t
     FLAGS: ENUM
 
+LEIDEN_OBJECTIVE:
+    # The objective function to maximize with the Leiden community detection
+    # method.
+    CTYPE: igraph_leiden_objective_t
+    FLAGS: ENUM
+
 LOOPS:
     # Enum that describes how loop edges should be handled in undirected graphs
     # in functions that support it. Possible options are: no loops, loops
@@ -394,6 +384,11 @@ LSETYPE:
 METRIC:
     # Enum that describes the metric to be used for spatial algorithms
     CTYPE: igraph_metric_t
+    FLAGS: ENUM
+
+MSTALGORITHM:
+    # Enum that describes the algorithm for computing a minimum spanning tree
+    CTYPE: igraph_mst_algorithm_t
     FLAGS: ENUM
 
 NEIMODE:
@@ -415,16 +410,6 @@ PAGERANKALGO:
 GRAPH_PRODUCT_TYPE:
     # Enum that describes the various implementations of the graph products
     CTYPE: igraph_product_t
-    FLAGS: ENUM
-
-LPA_VARIANT:
-    # Enum that describes the label propagation algorithm variant
-    CTYPE: igraph_lpa_variant_t
-    FLAGS: ENUM
-
-MST_ALGORITHM:
-    # Enum that describes the minimum spanning tree algorithm to use
-    CTYPE: igraph_mst_algorithm_t
     FLAGS: ENUM
 
 RANDOM_TREE_METHOD:
@@ -514,8 +499,13 @@ VORONOI_TIEBREAKER:
     FLAGS: ENUM
 
 WHEEL_MODE:
-    # Enum that describes how a star graph should be constructed
+    # Enum that describes how a wheel graph should be constructed
     CTYPE: igraph_wheel_mode_t
+    FLAGS: ENUM
+
+LPA_VARIANT:
+    # Enum that describes the label propagation algorithm variant
+    CTYPE: igraph_lpa_variant_t
     FLAGS: ENUM
 
 ###############################################################################
@@ -537,7 +527,7 @@ WRITE_GML_SW:
 # Callbacks
 ###############################################################################
 
-ARPACKFUNC:
+ARPACK_FUNC:
     # ARPACK matrix multiplication function.
     CTYPE: igraph_arpack_function_t
 
@@ -576,7 +566,7 @@ ISOMORPHISM_FUNC:
     # isomorphism is found
     CTYPE: igraph_isohandler_t
 
-LEVCFUNC:
+LEVC_FUNC:
     # Callback function for igraph_leading_eigenvector_community(). Called
     # after each eigenvalue / eigenvector calculation.
     CTYPE: igraph_community_leading_eigenvector_callback_t
@@ -585,12 +575,12 @@ LEVCFUNC:
 # Miscellaneous
 ###############################################################################
 
-ARPACKOPT:
+ARPACK_OPTIONS:
     # Structure that contains the options of the ARPACK eigensolver.
     CTYPE: igraph_arpack_options_t
     FLAGS: BY_REF
 
-ARPACKSTORAGE:
+ARPACK_STORAGE:
     # Pointer to a general-purpose memory block that ARPACK-based algorithms
     # may use as a working area.
     CTYPE: igraph_arpack_storage_t
