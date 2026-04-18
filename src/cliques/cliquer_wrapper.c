@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2016-2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -457,7 +457,7 @@ igraph_error_t igraph_i_weighted_clique_number(const igraph_t *graph,
 
     IGRAPH_CHECK(set_weights(vertex_weights, g));
 
-    igraph_cliquer_opt.user_function = check_interruption_callback;
+    igraph_cliquer_opt.user_function = &check_interruption_callback;
 
     IGRAPH_CHECK(clique_max_weight(g, &igraph_cliquer_opt, &res_int));
 
