@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2013  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard street, Cambridge, MA 02139 USA
 
@@ -873,7 +872,7 @@ igraph_error_t igraph_graphlets(const igraph_t *graph,
                    igraph_i_graphlets_order_cmp);
 
     IGRAPH_CHECK(igraph_vector_int_list_permute(cliques, &order));
-    IGRAPH_CHECK(igraph_vector_index_int(Mu, &order));
+    IGRAPH_CHECK(igraph_vector_index_in_place(Mu, &order));
 
     igraph_vector_int_destroy(&order);
     IGRAPH_FINALLY_CLEAN(1);
