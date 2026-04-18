@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -312,8 +312,6 @@ static igraph_error_t igraph_i_voronoi_dijkstra(
 /**
  * \function igraph_voronoi
  * \brief Voronoi partitioning of a graph.
- *
- * \experimental
  *
  * To obtain a Voronoi partitioning of a graph, we start with a set of generator
  * vertices, which will define the partitions. Each vertex is assigned to the generator
