@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    (C) 2006-2021 The igraph development team  Gabor Csardi <csardi.gabor@gmail.com>
 
    This program is free software; you can redistribute it and/or modify
