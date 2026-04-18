@@ -28,7 +28,7 @@
 int main(void) {
     igraph_t g;
     igraph_vector_int_t res, res_all;
-    igraph_integer_t i;
+    igraph_int_t i;
 
     igraph_small(&g, 6, IGRAPH_UNDIRECTED,
                  0, 1, 1, 2, 2, 5,
