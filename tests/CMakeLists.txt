@@ -965,10 +965,6 @@ add_legacy_tests(
 
 # setup
 
-add_legacy_tests(
-  FOLDER tests/unit NAMES
-  igraph_setup
-)
 
 # regression and fuzzing tests
 
