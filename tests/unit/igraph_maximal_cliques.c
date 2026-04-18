@@ -22,12 +22,11 @@
 #define NODES 1000
 #define CLIQUE_SIZE 10
 #define NO_CLIQUES 10
-#define INT(a) (igraph_rng_get_integer(igraph_rng_default(), 0, (a)))
 
 void permutation(igraph_vector_int_t *vec) {
     igraph_int_t i, r, tmp;
     for (i = 0; i < CLIQUE_SIZE; i++) {
-        r = INT(NODES - 1);
+        r = RNG_INTEGER(0, NODES - 1);
         tmp = VECTOR(*vec)[i];
         VECTOR(*vec)[i] = VECTOR(*vec)[r];
         VECTOR(*vec)[r] = tmp;
@@ -111,7 +110,8 @@ int main(void) {
 
     igraph_vector_int_list_init(&cliques, 0);
     igraph_maximal_cliques(&g, &cliques, /*min_size=*/ 3,
-                           /*max_size=*/ 0 /*no limit*/, IGRAPH_UNLIMITED);
+                           /*max_size=*/ IGRAPH_UNLIMITED,
+                           IGRAPH_UNLIMITED);
     igraph_maximal_cliques_count(&g, &no, /*min_size=*/ 3,
                                  /*max_size=*/ 0 /*no limit*/);
 
@@ -136,7 +136,8 @@ int main(void) {
 
     igraph_vector_int_list_init(&cliques, 0);
     igraph_maximal_cliques(&g, &cliques, /*min_size=*/ 3,
-                           /*max_size=*/ 0 /*no limit*/, IGRAPH_UNLIMITED);
+                           /*max_size=*/ IGRAPH_UNLIMITED,
+                           IGRAPH_UNLIMITED);
     igraph_maximal_cliques_count(&g, &no, /*min_size=*/ 3,
                                  /*max_size=*/ 0 /*no limit*/);
 
