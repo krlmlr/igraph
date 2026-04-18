@@ -40,6 +40,8 @@ void print_vector_int_list(const igraph_vector_int_list_t *v);
 
 /* Print elements of a matrix. Use brackets to make it clear when a vector has size zero. */
 void print_matrix_format(const igraph_matrix_t *m, FILE *f, const char *format);
+
+/* Print elements of a matrix, with indentation. Use brackets to make it clear when a vector has size zero. */
 void print_matrix_format_indent(const igraph_matrix_t *m, FILE *f, const char *format, const char *indent);
 
 void print_matrix(const igraph_matrix_t *m);
@@ -55,6 +57,9 @@ void print_matrix_round(const igraph_matrix_t *m);
 /* This is meant to be used when the elements of a matrix are integer values. */
 void print_matrix_complex_round(const igraph_matrix_complex_t *m);
 
+/* Print all matrices in a matrix list. Use brackets around each matrix
+ * and also use brackets around the entire list to make it clear when the list
+ * is empty */
 void print_matrix_list(const igraph_matrix_list_t *m);
 
 /* Print an adjacency list. Use brackets around each vector and also use
