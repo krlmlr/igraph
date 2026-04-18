@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2010-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard street, Cambridge, MA 02139 USA
 
@@ -1142,11 +1141,11 @@ static igraph_error_t igraph_i_eigen_checks(const igraph_matrix_t *A,
 
     if (A) {
         if (n != igraph_matrix_ncol(A) || n != igraph_matrix_nrow(A)) {
-            IGRAPH_ERROR("Invalid matrix", IGRAPH_EINVAL);
+            IGRAPH_ERROR("Eigenvector calculations need a square matrix.", IGRAPH_EINVAL);
         }
     } else if (sA) {
         if (n != igraph_sparsemat_ncol(sA) || n != igraph_sparsemat_nrow(sA)) {
-            IGRAPH_ERROR("Invalid matrix", IGRAPH_EINVAL);
+            IGRAPH_ERROR("Eigenvector calculations need a square matrix.", IGRAPH_EINVAL);
         }
     }
 
