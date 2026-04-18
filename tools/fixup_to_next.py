@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Create fixup commits so the current branch matches next.
+"""Create fixup commits so the current branch matches next-3.
 
-For each file that differs between HEAD and next:
-  * Stage the change (copy from next, or delete locally).
+For each file that differs between HEAD and next-3:
+  * Stage the change (copy from next-3, or delete locally).
   * Find the most recent commit reachable from HEAD that touched the file.
   * Commit with `git commit --fixup=<sha>` if one exists, otherwise use a
     distinctive message mentioning the path.
@@ -13,7 +13,7 @@ from __future__ import annotations
 import subprocess
 import sys
 
-TARGET = "next"
+TARGET = "next-3"
 
 
 def run(args, *, check=True):
@@ -71,7 +71,7 @@ def verify_clean_against_next() -> None:
         ["git", "diff", "--no-renames", "--name-only", "HEAD", TARGET]
     ).strip()
     if out:
-        print("Remaining differences vs next:", file=sys.stderr)
+        print("Remaining differences vs next-3:", file=sys.stderr)
         print(out, file=sys.stderr)
         sys.exit(1)
 
@@ -96,7 +96,7 @@ def main() -> int:
         sys.exit(f"Commit count mismatch: {created} != {total}")
 
     verify_clean_against_next()
-    print("HEAD now matches next.")
+    print("HEAD now matches next-3.")
     return 0
 
 
