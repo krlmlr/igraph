@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -306,8 +306,6 @@ static igraph_error_t igraph_i_ecc4_2(
 /**
  * \function igraph_ecc
  * \brief Edge clustering coefficient of some edges.
- *
- * \experimental
  *
  * The edge clustering coefficient <code>C^(k)_ij</code> of an edge (i, j)
  * is defined based on the number of k-cycles the edge participates in,
