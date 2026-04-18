@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2021-2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -150,7 +150,6 @@ igraph_error_t igraph_neighborhood_adjl2(const igraph_t *graph, igraph_vector_in
             igraph_int_t actdist = igraph_dqueue_int_pop(&q);
             igraph_int_t n;
             neis = igraph_i_lazy_adjlist2_get_real(&adjlist2, actnode);
-            //IGRAPH_CHECK(igraph_neighbors(graph, &neis, actnode, mode, IGRAPH_LOOPS, IGRAPH_MULTIPLE));
             n = igraph_vector_int_size(neis);
 
             if (actdist < order - 1) {
@@ -251,7 +250,6 @@ igraph_error_t igraph_neighborhood_adjl(const igraph_t *graph, igraph_vector_int
             igraph_int_t actdist = igraph_dqueue_int_pop(&q);
             igraph_int_t n;
             neis = igraph_lazy_adjlist_get(&adjlist, actnode);
-            //IGRAPH_CHECK(igraph_neighbors(graph, &neis, actnode, mode, IGRAPH_LOOPS, IGRAPH_MULTIPLE));
             n = igraph_vector_int_size(neis);
 
             if (actdist < order - 1) {
@@ -352,7 +350,6 @@ igraph_error_t igraph_neighborhood_adj(const igraph_t *graph, igraph_vector_int_
             igraph_int_t actdist = igraph_dqueue_int_pop(&q);
             igraph_int_t n;
             neis = igraph_adjlist_get(&adjlist, actnode);
-            //IGRAPH_CHECK(igraph_neighbors(graph, &neis, actnode, mode, IGRAPH_LOOPS, IGRAPH_MULTIPLE));
             n = igraph_vector_int_size(neis);
 
             if (actdist < order - 1) {
