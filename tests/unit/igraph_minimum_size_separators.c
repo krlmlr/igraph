@@ -20,7 +20,7 @@
 #include "test_utilities.h"
 
 int print_and_destroy(igraph_vector_int_list_t *list) {
-    igraph_integer_t i, n = igraph_vector_int_list_size(list);
+    igraph_int_t i, n = igraph_vector_int_list_size(list);
 
     for (i = 0; i < n; i++) {
         igraph_vector_int_t* v = igraph_vector_int_list_get_ptr(list, i);

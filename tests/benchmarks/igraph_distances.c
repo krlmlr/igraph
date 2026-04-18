@@ -43,7 +43,7 @@ int main(void) {
     igraph_vector_resize(&weights, igraph_ecount(&g));
 
     RNG_BEGIN();
-    for (igraph_integer_t i=0; i < igraph_ecount(&g); i++) {
+    for (igraph_int_t i=0; i < igraph_ecount(&g); i++) {
         VECTOR(weights)[i] = RNG_EXP(1);
     }
     RNG_END();
@@ -68,7 +68,7 @@ int main(void) {
     );
 
     RNG_BEGIN();
-    for (igraph_integer_t i=0; i < trunc(0.005 * igraph_ecount(&g)); i++) {
+    for (igraph_int_t i=0; i < trunc(0.005 * igraph_ecount(&g)); i++) {
         /* For reproducibility, do not write two RNG_...() calls on the same line
          * as the C language does not guarantee any evaluation order between them. */
         igraph_real_t w = RNG_UNIF(-0.05, 0);
@@ -106,7 +106,7 @@ int main(void) {
     igraph_vector_resize(&weights, igraph_ecount(&g));
 
     RNG_BEGIN();
-    for (igraph_integer_t i=0; i < igraph_ecount(&g); i++) {
+    for (igraph_int_t i=0; i < igraph_ecount(&g); i++) {
         VECTOR(weights)[i] = RNG_EXP(1);
     }
     RNG_END();
@@ -131,7 +131,7 @@ int main(void) {
     );
 
     RNG_BEGIN();
-    for (igraph_integer_t i=0; i < trunc(0.002 * igraph_ecount(&g)); i++) {
+    for (igraph_int_t i=0; i < trunc(0.002 * igraph_ecount(&g)); i++) {
         /* For reproducibility, do not write two RNG_...() calls on the same line
          * as the C language does not guarantee any evaluation order between them. */
         igraph_real_t w = RNG_UNIF(-0.02, 0);
@@ -169,7 +169,7 @@ int main(void) {
     igraph_vector_resize(&weights, igraph_ecount(&g));
 
     RNG_BEGIN();
-    for (igraph_integer_t i=0; i < igraph_ecount(&g); i++) {
+    for (igraph_int_t i=0; i < igraph_ecount(&g); i++) {
         VECTOR(weights)[i] = RNG_EXP(1);
     }
     RNG_END();
@@ -194,7 +194,7 @@ int main(void) {
     );
 
     RNG_BEGIN();
-    for (igraph_integer_t i=0; i < trunc(0.01 * igraph_ecount(&g)); i++) {
+    for (igraph_int_t i=0; i < trunc(0.01 * igraph_ecount(&g)); i++) {
         /* For reproducibility, do not write two RNG_...() calls on the same line
          * as the C language does not guarantee any evaluation order between them. */
         igraph_real_t w = RNG_UNIF(-0.02, 0);

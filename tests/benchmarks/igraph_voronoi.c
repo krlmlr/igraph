@@ -48,7 +48,7 @@ int main(void) {
     igraph_vector_resize(&weights, igraph_ecount(&g));
 
     RNG_BEGIN();
-    for (igraph_integer_t i=0; i < igraph_ecount(&g); i++) {
+    for (igraph_int_t i=0; i < igraph_ecount(&g); i++) {
         VECTOR(weights)[i] = RNG_EXP(1);
     }
     RNG_END();
@@ -80,7 +80,7 @@ int main(void) {
     igraph_vector_resize(&weights, igraph_ecount(&g));
 
     RNG_BEGIN();
-    for (igraph_integer_t i=0; i < igraph_ecount(&g); i++) {
+    for (igraph_int_t i=0; i < igraph_ecount(&g); i++) {
         VECTOR(weights)[i] = RNG_EXP(1);
     }
     RNG_END();
@@ -112,7 +112,7 @@ int main(void) {
     igraph_vector_resize(&weights, igraph_ecount(&g));
 
     RNG_BEGIN();
-    for (igraph_integer_t i=0; i < igraph_ecount(&g); i++) {
+    for (igraph_int_t i=0; i < igraph_ecount(&g); i++) {
         VECTOR(weights)[i] = RNG_EXP(1);
     }
     RNG_END();
@@ -144,7 +144,7 @@ int main(void) {
     igraph_vector_resize(&weights, igraph_ecount(&g));
 
     RNG_BEGIN();
-    for (igraph_integer_t i=0; i < igraph_ecount(&g); i++) {
+    for (igraph_int_t i=0; i < igraph_ecount(&g); i++) {
         VECTOR(weights)[i] = RNG_EXP(1);
     }
     RNG_END();
