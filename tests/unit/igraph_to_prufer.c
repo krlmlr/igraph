@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2010-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard street, Cambridge, MA 02139 USA
 
@@ -153,8 +152,6 @@ int test_num = 0;
     }
 
 int main(void) {
-
-
     RUN_TEST(test_from_prufer_back_to_prufer());
     RUN_TEST(test_from_prufer_back_to_prufer_with_resize());
     RUN_TEST(test_from_prufer_back_to_prufer_with_resize2());
@@ -162,7 +159,6 @@ int main(void) {
     RUN_TEST(test_from_random_prufer_back_to_prufer(100));
     RUN_TEST(test_from_random_prufer_back_to_prufer(1000));
     RUN_TEST(test_from_random_prufer_back_to_prufer(10000));
-
 
     VERIFY_FINALLY_STACK();
 
