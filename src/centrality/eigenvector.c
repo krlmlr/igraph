@@ -1,7 +1,5 @@
-/* -*- mode: C -*-  */
-/* vim:set ts=4 sw=4 sts=4 et: */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2007-2021  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -14,22 +12,23 @@
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include "igraph_centrality.h"
 
 #include "igraph_adjlist.h"
+#include "igraph_cycles.h"
 #include "igraph_interface.h"
 #include "igraph_random.h"
 #include "igraph_structural.h"
-#include "igraph_isomorphism.h"
 
 #include "centrality/centrality_internal.h"
 
 #include <float.h>
 #include <limits.h>
+#include <math.h>
 
 /* Multiplies vector 'from' by the unweighted adjacency matrix and stores the result in 'to'. */
 static igraph_error_t adjmat_mul_unweighted(igraph_real_t *to, const igraph_real_t *from,
