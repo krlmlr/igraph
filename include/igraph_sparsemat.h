@@ -1,7 +1,6 @@
 /*
    igraph library.
-   Copyright (C) 2009-2012  Gabor Csardi <csardi.gabor@gmail.com>
-   334 Harvard street, Cambridge, MA 02139 USA
+   Copyright (C) 2010-2025  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -14,10 +13,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-   02110-1301 USA
-
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #ifndef IGRAPH_SPARSEMAT_H
@@ -27,12 +23,11 @@
 #include "igraph_error.h"
 #include "igraph_types.h"
 #include "igraph_vector.h"
-#include "igraph_datatype.h"
 #include "igraph_arpack.h"
 
 #include <stdio.h>
 
-__BEGIN_DECLS
+IGRAPH_BEGIN_C_DECLS
 
 /*
  * These types are private to igraph, and customized to use igraph_int_t.
@@ -287,6 +282,6 @@ IGRAPH_EXPORT igraph_int_t igraph_sparsemat_iterator_idx(const igraph_sparsemat_
 IGRAPH_EXPORT igraph_real_t igraph_sparsemat_iterator_get(const igraph_sparsemat_iterator_t *it);
 IGRAPH_EXPORT igraph_int_t igraph_sparsemat_iterator_next(igraph_sparsemat_iterator_t *it);
 
-__END_DECLS
+IGRAPH_END_C_DECLS
 
 #endif
