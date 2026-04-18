@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2024  The igraph development team
 
    This program is free software; you can redistribute it and/or modify
@@ -61,7 +61,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size) {
 
             igraph_community_label_propagation(&graph, &membership, IGRAPH_OUT, NULL, NULL, NULL);
             igraph_community_walktrap(&graph, NULL, 3, &merges, &mv, &membership);
-            igraph_community_edge_betweenness(&graph, &iv, &v, &merges, &iv2, &mv, &membership2, IGRAPH_DIRECTED, NULL);
+            igraph_community_edge_betweenness(&graph, &iv, &v, &merges, &iv2, &mv, &membership2, IGRAPH_DIRECTED, NULL, NULL);
 
             // Take the opportunity to run functions that can use the output of community detection.
 

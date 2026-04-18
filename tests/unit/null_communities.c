@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -42,7 +42,7 @@ int main(void) {
 
     /* Edge betweenness */
 
-    igraph_community_edge_betweenness(&g, NULL, NULL, &merges, NULL, &modularity, &membership, 0, NULL);
+    igraph_community_edge_betweenness(&g, NULL, NULL, &merges, NULL, &modularity, &membership, IGRAPH_UNDIRECTED, NULL, NULL);
 
     IGRAPH_ASSERT(igraph_matrix_int_nrow(&merges) == 0);
     IGRAPH_ASSERT(igraph_matrix_int_ncol(&merges) == 2);
