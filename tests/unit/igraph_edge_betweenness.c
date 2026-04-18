@@ -29,8 +29,8 @@ void test_bug950(void) {
     igraph_t g;
     igraph_vector_t eb;
     igraph_vector_t weights;
-    igraph_integer_t from, to;
-    igraph_integer_t no_of_edges, i;
+    igraph_int_t from, to;
+    igraph_int_t no_of_edges, i;
 
     igraph_full(&g, 6, 0, 0);
     no_of_edges = igraph_ecount(&g);
