@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2025  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -13,9 +13,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc.,  51 Franklin Street, Fifth Floor, Boston, MA
-   02110-1301 USA
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #ifndef IGRAPH_PATHS_INTERNAL_H
@@ -24,7 +22,7 @@
 #include "igraph_decls.h"
 #include "igraph_paths.h"
 
-__BEGIN_DECLS
+IGRAPH_BEGIN_C_DECLS
 
 /* Helper functions for validating input to shortest path functions. */
 
@@ -116,6 +114,6 @@ igraph_error_t igraph_i_get_all_shortest_paths_unweighted(
         igraph_int_t from, igraph_vs_t to,
         igraph_neimode_t mode);
 
-__END_DECLS
+IGRAPH_END_C_DECLS
 
 #endif /* IGRAPH_PATHS_INTERNAL_H */
