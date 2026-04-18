@@ -1,7 +1,5 @@
-/* -*- mode: C -*-  */
-/* vim:set ts=4 sw=4 sts=4 et: */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2005-2021 The igraph development team
 
    This program is free software; you can redistribute it and/or modify
@@ -125,8 +123,6 @@ done:
 /**
  * \function igraph_count_loops
  * \brief Counts the self-loops in the graph.
- *
- * \experimental
  *
  * Counts loop edges, i.e. edges whose two endpoints coincide.
  *
