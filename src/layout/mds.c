@@ -1,7 +1,5 @@
-/* -*- mode: C -*-  */
-/* vim:set ts=4 sw=4 sts=4 et: */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2003-2020  The igraph development team
 
    This program is free software; you can redistribute it and/or modify
@@ -28,7 +26,6 @@
 #include "igraph_components.h"
 #include "igraph_eigen.h"
 #include "igraph_interface.h"
-#include "igraph_memory.h"
 #include "igraph_operators.h"
 #include "igraph_paths.h"
 #include "igraph_random.h"
@@ -195,7 +192,6 @@ igraph_error_t igraph_layout_mds(const igraph_t *graph, igraph_matrix_t *res,
     igraph_matrix_t m;
     igraph_bool_t conn;
 
-
     /* Check the distance matrix */
     if (dist && (igraph_matrix_nrow(dist) != no_of_nodes ||
                  igraph_matrix_ncol(dist) != no_of_nodes)) {
@@ -291,7 +287,6 @@ igraph_error_t igraph_layout_mds(const igraph_t *graph, igraph_matrix_t *res,
         igraph_vector_int_destroy(&comp);
         IGRAPH_FINALLY_CLEAN(6);
     }
-
 
     igraph_matrix_destroy(&m);
     IGRAPH_FINALLY_CLEAN(1);
