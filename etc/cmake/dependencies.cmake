@@ -50,7 +50,6 @@ macro(find_dependencies)
         set(IGRAPH_USE_INTERNAL_${LIBNAME_UPPER} ON)
       endif()
     endif()
-
     if(IGRAPH_USE_INTERNAL_${LIBNAME_UPPER})
       list(APPEND VENDORED_DEPENDENCIES ${DEPENDENCY})
     else()
