@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -31,7 +31,6 @@ int main(void) {
 
     igraph_vector_int_init(&vec, 0);
 
-
 #define N 10000000
 
     igraph_vector_int_resize(&vec, N);
@@ -57,7 +56,6 @@ int main(void) {
         VECTOR(vec)[i] = RNG_INTEGER(0, N-1);
     }
     BENCH("Sort vector of length " IGRAPH_I_STRINGIFY(N), igraph_vector_int_sort(&vec));
-
 
     igraph_vector_int_destroy(&vec);
 
