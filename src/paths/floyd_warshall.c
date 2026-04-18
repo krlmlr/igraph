@@ -1,6 +1,6 @@
 /*
    igraph library.
-   Copyright (C) 2022-2023  The igraph development team <igraph@igraph.org>
+   Copyright (C) 2022-2025  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -199,8 +199,6 @@ static igraph_error_t distances_floyd_warshall_tree(igraph_matrix_t *res) {
 /**
  * \function igraph_distances_floyd_warshall
  * \brief Weighted all-pairs shortest path lengths with the Floyd-Warshall algorithm.
- *
- * \experimental
  *
  * The Floyd-Warshall algorithm computes weighted shortest path lengths between
  * all pairs of vertices at the same time. It is useful with very dense weighted graphs,
