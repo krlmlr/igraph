@@ -950,6 +950,13 @@ add_legacy_tests(
   glpk_error
 )
 
+# setup
+
+add_legacy_tests(
+  FOLDER tests/unit NAMES
+  igraph_setup
+)
+
 # regression and fuzzing tests
 
 add_legacy_tests(
