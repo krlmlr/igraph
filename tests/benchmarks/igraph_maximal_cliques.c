@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2013-2024  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -29,20 +29,21 @@ int main(void) {
         15447, 11837,  2333,  7309, 18539, 14099,
         14264,  9240
     };
-    igraph_vector_int_t toremove;
+    const igraph_vector_int_t toremove =
+        igraph_vector_int_view(toremovev, sizeof(toremovev) / sizeof(toremovev[0]));;
     igraph_vector_int_list_t res;
 
     BENCH_INIT();
 
-    toremove = igraph_vector_int_view(toremovev, sizeof(toremovev) / sizeof(toremovev[0]));
     igraph_full(&g, 200, IGRAPH_UNDIRECTED, IGRAPH_NO_LOOPS);
     igraph_delete_edges(&g, igraph_ess_vector(&toremove));
 
     igraph_vector_int_list_init(&res, 0);
 
     BENCH(" 1 Maximal cliques of almost complete graph",
-          igraph_maximal_cliques(&g, &res, /* min_size= */ 0,
-                                 /* max_size= */ 0, IGRAPH_UNLIMITED);
+          igraph_maximal_cliques(&g, &res,
+                                 /* min_size= */ IGRAPH_UNLIMITED, /* max_size= */ IGRAPH_UNLIMITED,
+                                 /* max_results= */ IGRAPH_UNLIMITED);
          );
 
     igraph_destroy(&g);
