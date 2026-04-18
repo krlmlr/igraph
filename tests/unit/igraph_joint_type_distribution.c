@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2023  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -53,7 +53,7 @@ void check_assort(const igraph_t *g, const igraph_vector_t *weights, const igrap
 
     if (! weights) {
         q1 /= 1 - c2;
-        igraph_assortativity_nominal(g, types, &q2, /*directed*/ true, /*normalized*/ true);
+        igraph_assortativity_nominal(g, NULL, types, &q2, /*directed*/ true, /*normalized*/ true);
         // printf("Normalized nominal assortativity: %g == %g\n", q1, q2);
         IGRAPH_ASSERT(igraph_almost_equals(q1, q2, 1e-14));
     }
