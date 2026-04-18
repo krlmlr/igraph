@@ -1,27 +1,9 @@
 name: Stimulus
-on:
-  push:
-    branches:
-      - main
-      - '*-dev'
-      - next
-  pull_request:
-    branches:
-      - main
-      - '*-dev'
-      - next
-  workflow_dispatch:
-    inputs:
-      ref:
-        description: "Branch, tag, or commit to check out"
-        required: false
-        default: ""
+on: [push, pull_request]
 
 jobs:
   ci:
     runs-on: ubuntu-latest
-    permissions:
-      statuses: write
     env:
       STIMULUS_VERSION: "0.21.7"
     steps:
@@ -32,22 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          ref: ${{ inputs.ref || github.sha }}
           fetch-depth: 0
-
-      - name: Set pending status
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          sha=$(git rev-parse HEAD)
-          html_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          gh api --method POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            repos/${{ github.repository }}/statuses/${sha} \
-            -f state=pending -f target_url="${html_url}" \
-            -f description="Stimulus validation running" -f context=stimulus
-        shell: bash
 
       - name: Install stimulus
         run: |
@@ -65,26 +32,3 @@ jobs:
           cd interfaces
           .venv/bin/stimulus -f functions.yaml -t types.yaml -l ci:validate -o test.cpp
           clang++ -std=c++14 -c test.cpp -I ../include -I ../build/include
-
-      - name: Set final status
-        if: always()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [ "${{ job.status }}" == "success" ]; then
-            state="success"
-          else
-            state="failure"
-          fi
-          sha=$(git rev-parse HEAD)
-          html_url=$(gh api \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            repos/${{ github.repository }}/actions/runs/${{ github.run_id }} | jq -r .html_url)
-          gh api --method POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            repos/${{ github.repository }}/statuses/${sha} \
-            -f state="${state}" -f target_url="${html_url}" \
-            -f description="Stimulus validation ${state}" -f context=stimulus
-        shell: bash
