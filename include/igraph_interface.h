@@ -1,8 +1,6 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
-   Copyright (C) 2009-2012  Gabor Csardi <csardi.gabor@gmail.com>
-   334 Harvard street, Cambridge, MA 02139 USA
+   igraph library.
+   Copyright (C) 2009-2025  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -15,10 +13,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc.,  51 Franklin Street, Fifth Floor, Boston, MA
-   02110-1301 USA
-
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #ifndef IGRAPH_INTERFACE_H
@@ -31,7 +26,7 @@
 #include "igraph_iterators.h"
 #include "igraph_types.h"
 
-__BEGIN_DECLS
+IGRAPH_BEGIN_C_DECLS
 
 /* -------------------------------------------------- */
 /* Interface                                          */
@@ -53,9 +48,9 @@ IGRAPH_EXPORT igraph_error_t igraph_add_vertices(
     const igraph_attribute_record_list_t* attr
 );
 IGRAPH_EXPORT igraph_error_t igraph_delete_edges(igraph_t *graph, igraph_es_t edges);
-IGRAPH_EXPORT igraph_error_t igraph_delete_vertices(igraph_t *graph, const igraph_vs_t vertices);
+IGRAPH_EXPORT igraph_error_t igraph_delete_vertices(igraph_t *graph, igraph_vs_t vertices);
 IGRAPH_EXPORT igraph_error_t igraph_delete_vertices_map(
-    igraph_t *graph, const igraph_vs_t vertices, igraph_vector_int_t *map,
+    igraph_t *graph, igraph_vs_t vertices, igraph_vector_int_t *map,
     igraph_vector_int_t *invmap
 );
 IGRAPH_EXPORT IGRAPH_FUNCATTR_PURE igraph_int_t igraph_vcount(const igraph_t *graph);
@@ -65,11 +60,14 @@ IGRAPH_EXPORT igraph_error_t igraph_neighbors(
     igraph_neimode_t mode, igraph_loops_t loops, igraph_bool_t multiple
 );
 IGRAPH_EXPORT IGRAPH_FUNCATTR_PURE igraph_bool_t igraph_is_directed(const igraph_t *graph);
-IGRAPH_EXPORT igraph_error_t igraph_degree_1(const igraph_t *graph, igraph_int_t *deg,
-                                             igraph_int_t vid, igraph_neimode_t mode, igraph_loops_t loops);
-IGRAPH_EXPORT igraph_error_t igraph_degree(const igraph_t *graph, igraph_vector_int_t *res,
-                                const igraph_vs_t vids, igraph_neimode_t mode,
-                                igraph_loops_t loops);
+IGRAPH_EXPORT igraph_error_t igraph_degree_1(
+    const igraph_t *graph, igraph_int_t *deg, igraph_int_t vid,
+    igraph_neimode_t mode, igraph_loops_t loops
+);
+IGRAPH_EXPORT igraph_error_t igraph_degree(
+    const igraph_t *graph, igraph_vector_int_t *res, igraph_vs_t vids,
+    igraph_neimode_t mode, igraph_loops_t loops
+);
 IGRAPH_EXPORT igraph_error_t igraph_edge(const igraph_t *graph, igraph_int_t eid,
                               igraph_int_t *from, igraph_int_t *to);
 IGRAPH_EXPORT igraph_error_t igraph_edges(const igraph_t *graph, igraph_es_t eids,
@@ -148,10 +146,10 @@ IGRAPH_EXPORT void igraph_i_property_cache_invalidate_all(const igraph_t *graph)
     ((igraph_int_t)(IGRAPH_TO(graph,(eid))==(vid) ? IGRAPH_FROM((graph),(eid)) : IGRAPH_TO((graph),(eid))))
 
 IGRAPH_DEPRECATED IGRAPH_EXPORT igraph_error_t igraph_delete_vertices_idx(
-    igraph_t *graph, const igraph_vs_t vertices, igraph_vector_int_t *idx,
+    igraph_t *graph, igraph_vs_t vertices, igraph_vector_int_t *idx,
     igraph_vector_int_t *invidx
 );
 
-__END_DECLS
+IGRAPH_END_C_DECLS
 
 #endif
