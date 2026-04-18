@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2021  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -73,6 +73,9 @@ int main(void) {
     printf("Vertex 1 with loop, undirected, IGRAPH_LOOPS_ONCE:\n");
     call_and_print(&g_lmu, 1, IGRAPH_IN, IGRAPH_LOOPS_ONCE);
 
+    printf("Vertex 1 with loop, IGRAPH_OUT, IGRAPH_LOOPS_TWICE:\n");
+    call_and_print(&g_lm, 1, IGRAPH_OUT, IGRAPH_LOOPS_TWICE);
+
     printf("Vertex 1 with loop, IGRAPH_ALL, IGRAPH_LOOPS_TWICE:\n");
     call_and_print(&g_lm, 1, IGRAPH_ALL, IGRAPH_LOOPS_TWICE);
 
@@ -86,10 +89,6 @@ int main(void) {
     call_and_print(&g_s2, 0, IGRAPH_ALL, IGRAPH_LOOPS_ONCE);
 
     VERIFY_FINALLY_STACK();
-
-    printf("Trying IGRAPH_LOOPS_TWICE with IGRAPH_OUT:\n");
-    /* IGRAPH_LOOPS_TWICE is now silently converted to IGRAPH_LOOPS_ONCE for directed OUT */
-    IGRAPH_ASSERT(igraph_incident(&g_lm, &eids, 0, IGRAPH_OUT, IGRAPH_LOOPS_TWICE) == IGRAPH_SUCCESS);
 
     printf("Vertex not in graph:\n");
     CHECK_ERROR(igraph_neighbors(&g_lm, &eids, 100, IGRAPH_OUT, IGRAPH_LOOPS_ONCE, IGRAPH_NO_MULTIPLE), IGRAPH_EINVVID);
