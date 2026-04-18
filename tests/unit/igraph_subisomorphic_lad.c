@@ -1,4 +1,4 @@
-/* IGraph library.
+/* igraph library.
    Copyright (C) 2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -176,9 +176,11 @@ int main(void) {
     igraph_vector_int_init(&map, 0);
     igraph_vector_int_list_init(&maps, 0);
     igraph_small(&pattern, 0, IGRAPH_DIRECTED, -1);
-    CHECK_ERROR(igraph_subisomorphic_lad(&pattern, &target, /*domains=*/ 0,
-                                      &iso, &map, &maps, /*induced=*/ 0),
-                                      IGRAPH_EINVAL);
+    CHECK_ERROR(
+        igraph_subisomorphic_lad(&pattern, &target, /*domains=*/ 0,
+        &iso, &map, &maps, /*induced=*/ 0),
+        IGRAPH_EINVAL
+    );
     igraph_vector_int_destroy(&map);
     igraph_vector_int_list_destroy(&maps);
     igraph_destroy(&pattern);
