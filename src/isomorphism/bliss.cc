@@ -192,7 +192,7 @@ struct AbortChecker {
 
     AbortChecker() : aborted(false) { }
     bool operator()() {
-        if (igraph_allow_interruption()) {
+        if (igraph_allow_interruption() != IGRAPH_SUCCESS) {
             aborted = true;
             return true;
         }
@@ -230,12 +230,6 @@ public:
 } // end unnamed namespace
 
 
-static igraph_error_t igraph_i_canonical_permutation_bliss(
-    const igraph_t *graph, const igraph_vector_int_t *colors,
-    igraph_vector_int_t *labeling, igraph_bliss_sh_t sh,
-    igraph_bliss_info_t *info
-);
-
 /**
  * \function igraph_canonical_permutation
  * \brief Canonical permutation of a graph.
@@ -272,6 +266,12 @@ igraph_error_t igraph_canonical_permutation(
         graph, colors, labeling, IGRAPH_BLISS_FL, NULL
     );
 }
+
+static igraph_error_t igraph_i_canonical_permutation_bliss(
+    const igraph_t *graph, const igraph_vector_int_t *colors,
+    igraph_vector_int_t *labeling, igraph_bliss_sh_t sh,
+    igraph_bliss_info_t *info
+);
 
 /**
  * \function igraph_canonical_permutation_bliss
@@ -537,7 +537,7 @@ igraph_error_t igraph_automorphism_group_bliss(
 /* The following license notice applies to the rest of this file */
 
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2006-2021  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
