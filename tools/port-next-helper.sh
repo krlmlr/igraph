@@ -52,16 +52,16 @@ identify)
 
 before)
     # Capture before numstat and shortstat (run on main-dev before making changes)
-    git diff --numstat HEAD..origin/next > "$BEFORE_FILE"
-    git diff --shortstat HEAD..origin/next > "$BEFORE_SHORTSTAT_FILE"
+    git diff --numstat HEAD..origin/next -- ':!/changelog' > "$BEFORE_FILE"
+    git diff --shortstat HEAD..origin/next -- ':!/changelog' > "$BEFORE_SHORTSTAT_FILE"
     echo "Saved before numstat to $BEFORE_FILE ($(wc -l < "$BEFORE_FILE") files)"
     echo "Before shortstat: $(cat "$BEFORE_SHORTSTAT_FILE" | tr -d '\n')"
     ;;
 
 after)
     # Capture after numstat and shortstat (run after committing changes)
-    git diff --numstat HEAD..origin/next > "$AFTER_FILE"
-    git diff --shortstat HEAD..origin/next > "$AFTER_SHORTSTAT_FILE"
+    git diff --numstat HEAD..origin/next -- ':!/changelog' > "$AFTER_FILE"
+    git diff --shortstat HEAD..origin/next -- ':!/changelog' > "$AFTER_SHORTSTAT_FILE"
     echo "Saved after numstat to $AFTER_FILE ($(wc -l < "$AFTER_FILE") files)"
     echo "After shortstat: $(cat "$AFTER_SHORTSTAT_FILE" | tr -d '\n')"
     ;;
@@ -109,6 +109,19 @@ show)
     git show "origin/next:$1"
     ;;
 
+test)
+    echo "Setting up build directory..."
+    rm -rf build
+    mkdir -p build
+    cd build
+    cmake .. -GNinja 2>&1 | tail -10
+    echo "Building tests..."
+    cmake --build . --target build_tests 2>&1 | tail -30
+    echo "Running tests..."
+    ctest --output-on-failure -j4 2>&1 | tail -50
+    echo "All tests passed."
+    ;;
+
 stimulus)
     # Run Stimulus CI validation (mirrors .github/workflows/stimulus.yml)
     # Sets up venv if needed, then validates interfaces/functions.yaml
@@ -132,11 +145,11 @@ stimulus)
 
 setup)
     # Ensure build environment is ready
+    if [ -f tools/install-deps.sh ]; then
+        bash tools/install-deps.sh 2>&1 | tail -5
+    fi
     if [ ! -f build/CMakeCache.txt ]; then
         echo "Setting up build directory..."
-        if [ -f tools/install-deps.sh ]; then
-            bash tools/install-deps.sh 2>&1 | tail -5
-        fi
         mkdir -p build
         cd build
         cmake .. -GNinja 2>&1 | tail -10
@@ -158,6 +171,7 @@ setup)
     echo "  diff FILE         Show diff main-dev..next for a file"
     echo "  show FILE         Show file content from next branch"
     echo "  setup             Ensure build directory and deps exist"
+    echo "  test              Build and run tests to verify changes"
     echo "  stimulus          Run Stimulus CI validation (must pass before committing)"
     exit 1
     ;;

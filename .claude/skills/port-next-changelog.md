@@ -30,7 +30,7 @@ The `changelog/` directory on `next` has subdirectories `1-nfc/`, `2-added/`, `3
 
 ## Step-by-step procedure
 
-### 1. Setup
+### 0. Setup
 
 ```bash
 git fetch origin main-dev next
@@ -38,6 +38,20 @@ git checkout main-dev
 git pull origin main-dev
 tools/port-next-helper.sh setup
 ```
+
+### 1. Check successful build
+
+Before making any changes, ensure the current `main-dev` branch builds successfully:
+
+```bash
+tools/port-next-helper.sh test
+tools/port-next-helper.sh stimulus
+```
+
+If the build or Stimulus validation fails, fix those issues first before proceeding.
+See detailed instructions below.
+Commit and push any necessary fixes to `main-dev` before porting the next changelog entry.
+
 
 ### 2. Identify the next changelog entry to port
 
@@ -102,19 +116,17 @@ tools/port-next-helper.sh show changelog/TARGET_DIR/TARGET_FILE > changelog/TARG
 ### 8. Build and test
 
 ```bash
-cd /home/user/igraph/build
-cmake --build . --target build_tests 2>&1 | tail -30
-ctest --output-on-failure -j4 2>&1 | tail -50
+tools/port-next-helper.sh test
 ```
 
 If build fails, fix the issues. Common problems:
 
-- Missing type definitions or declarations that are part of a different changelog entry — add minimal forward declarations or stubs
+- Missing definitions or declarations that are part of a different changelog entry — look up the relevant entry on `next` and copy the necessary code to the final location
 - Conflicting changes with previously ported entries — adapt minimally
 
 Fix failures and repeat until green.
 
-### 8a. Validate Stimulus interface descriptions (MANDATORY — must pass before committing)
+### 9. Validate Stimulus interface descriptions
 
 After a successful build, run the Stimulus CI check to ensure `interfaces/functions.yaml` matches the C function prototypes:
 
@@ -128,7 +140,7 @@ If validation fails, pick the relevant changes to `interfaces/types.yaml` and/or
 
 Fix all Stimulus failures and re-run `tools/port-next-helper.sh stimulus` until it prints `Stimulus validation passed.`
 
-### 9. Create a temporary commit and capture AFTER numstat and shortstat
+### 10. Create a temporary commit and capture AFTER numstat and shortstat
 
 ```bash
 git add -A
@@ -136,7 +148,7 @@ git commit -m "temp"
 tools/port-next-helper.sh after
 ```
 
-### 10. Generate the proof-of-work table and shortstat summary
+### 11. Generate the proof-of-work table and shortstat summary
 
 ```bash
 tools/port-next-helper.sh table changelog/TARGET_DIR/TARGET_FILE path/to/file1 path/to/file2 ...
@@ -156,7 +168,7 @@ Before: 150 files changed, 1234 insertions(+), 567 deletions(-)
 After:  149 files changed, 1200 insertions(+), 550 deletions(-)
 ```
 
-### 11. Update the changelog file with proof-of-work
+### 12. Update the changelog file with proof-of-work
 
 Append to `changelog/TARGET_DIR/TARGET_FILE`:
 
@@ -176,7 +188,7 @@ Notes on remaining differences:
 <explain the remaining differences, any increases or notable patterns>
 `````
 
-### 12. Commit
+### 13. Commit
 
 Amend the temporary commit with a descriptive message:
 
@@ -209,7 +221,7 @@ EOF
 - Numstat table section with the 4-column per-file table
 - Session URL at the end
 
-### 13. Push
+### 14. Push
 
 ```bash
 git push -u origin main-dev
