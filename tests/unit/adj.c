@@ -23,14 +23,14 @@
 void print_params(const igraph_t *graph, igraph_neimode_t mode, igraph_loops_t loops) {
     printf(igraph_is_directed(graph) ? "directed;   " : "undirected; ");
     switch (mode) {
-    case IGRAPH_ALL: printf("ALL; "); break;
-    case IGRAPH_OUT: printf("OUT; "); break;
-    case IGRAPH_IN : printf("IN;  "); break;
+        case IGRAPH_ALL: printf("ALL; "); break;
+        case IGRAPH_OUT: printf("OUT; "); break;
+        case IGRAPH_IN : printf("IN;  "); break;
     }
     switch (loops) {
-    case IGRAPH_NO_LOOPS:    printf("NO_LOOPS;    "); break;
-    case IGRAPH_LOOPS_ONCE:  printf("LOOPS_ONCE;  "); break;
-    case IGRAPH_LOOPS_TWICE: printf("LOOPS_TWICE; "); break;
+        case IGRAPH_NO_LOOPS:    printf("NO_LOOPS;    "); break;
+        case IGRAPH_LOOPS_ONCE:  printf("LOOPS_ONCE;  "); break;
+        case IGRAPH_LOOPS_TWICE: printf("LOOPS_TWICE; "); break;
     }
 }
 
