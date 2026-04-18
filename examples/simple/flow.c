@@ -27,9 +27,12 @@ int main(void) {
     igraph_t g;
     igraph_real_t flow;
     igraph_vector_t capacity;
-    igraph_integer_t source, target;
+    igraph_int_t source, target;
     FILE *infile;
     igraph_maxflow_stats_t stats;
+
+    /* Initialize the library. */
+    igraph_setup();
 
     igraph_vector_init(&capacity, 0);
 
