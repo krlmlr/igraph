@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2015-2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -226,12 +226,10 @@ int main(void) {
 
     igraph_rng_seed(igraph_rng_default(), 293847); /* make tests deterministic */
 
-
     test3();
     test4();
     test_bliss();
     test_bug_995();
-
 
     VERIFY_FINALLY_STACK();
 
