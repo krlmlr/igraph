@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2006-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -36,7 +35,6 @@ int main(void) {
 
     igraph_rng_seed(igraph_rng_default(), 42); /* make tests deterministic */
 
-    RNG_BEGIN();
 
     /* 2D */
     igraph_matrix_init(&m, 1000, 2);
@@ -79,7 +77,6 @@ int main(void) {
     }
     igraph_matrix_destroy(&m);
 
-    RNG_END();
 
     VERIFY_FINALLY_STACK();
 
