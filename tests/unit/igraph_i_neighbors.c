@@ -18,12 +18,11 @@
 
 #include <igraph.h>
 #include "test_utilities.h"
-#include "../../src/graph/internal.h"
 
 void call_and_print(igraph_t *graph, igraph_int_t pnode, igraph_neimode_t mode, igraph_loops_t loops, igraph_bool_t multiple) {
     igraph_vector_int_t neis;
     igraph_vector_int_init(&neis, 0);
-    IGRAPH_ASSERT(igraph_i_neighbors(graph, &neis, pnode, mode, loops, multiple) == IGRAPH_SUCCESS);
+    IGRAPH_ASSERT(igraph_neighbors(graph, &neis, pnode, mode, loops, multiple) == IGRAPH_SUCCESS);
     print_vector_int(&neis);
     igraph_vector_int_destroy(&neis);
 }
@@ -102,13 +101,14 @@ int main(void) {
     igraph_set_error_handler(igraph_error_handler_ignore);
 
     printf("Trying IGRAPH_LOOPS_TWICE with IGRAPH_OUT:\n");
-    IGRAPH_ASSERT(igraph_i_neighbors(&g_lm, &neis, 0, IGRAPH_OUT, IGRAPH_LOOPS_TWICE, IGRAPH_NO_MULTIPLE) == IGRAPH_EINVAL);
+    /* IGRAPH_LOOPS_TWICE is now silently converted to IGRAPH_LOOPS_ONCE for directed OUT */
+    IGRAPH_ASSERT(igraph_neighbors(&g_lm, &neis, 0, IGRAPH_OUT, IGRAPH_LOOPS_TWICE, IGRAPH_NO_MULTIPLE) == IGRAPH_SUCCESS);
 
     printf("Trying invalid vertex ID:\n");
-    IGRAPH_ASSERT(igraph_i_neighbors(&g_lm, &neis, 42, IGRAPH_ALL, IGRAPH_LOOPS_TWICE, IGRAPH_MULTIPLE) == IGRAPH_EINVVID);
+    IGRAPH_ASSERT(igraph_neighbors(&g_lm, &neis, 42, IGRAPH_ALL, IGRAPH_LOOPS_TWICE, IGRAPH_MULTIPLE) == IGRAPH_EINVVID);
 
     printf("Trying invalid mode:\n");
-    IGRAPH_ASSERT(igraph_i_neighbors(&g_lm, &neis, 0, (igraph_neimode_t) 42, IGRAPH_LOOPS_TWICE, IGRAPH_MULTIPLE) == IGRAPH_EINVMODE);
+    IGRAPH_ASSERT(igraph_neighbors(&g_lm, &neis, 0, (igraph_neimode_t) 42, IGRAPH_LOOPS_TWICE, IGRAPH_MULTIPLE) == IGRAPH_EINVMODE);
 
     igraph_destroy(&g_1);
     igraph_destroy(&g_lm);

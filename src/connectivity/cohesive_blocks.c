@@ -87,7 +87,7 @@ static igraph_error_t igraph_i_cb_components(igraph_t *graph,
         while (!igraph_dqueue_int_empty(Q)) {
             igraph_int_t node = igraph_dqueue_int_pop(Q);
             igraph_int_t j, n;
-            IGRAPH_CHECK(igraph_neighbors(graph, neis, node, IGRAPH_ALL));
+            IGRAPH_CHECK(igraph_neighbors(graph, neis, node, IGRAPH_ALL, IGRAPH_LOOPS, IGRAPH_MULTIPLE));
             n = igraph_vector_int_size(neis);
             for (j = 0; j < n; j++) {
                 igraph_int_t v = VECTOR(*neis)[j];
