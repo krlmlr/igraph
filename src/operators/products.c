@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2025  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -585,7 +585,7 @@ igraph_error_t igraph_product(igraph_t *res,
 igraph_error_t igraph_rooted_product(igraph_t *res,
                                      const igraph_t *g1,
                                      const igraph_t *g2,
-                                     const igraph_int_t root) {
+                                     igraph_int_t root) {
 
     const igraph_bool_t directed = igraph_is_directed(g1);
 
