@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2022  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
@@ -200,7 +200,8 @@ void test_bipartite_graph(void) {
     printf("Testing complete bipartite graph\n");
     run_tests(&graph_1, false);
 
-    igraph_bipartite_game_gnm(&graph_2, 0, 100, 100, 10000 - 100, IGRAPH_UNDIRECTED, IGRAPH_ALL, IGRAPH_SIMPLE_SW, IGRAPH_EDGE_UNLABELED);
+    igraph_bipartite_game_gnm(&graph_2, 0, 100, 100, 10000 - 100, IGRAPH_UNDIRECTED, IGRAPH_ALL, IGRAPH_SIMPLE_SW,
+                              false);
     printf("Testing large bipartite graph\n");
     run_tests(&graph_2, false);
 
