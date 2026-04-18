@@ -152,8 +152,6 @@ int test_num = 0;
     }
 
 int main(void) {
-
-
     RUN_TEST(test_from_prufer_back_to_prufer());
     RUN_TEST(test_from_prufer_back_to_prufer_with_resize());
     RUN_TEST(test_from_prufer_back_to_prufer_with_resize2());
@@ -161,7 +159,6 @@ int main(void) {
     RUN_TEST(test_from_random_prufer_back_to_prufer(100));
     RUN_TEST(test_from_random_prufer_back_to_prufer(1000));
     RUN_TEST(test_from_random_prufer_back_to_prufer(10000));
-
 
     VERIFY_FINALLY_STACK();
 
