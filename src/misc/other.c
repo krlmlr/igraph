@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2005-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard street, Cambridge, MA 02139 USA
 
@@ -24,7 +23,6 @@
 #include "igraph_interface.h"
 #include "igraph_nongraph.h"
 #include "igraph_paths.h"
-#include "igraph_spatial.h"
 
 #include "core/interruption.h"
 
@@ -83,6 +81,7 @@ igraph_error_t igraph_running_mean(const igraph_vector_t *data, igraph_vector_t 
 
     return IGRAPH_SUCCESS;
 }
+
 
 /**
  * \function igraph_expand_path_to_pairs
@@ -260,5 +259,3 @@ igraph_error_t igraph_vertex_path_from_edge_path(
 
     return IGRAPH_SUCCESS;
 }
-
-
