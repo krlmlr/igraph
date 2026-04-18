@@ -120,14 +120,6 @@ IGRAPH_EXPORT IGRAPH_DEPRECATED igraph_error_t igraph_get_incidence(
    igraph_vector_int_t *row_ids, igraph_vector_int_t *col_ids
 );
 
-IGRAPH_EXPORT IGRAPH_DEPRECATED  igraph_error_t igraph_bipartite_game(
-    igraph_t *graph, igraph_vector_bool_t *types,
-    igraph_erdos_renyi_t type,
-    igraph_int_t n1, igraph_int_t n2,
-    igraph_real_t p, igraph_int_t m,
-    igraph_bool_t directed, igraph_neimode_t mode
-);
-
 __END_DECLS
 
 #endif
