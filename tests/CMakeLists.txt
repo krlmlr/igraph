@@ -144,7 +144,6 @@ add_legacy_tests(
   igraph_get_eid
   igraph_is_same_graph
   igraph_incident
-  igraph_i_neighbors
   igraph_neighbors
 )
 
@@ -287,6 +286,10 @@ add_legacy_tests(
   components
   coreness
   efficiency
+# The eigen_stress test is disabled by default. The chance of failure on at
+# least some platforms, or with some BLAS/LAPACK/ARPACK versions is high
+# due to ARPACK's fickleness. The test is still useful for local testing.
+  # eigen_stress
   global_transitivity
   harmonic_centrality
   hub_and_authority
@@ -343,7 +346,6 @@ add_legacy_tests(
   igraph_local_scan_subset_ecount
   igraph_local_transitivity
   igraph_mean_degree
-  minimum_spanning_tree
   igraph_neighborhood
   igraph_neighborhood_graphs
   igraph_neighborhood_size
@@ -364,6 +366,7 @@ add_legacy_tests(
   igraph_spanner
   jdm
   knn
+  minimum_spanning_tree
   mycielskian
   paths
   random_spanning_tree
@@ -723,6 +726,7 @@ add_legacy_tests(
   igraph_weighted_cliques
   maximal_cliques_callback
   maximal_cliques_hist
+  max_results
 )
 
 # eigen.at
@@ -773,7 +777,6 @@ add_examples(
 add_legacy_tests(
   FOLDER tests/unit NAMES
   dgemv
-  igraph_arpack_error
   igraph_arpack_rnsolve
   igraph_arpack_unpack_complex
   igraph_blas_dgemm
@@ -798,8 +801,8 @@ add_legacy_tests(
   igraph_bipartite_create
   igraph_bipartite_projection
   igraph_biadjacency
-  igraph_weighted_biadjacency
   igraph_get_biadjacency
+  igraph_weighted_biadjacency
 )
 
 # centralization.at
@@ -963,13 +966,6 @@ add_legacy_tests(
   glpk_error
 )
 
-# setup
-
-add_legacy_tests(
-  FOLDER tests/unit NAMES
-  igraph_setup
-)
-
 # regression and fuzzing tests
 
 add_legacy_tests(
@@ -1047,9 +1043,10 @@ add_benchmarks(
   intersection
   lad
   modularity
+  spanning_tree
 )
 
-# dot product
+# sampling
 add_legacy_tests(
   FOLDER tests/unit NAMES
   igraph_rng_sample_dirichlet
