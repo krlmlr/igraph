@@ -1,7 +1,6 @@
-/* -*- mode: C -*-  */
 /* vim:set ts=4 sw=4 sts=4 noet: */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2007-2012  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard street, Cambridge, MA 02139 USA
 
@@ -1619,7 +1618,7 @@ const char* igraph_arpack_error_to_string(igraph_arpack_error_t error) {
         : -1;
     const char* message = 0;
 
-    if (index >= 0 && (size_t) index < sizeof(igraph_i_arpack_error_strings) / sizeof(igraph_i_arpack_error_strings[0])) {
+    if (index >= 0 && index < sizeof(igraph_i_arpack_error_strings) / sizeof(igraph_i_arpack_error_strings[0])) {
         message = igraph_i_arpack_error_strings[index];
     }
 
