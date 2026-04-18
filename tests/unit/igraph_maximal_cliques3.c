@@ -1,6 +1,5 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2013  Gabor Csardi <csardi.gabor@gmail.com>
    334 Harvard st, Cambridge MA, 02139 USA
 
@@ -49,7 +48,8 @@ int main(void) {
     igraph_vector_int_list_init(&cliques, 0);
 
     igraph_maximal_cliques(&graph, &cliques, /*min_size=*/ 15,
-                           /*max_size=*/ 0, IGRAPH_UNLIMITED);
+                           /*max_size=*/ IGRAPH_UNLIMITED,
+                           IGRAPH_UNLIMITED);
 
     print_and_destroy(&cliques);
     igraph_destroy(&graph);
