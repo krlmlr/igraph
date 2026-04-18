@@ -1,0 +1,44 @@
+# Helper workflow to trigger CI for each commit on a branch.
+# Triggers build-cmake and stimulus for commits after the first commit in the
+# first-parent history that already has a CI build status.
+#   The user can always rebase and force-push to move commits past the boundary and
+#   re-trigger builds for specific commits.
+
+on:
+  push:
+    branches:
+      - each-*
+      - '*-dev'
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      branch:
+        description: "Branch ref to trigger CI for (e.g. refs/heads/main-dev)"
+        required: true
+        type: string
+
+name: each-ci
+
+jobs:
+  each-ci:
+    if: github.repository == 'krlmlr/igraph'
+    runs-on: ubuntu-24.04
+
+    name: "Trigger CI workflows for each commit"
+
+    permissions:
+      contents: read
+      statuses: read
+      actions: write
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.branch || github.ref }}
+          fetch-depth: 0
+
+      - name: Enumerate commits and trigger CI workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/each-ci.sh
+        shell: bash
