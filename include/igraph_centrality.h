@@ -1,8 +1,6 @@
-/* -*- mode: C -*-  */
 /*
-   IGraph library.
-   Copyright (C) 2009-2012  Gabor Csardi <csardi.gabor@gmail.com>
-   334 Harvard street, Cambridge, MA 02139 USA
+   igraph library.
+   Copyright (C) 2009-2025  The igraph development team <igraph@igraph.org>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -15,24 +13,21 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc.,  51 Franklin Street, Fifth Floor, Boston, MA
-   02110-1301 USA
-
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #ifndef IGRAPH_CENTRALITY_H
 #define IGRAPH_CENTRALITY_H
 
 #include "igraph_decls.h"
+#include "igraph_arpack.h"
 #include "igraph_constants.h"
-#include "igraph_error.h"
-#include "igraph_types.h"
 #include "igraph_datatype.h"
 #include "igraph_iterators.h"
-#include "igraph_arpack.h"
+#include "igraph_error.h"
+#include "igraph_types.h"
 
-__BEGIN_DECLS
+IGRAPH_BEGIN_C_DECLS
 
 /* -------------------------------------------------- */
 /* Centrality                                         */
@@ -40,21 +35,21 @@ __BEGIN_DECLS
 
 IGRAPH_EXPORT igraph_error_t igraph_closeness(const igraph_t *graph, igraph_vector_t *res,
                                    igraph_vector_int_t *reachable_count, igraph_bool_t *all_reachable,
-                                   const igraph_vs_t vids, igraph_neimode_t mode,
+                                   igraph_vs_t vids, igraph_neimode_t mode,
                                    const igraph_vector_t *weights, igraph_bool_t normalized);
 IGRAPH_EXPORT igraph_error_t igraph_closeness_cutoff(const igraph_t *graph, igraph_vector_t *res,
                                           igraph_vector_int_t *reachable_count, igraph_bool_t *all_reachable,
-                                          const igraph_vs_t vids, igraph_neimode_t mode,
+                                          igraph_vs_t vids, igraph_neimode_t mode,
                                           const igraph_vector_t *weights,
                                           igraph_bool_t normalized,
                                           igraph_real_t cutoff);
 
 IGRAPH_EXPORT igraph_error_t igraph_harmonic_centrality(const igraph_t *graph, igraph_vector_t *res,
-                                             const igraph_vs_t vids, igraph_neimode_t mode,
+                                             igraph_vs_t vids, igraph_neimode_t mode,
                                              const igraph_vector_t *weights,
                                              igraph_bool_t normalized);
 IGRAPH_EXPORT igraph_error_t igraph_harmonic_centrality_cutoff(const igraph_t *graph, igraph_vector_t *res,
-                                                    const igraph_vs_t vids, igraph_neimode_t mode,
+                                                    igraph_vs_t vids, igraph_neimode_t mode,
                                                     const igraph_vector_t *weights,
                                                     igraph_bool_t normalized,
                                                     igraph_real_t cutoff);
@@ -146,10 +141,10 @@ IGRAPH_EXPORT igraph_error_t igraph_eigenvector_centrality(const igraph_t *graph
                                                            igraph_arpack_options_t *options);
 
 IGRAPH_EXPORT igraph_error_t igraph_hub_and_authority_scores(const igraph_t *graph, igraph_vector_t *hub_vector,
-                                         igraph_vector_t *authority_vector,
-                                         igraph_real_t *value,
-                                         const igraph_vector_t *weights,
-                                         igraph_arpack_options_t *options);
+                                                             igraph_vector_t *authority_vector,
+                                                             igraph_real_t *value,
+                                                             const igraph_vector_t *weights,
+                                                             igraph_arpack_options_t *options);
 
 IGRAPH_EXPORT igraph_error_t igraph_constraint(const igraph_t *graph, igraph_vector_t *res,
                                     igraph_vs_t vids, const igraph_vector_t *weights);
@@ -207,6 +202,6 @@ IGRAPH_EXPORT igraph_error_t igraph_centralization_eigenvector_centrality_tmax(c
                                                                                igraph_neimode_t mode,
                                                                                igraph_real_t *res);
 
-__END_DECLS
+IGRAPH_END_C_DECLS
 
 #endif
