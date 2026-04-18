@@ -149,7 +149,9 @@ static igraph_error_t igraph_i_is_separator(
             }
 
             SET_VISITED(v);
-            IGRAPH_CHECK(igraph_neighbors(graph, &neis, v, IGRAPH_ALL, IGRAPH_LOOPS, IGRAPH_MULTIPLE));
+            IGRAPH_CHECK(igraph_neighbors(
+                graph, &neis, v, IGRAPH_ALL, IGRAPH_LOOPS, IGRAPH_MULTIPLE
+            ));
 
             const igraph_int_t dv = igraph_vector_int_size(&neis);
 
@@ -230,7 +232,9 @@ done:
 
             for (IGRAPH_VIT_RESET(vit); !IGRAPH_VIT_END(vit); IGRAPH_VIT_NEXT(vit)) {
                 const igraph_int_t u = IGRAPH_VIT_GET(vit);
-                IGRAPH_CHECK(igraph_neighbors(graph, &Sneis, u, IGRAPH_ALL, IGRAPH_LOOPS, IGRAPH_MULTIPLE));
+                IGRAPH_CHECK(igraph_neighbors(
+                    graph, &Sneis, u, IGRAPH_ALL, IGRAPH_LOOPS, IGRAPH_MULTIPLE
+                ));
                 const igraph_int_t du = igraph_vector_int_size(&Sneis);
                 for (igraph_int_t i=0; i < du; i++) {
 
@@ -249,7 +253,9 @@ done:
                         }
 
                         SET_VISITED(v);
-                        IGRAPH_CHECK(igraph_neighbors(graph, &neis, v, IGRAPH_ALL, IGRAPH_LOOPS, IGRAPH_MULTIPLE));
+                        IGRAPH_CHECK(igraph_neighbors(
+                            graph, &neis, v, IGRAPH_ALL, IGRAPH_LOOPS, IGRAPH_MULTIPLE
+                        ));
 
                         const igraph_int_t dv = igraph_vector_int_size(&neis);
 
@@ -694,7 +700,7 @@ static igraph_error_t igraph_i_minimum_size_separators_topkdeg(
      * faster IGRAPH_LOOPS here instead of the slower IGRAPH_NO_LOOPS. */
     IGRAPH_CHECK(igraph_degree(graph, &deg, igraph_vss_all(), IGRAPH_ALL, IGRAPH_LOOPS));
 
-    IGRAPH_CHECK(igraph_vector_int_order1(&deg, &order, no_of_nodes));
+    IGRAPH_CHECK(igraph_i_vector_int_order(&deg, &order, no_of_nodes));
     IGRAPH_CHECK(igraph_vector_int_resize(res, k));
     for (igraph_int_t i = 0; i < k; i++) {
         VECTOR(*res)[i] = VECTOR(order)[no_of_nodes - 1 - i];
