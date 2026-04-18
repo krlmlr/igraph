@@ -81,11 +81,11 @@ add_library(
 
   random/random.c
   random/random_device.cpp
-  random/sampling.c
   random/rng_glibc2.c
   random/rng_mt19937.c
   random/rng_pcg32.c
   random/rng_pcg64.c
+  random/sampling.c
 
   graph/adjlist.c
   graph/attributes.c
@@ -114,7 +114,6 @@ add_library(
   constructors/prufer.c
   constructors/regular.c
   constructors/trees.c
-
 
   games/barabasi.c
   games/callaway_traits.c
@@ -184,6 +183,9 @@ add_library(
   connectivity/separators.c
   connectivity/reachability.c
 
+  cycles/cycle_bases.c
+        cycles/feedback_sets.c
+  cycles/order_cycle.cpp
   cycles/simple_cycles.c
 
   flow/flow.c
@@ -297,15 +299,12 @@ add_library(
   misc/cocitation.c
   misc/coloring.c
   misc/conversion.c
-  misc/cycle_bases.c
   misc/degree_sequence.cpp
   misc/embedding.c
-  misc/feedback_arc_set.c
   misc/graphicality.c
   misc/matching.c
   misc/mixing.c
   misc/motifs.c
-  misc/order_cycle.cpp
   misc/other.c
   misc/power_law_fit.c
   misc/scan.c
@@ -342,8 +341,8 @@ add_library(
 add_dependencies(igraph parsersources)
 
 # Set soname for the library
-set_target_properties(igraph PROPERTIES VERSION "3.1.11")
-set_target_properties(igraph PROPERTIES SOVERSION 3)
+set_target_properties(igraph PROPERTIES VERSION "4.0.1")
+set_target_properties(igraph PROPERTIES SOVERSION 4)
 
 # Add extra compiler definitions if needed
 target_compile_definitions(
@@ -383,6 +382,7 @@ target_include_directories(
 
   # Include paths for dependencies
   "$<$<BOOL:${GLPK_INCLUDE_DIR}>:${GLPK_INCLUDE_DIR}>"
+  "$<$<BOOL:${INFOMAP_INCLUDE_DIR}>:${INFOMAP_INCLUDE_DIR}>"
   "$<$<BOOL:${GMP_INCLUDE_DIR}>:${GMP_INCLUDE_DIR}>"
   "$<$<BOOL:${LIBXML2_INCLUDE_DIRS}>:${LIBXML2_INCLUDE_DIRS}>"
   "$<$<BOOL:${PLFIT_INCLUDE_DIRS}>:${PLFIT_INCLUDE_DIRS}>"
@@ -402,6 +402,10 @@ endif()
 
 if(GLPK_LIBRARIES)
   target_link_libraries(igraph PRIVATE ${GLPK_LIBRARIES})
+endif()
+
+if(INFOMAP_LIBRARIES)
+  target_link_libraries(igraph PRIVATE ${INFOMAP_LIBRARIES})
 endif()
 
 if(GMP_LIBRARIES)
