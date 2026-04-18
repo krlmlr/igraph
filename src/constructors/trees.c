@@ -1,5 +1,5 @@
 /*
-   IGraph library.
+   igraph library.
    Copyright (C) 2022 The igraph development team
 
    This program is free software; you can redistribute it and/or modify
@@ -25,8 +25,6 @@
 /**
  * \function igraph_tree_from_parent_vector
  * \brief Constructs a tree or forest from a vector encoding the parent of each vertex.
- *
- * \experimental
  *
  * Rooted trees and forests are conveniently represented using a \p parents
  * vector where the ID of the parent of vertex \c v is stored in <code>parents[v]</code>.
