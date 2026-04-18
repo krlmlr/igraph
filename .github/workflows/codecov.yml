@@ -4,13 +4,9 @@ on:
   push:
     branches:
       - main
-      - '*-dev'
-      - next
   pull_request:
     branches:
       - main
-      - '*-dev'
-      - next
 
 env:
   CMAKE_COLOR_DIAGNOSTICS: ON
