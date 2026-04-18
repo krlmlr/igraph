@@ -1,4 +1,3 @@
-/* vim:set ts=4 sw=4 sts=4 et: */
 /*
    igraph library.
    Copyright (C) 2006-2012  Gabor Csardi <csardi.gabor@gmail.com>
@@ -29,7 +28,10 @@ int main(void) {
     igraph_matrix_t m;
     igraph_vector_int_t pairs;
     igraph_vector_t res;
-    igraph_integer_t i, j, n;
+    igraph_int_t i, j, n;
+
+    /* Initialize the library. */
+    igraph_setup();
 
     igraph_small(&g, 0, IGRAPH_DIRECTED,
                  0, 1, 2, 1, 2, 0, 3, 0,
