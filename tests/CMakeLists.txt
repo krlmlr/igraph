@@ -346,7 +346,6 @@ add_legacy_tests(
   igraph_local_scan_subset_ecount
   igraph_local_transitivity
   igraph_mean_degree
-  minimum_spanning_tree
   igraph_neighborhood
   igraph_neighborhood_graphs
   igraph_neighborhood_size
@@ -367,6 +366,7 @@ add_legacy_tests(
   igraph_spanner
   jdm
   knn
+  minimum_spanning_tree
   mycielskian
   paths
   random_spanning_tree
