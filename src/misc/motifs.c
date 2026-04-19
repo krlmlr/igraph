@@ -448,8 +448,8 @@ igraph_error_t igraph_motifs_randesu_callback(const igraph_t *graph, igraph_int_
                     igraph_stack_int_pop(&stack);
                     nei = igraph_stack_int_pop(&stack);
                     neiparent = igraph_stack_int_pop(&stack);
-                    igraph_vector_int_push_back(&adjverts, nei);
-                    igraph_vector_int_push_back(&adjverts, neiparent);
+                    IGRAPH_CHECK(igraph_vector_int_push_back(&adjverts, nei));
+                    IGRAPH_CHECK(igraph_vector_int_push_back(&adjverts, neiparent));
                 }
 
                 nei = igraph_vector_int_pop_back(&vids);
@@ -689,8 +689,8 @@ igraph_error_t igraph_motifs_randesu_estimate(const igraph_t *graph, igraph_real
                     igraph_stack_int_pop(&stack);
                     nei = igraph_stack_int_pop(&stack);
                     neiparent = igraph_stack_int_pop(&stack);
-                    igraph_vector_int_push_back(&adjverts, nei);
-                    igraph_vector_int_push_back(&adjverts, neiparent);
+                    IGRAPH_CHECK(igraph_vector_int_push_back(&adjverts, nei));
+                    IGRAPH_CHECK(igraph_vector_int_push_back(&adjverts, neiparent));
                 }
 
                 nei = igraph_vector_int_pop_back(&vids);
@@ -876,8 +876,8 @@ igraph_error_t igraph_motifs_randesu_no(const igraph_t *graph, igraph_real_t *no
                     igraph_stack_int_pop(&stack);
                     nei = igraph_stack_int_pop(&stack);
                     neiparent = igraph_stack_int_pop(&stack);
-                    igraph_vector_int_push_back(&adjverts, nei);
-                    igraph_vector_int_push_back(&adjverts, neiparent);
+                    IGRAPH_CHECK(igraph_vector_int_push_back(&adjverts, nei));
+                    IGRAPH_CHECK(igraph_vector_int_push_back(&adjverts, neiparent));
                 }
 
                 nei = igraph_vector_int_pop_back(&vids);
