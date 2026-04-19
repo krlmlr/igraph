@@ -172,7 +172,7 @@ int main(void) {
     /* This is for benchmarking */
     igraph_rng_seed(igraph_rng_default(), 42);
     igraph_watts_strogatz_game(&graph, 3, 10, 2, 0.1, 0, 0);
-    igraph_minimum_cycle_basis(&graph, NULL, &result, /* cutoff */ -1, /* complete */ true, /* ordered */ true);
+    igraph_minimum_cycle_basis(&graph, /* cutoff */ -1, /* complete */ true, * ordered */ true, &result);
     print_check_destroy(&graph, &result);
 #endif
 
