@@ -1046,7 +1046,7 @@ add_benchmarks(
   spanning_tree
 )
 
-# dot product
+# sampling
 add_legacy_tests(
   FOLDER tests/unit NAMES
   igraph_rng_sample_dirichlet
