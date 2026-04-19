@@ -966,9 +966,6 @@ add_legacy_tests(
   glpk_error
 )
 
-# setup
-
-
 # regression and fuzzing tests
 
 add_legacy_tests(
