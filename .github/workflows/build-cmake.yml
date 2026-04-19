@@ -93,7 +93,7 @@ jobs:
             ccache-msys2-${{ matrix.arch }}-
 
       - name: Build
-        run: cmake --build . --target build_tests
+        run: cmake --build . --target build_tests -- -k 0
         working-directory: build-${{ matrix.arch }}
 
       # The glpk_error test is temporarily disabled, see https://github.com/igraph/igraph/issues/1850
