@@ -1043,6 +1043,7 @@ add_benchmarks(
   intersection
   lad
   modularity
+  spanning_tree
 )
 
 # dot product
